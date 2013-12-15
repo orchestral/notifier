@@ -1,5 +1,7 @@
 {
     "name": "orchestra/notifier",
+    "description": "[WIP] Orchestra Platform 2 User Notification Component",
+    "keywords": ["orchestra-platform", "orchestral", "laravel"],
     "license": "MIT",
     "authors": [
         {
