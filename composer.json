@@ -25,5 +25,10 @@
         "illuminate/mail": "4.1.*",
         "illuminate/support": "4.1.*"
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2-dev"
+        }
+    },
     "minimum-stability": "dev"
 }
