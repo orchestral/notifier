@@ -1,0 +1,26 @@
+{
+    "name": "orchestra/notifier",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mior Muhammad Zaki",
+            "email": "crynobone@gmail.com",
+            "homepage": "https://github.com/crynobone"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Orchestra\\Notifier" : "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.8.*",
+        "illuminate/auth": "4.1.*",
+        "illuminate/mail": "4.1.*",
+        "illuminate/support": "4.1.*"
+    },
+    "minimum-stability": "dev"
+}
