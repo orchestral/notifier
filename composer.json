@@ -17,12 +17,14 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "orchestra/support": "2.1.*"
+        "orchestra/memory": "2.1.*"
     },
     "require-dev": {
         "mockery/mockery": "0.8.*",
+        "jeremeamia/superclosure": "1.0.*",
         "illuminate/auth": "4.1.*",
         "illuminate/mail": "4.1.*",
+        "illuminate/queue": "4.1.*",
         "illuminate/support": "4.1.*"
     },
     "extra": {
