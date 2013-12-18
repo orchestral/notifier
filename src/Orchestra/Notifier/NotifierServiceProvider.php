@@ -1,4 +1,4 @@
-<?php namespace Orchestra\Notifer;
+<?php namespace Orchestra\Notifier;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -40,7 +40,7 @@ class NotifierServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerMemoryEvents();
+        $this->registerMemoryEvent();
     }
 
     /**
@@ -50,7 +50,7 @@ class NotifierServiceProvider extends ServiceProvider
      */
     protected function registerMemoryEvent()
     {
-        $memory = $app['orchestra.memory']->makeOrFallback();
+        $memory = $this->app['orchestra.memory']->makeOrFallback();
 
         $this->app['orchestra.mail']->attach($memory);
     }
