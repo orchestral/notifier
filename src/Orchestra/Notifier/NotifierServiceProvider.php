@@ -50,7 +50,7 @@ class NotifierServiceProvider extends ServiceProvider
      */
     protected function registerMemoryEvent()
     {
-        $memory = $app['orchestra.memory']->makeOrFallback();
+        $memory = $this->app['orchestra.memory']->makeOrFallback();
 
         $this->app['orchestra.mail']->attach($memory);
     }
