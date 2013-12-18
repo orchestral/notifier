@@ -40,7 +40,7 @@ class NotifierServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerMemoryEvents();
+        $this->registerMemoryEvent();
     }
 
     /**
