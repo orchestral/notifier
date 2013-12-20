@@ -27,13 +27,6 @@ class Mailer extends Container
     protected $mailer;
 
     /**
-     * Memory instance.
-     *
-     * @var \Orchestra\Memory\Drivers\Driver
-     */
-    protected $memory;
-
-    /**
      * Construct a new Mail instance.
      *
      * @param  \Illuminate\Foundation\Application   $app
