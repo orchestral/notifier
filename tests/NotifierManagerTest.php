@@ -15,6 +15,27 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test Orchestra\Notifier\NotifierManager::createDefaultDriver()
+     * method.
+     *
+     * @test
+     */
+    public function testCreateDefaultDriverMethod()
+    {
+        $app = new Container;
+
+        $app['config'] = $config = m::mock('\Illuminate\Config\Repository');
+        $app['mailer'] = $mailer = m::mock('\Illuminate\Mail\Mailer');
+
+        $config->shouldReceive('get')->once()
+            ->with('orchestra/notifier::driver', 'laravel')->andReturn('laravel');
+
+        $stub = new NotifierManager($app);
+
+        $this->assertInstanceOf('\Orchestra\Notifier\LaravelNotifier', $stub->driver());
+    }
+
+    /**
      * Test Orchestra\Notifier\NotifierManager::createOrchestraDriver()
      * method.
      *
@@ -24,17 +45,14 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container;
 
-        $app['config'] = $config = m::mock('\Illuminate\Config\Repository');
         $app['orchestra.mail'] = $mailer = m::mock('\Orchestra\Notifier\Mailer');
         $app['orchestra.memory'] = $memory = m::mock('\Orchestra\Memory\Drivers\Driver');
 
-        $config->shouldReceive('get')->once()
-            ->with('orchestra/notifier::driver', 'orchestra')->andReturn('orchestra');
         $memory->shouldReceive('makeOrFallback')->once()->andReturn($memory);
 
         $stub = new NotifierManager($app);
 
-        $this->assertInstanceOf('\Orchestra\Notifier\OrchestraNotifier', $stub->driver());
+        $this->assertInstanceOf('\Orchestra\Notifier\OrchestraNotifier', $stub->driver('orchestra'));
     }
 
     /**
