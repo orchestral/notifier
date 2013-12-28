@@ -5,6 +5,16 @@ use Illuminate\Support\Manager;
 class NotifierManager extends Manager
 {
     /**
+     * Create Laravel driver.
+     *
+     * @return OrchestraNotifier
+     */
+    protected function createLaravelDriver()
+    {
+        return new LaravelNotifier($this->app['mailer']);
+    }
+
+    /**
      * Create Orchestra Platform driver.
      *
      * @return OrchestraNotifier
@@ -24,6 +34,6 @@ class NotifierManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return $this->app['config']->get('orchestra/notifier::driver', 'orchestra');
+        return $this->app['config']->get('orchestra/notifier::driver', 'laravel');
     }
 }

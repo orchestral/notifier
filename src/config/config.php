@@ -1,5 +1,5 @@
 <?php
 
 return array(
-    'default' => 'orchestra',
+    'default' => 'laravel',
 );
