@@ -27,7 +27,7 @@ class OrchestraNotifier extends Container implements NotifierInterface
      *
      * @param  \Illuminate\Auth\Reminders\RemindableInterface  $user
      * @param  string                                          $subject
-     * @param  string                                          $view
+     * @param  string|array                                    $view
      * @param  array                                           $data
      * @return boolean
      */

@@ -36,4 +36,21 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Orchestra\Notifier\OrchestraNotifier', $stub->driver());
     }
+
+    /**
+     * Test Orchestra\Notifier\NotifierManager::createLaravelDriver()
+     * method.
+     *
+     * @test
+     */
+    public function testCreateLaravelDriverMethod()
+    {
+        $app = new Container;
+
+        $app['mailer'] = $mailer = m::mock('\Illuminate\Mail\Mailer');
+
+        $stub = new NotifierManager($app);
+
+        $this->assertInstanceOf('\Orchestra\Notifier\LaravelNotifier', $stub->driver('laravel'));
+    }
 }
