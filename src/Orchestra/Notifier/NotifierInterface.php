@@ -1,6 +1,5 @@
 <?php namespace Orchestra\Notifier;
 
-use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
 interface NotifierInterface
