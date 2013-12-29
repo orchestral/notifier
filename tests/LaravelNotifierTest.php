@@ -21,8 +21,8 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodSucceed()
     {
-        $mailer = m::mock('\Illuminate\Mail\Mailer');
-        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface');
+        $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
+        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface[getReminderEmail]');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
@@ -50,8 +50,8 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodFailed()
     {
-        $mailer = m::mock('\Illuminate\Mail\Mailer');
-        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface');
+        $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
+        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface[getReminderEmail]');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();

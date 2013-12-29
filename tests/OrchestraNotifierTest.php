@@ -21,8 +21,8 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodWithoutQueue()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer');
-        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface');
+        $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
+        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface[getReminderEmail]');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
@@ -51,8 +51,8 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodUsingQueue()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer');
-        $memory = m::mock('\Orchestra\Memory\Drivers\Driver');
+        $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
+        $memory = m::mock('\Orchestra\Memory\Provider[get]');
         $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
@@ -82,8 +82,8 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodFailed()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer');
-        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface');
+        $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
+        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface[getReminderEmail]');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
