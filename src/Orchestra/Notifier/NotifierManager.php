@@ -36,4 +36,15 @@ class NotifierManager extends Manager
     {
         return $this->app['config']->get('orchestra/notifier::driver', 'laravel');
     }
+
+    /**
+     * Set the default driver.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    public function setDefaultDriver($name)
+    {
+        $this->app['config']->set('orchestra/notifier::driver', $name);
+    }
 }

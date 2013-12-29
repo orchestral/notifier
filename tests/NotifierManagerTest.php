@@ -71,4 +71,24 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Orchestra\Notifier\LaravelNotifier', $stub->driver('laravel'));
     }
+
+    /**
+     * Test Orchestra\Notifier\NotifierManager::setDefaultDriver()
+     * method.
+     *
+     * @test
+     */
+    public function testSetDefaultDriverMethod()
+    {
+        $app = new Container;
+
+        $app['config'] = $config = m::mock('\Illuminate\Config\Repository');
+
+        $config->shouldReceive('set')->once()
+            ->with('orchestra/notifier::driver', 'foo')->andReturnNull();
+
+        $stub = new NotifierManager($app);
+
+        $stub->setDefaultDriver('foo');
+    }
 }
