@@ -22,13 +22,13 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodWithoutQueue()
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
-        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
+        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
-            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
+        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
@@ -52,7 +52,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodWithCallback()
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
-        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
+        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
         $view = 'foo.bar';
         $data = array();
 
@@ -60,8 +60,8 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
             $mail->subject('foobar!!');
         };
 
-        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
-            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
+        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
@@ -87,13 +87,13 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
         $memory = m::mock('\Orchestra\Memory\Provider[get]');
-        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
+        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
-            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
+        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
         $memory->shouldReceive('get')->once()->with('email.queue', false)->andReturn(true);
         $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
@@ -119,13 +119,13 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodFailed()
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
-        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
+        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
-            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
+        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
