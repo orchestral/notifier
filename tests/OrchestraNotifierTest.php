@@ -22,12 +22,13 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodWithoutQueue()
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
-        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface[getReminderEmail]');
+        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getReminderEmail')->once()->andReturn('hello@orchestraplatform.com');
+        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
@@ -35,7 +36,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
 
                     return array('hello@orchestraplatform.com');
                 })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com')->andReturnNull()
+            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
         $stub = new OrchestraNotifier($mailer);
@@ -53,12 +54,14 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
         $memory = m::mock('\Orchestra\Memory\Provider[get]');
-        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface');
+        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getReminderEmail')->once()->andReturn('hello@orchestraplatform.com');
+        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
+
         $memory->shouldReceive('get')->once()->with('email.queue', false)->andReturn(true);
         $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
@@ -66,7 +69,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
 
                     return array();
                 })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com')->andReturnNull()
+            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
         $stub = new OrchestraNotifier($mailer);
@@ -83,12 +86,13 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodFailed()
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
-        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface[getReminderEmail]');
+        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getReminderEmail')->once()->andReturn('hello@orchestraplatform.com');
+        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
@@ -96,7 +100,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
 
                     return array();
                 })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com')->andReturnNull()
+            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
         $stub = new OrchestraNotifier($mailer);

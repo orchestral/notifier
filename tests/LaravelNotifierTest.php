@@ -22,12 +22,13 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodSucceed()
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
-        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface[getReminderEmail]');
+        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getReminderEmail')->once()->andReturn('hello@orchestraplatform.com');
+        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
@@ -35,7 +36,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
 
                     return array('hello@orchestraplatform.com');
                 })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com')->andReturnNull()
+            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
         $stub = new LaravelNotifier($mailer);
@@ -51,12 +52,13 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodFailed()
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
-        $user = m::mock('\Illuminate\Auth\Reminders\RemindableInterface[getReminderEmail]');
+        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getReminderEmail')->once()->andReturn('hello@orchestraplatform.com');
+        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
@@ -64,7 +66,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
 
                     return array();
                 })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com')->andReturnNull()
+            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
         $stub = new LaravelNotifier($mailer);

@@ -8,3 +8,4 @@ title: Notifier Change Log
 ### v2.1.0@dev {#v2-1-0}
 
 * Move `Orchestra\Foundation\Mail` to `Orchestra\Notifier\Mailer`.
+* Add `Orchestra\Notifier\LaravelNotifier` and `Orchestra\Notifier\OrchestraNotifier` which implements `Orchestra\Notifier\NotifierInterface`.
