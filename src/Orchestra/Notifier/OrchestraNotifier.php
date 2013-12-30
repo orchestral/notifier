@@ -25,13 +25,13 @@ class OrchestraNotifier extends Container implements NotifierInterface
     /**
      * Send notification via API.
      *
-     * @param  NotifiableInterface $user
-     * @param  string              $subject
-     * @param  string|array        $view
-     * @param  array               $data
+     * @param  UserProviderInterface   $user
+     * @param  string                  $subject
+     * @param  string|array            $view
+     * @param  array                   $data
      * @return boolean
      */
-    public function send(NotifiableInterface $user, $subject, $view, array $data = array())
+    public function send(UserProviderInterface $user, $subject, $view, array $data = array())
     {
         $sent = $this->mailer->push($view, $data, function ($message) use ($user, $subject) {
             $message->to($user->getNotifierEmail(), $user->getNotifierName());

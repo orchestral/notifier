@@ -1,6 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
-interface NotifiableInterface
+interface UserProviderInterface
 {
     /**
      * Get the e-mail address where notification are sent.

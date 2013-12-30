@@ -25,13 +25,13 @@ class LaravelNotifier implements NotifierInterface
     /**
      * Send notification via API.
      *
-     * @param  NotifiableInterface $user
-     * @param  string              $subject
-     * @param  string|array        $view
-     * @param  array               $data
+     * @param  UserProviderInterface   $user
+     * @param  string                  $subject
+     * @param  string|array            $view
+     * @param  array                   $data
      * @return boolean
      */
-    public function send(NotifiableInterface $user, $subject, $view, array $data = array())
+    public function send(UserProviderInterface $user, $subject, $view, array $data = array())
     {
         $sent = $this->mailer->send($view, $data, function ($mail) use ($user, $subject) {
             $mail->to($user->getNotifierEmail(), $user->getNotifierName());
