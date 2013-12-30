@@ -43,7 +43,7 @@ class LaravelNotifier implements NotifierInterface
 
         $sent = $this->mailer->send($view, $data, function ($mail) use ($user, $subject, $callback) {
             $mail->to($user->getNotifierEmail(), $user->getNotifierName());
-            $mail->subject($subject);
+            ! empty($subject) and $mail->subject($subject);
 
             is_callable($callback) and call_user_func_array($callback, func_get_args());
         });
