@@ -22,7 +22,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodSucceed()
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
-        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
+        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
@@ -52,7 +52,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodFailed()
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
-        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
+        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();

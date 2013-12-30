@@ -22,7 +22,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodWithoutQueue()
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
-        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
+        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
@@ -54,7 +54,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
         $memory = m::mock('\Orchestra\Memory\Provider[get]');
-        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
+        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
@@ -86,7 +86,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodFailed()
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
-        $user = m::mock('\Orchestra\Notifier\NotifiableInterface');
+        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
