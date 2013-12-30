@@ -1,5 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
+use Closure;
 
 interface NotifierInterface
 {
@@ -10,7 +11,14 @@ interface NotifierInterface
      * @param  string                  $subject
      * @param  string|array            $view
      * @param  array                   $data
+     * @param  Closure                 $callback
      * @return boolean
      */
-    public function send(UserProviderInterface $user, $subject, $view, array $data = array());
+    public function send(
+        UserProviderInterface $user,
+        $subject,
+        $view,
+        array $data = array(),
+        Closure $callback = null
+    );
 }

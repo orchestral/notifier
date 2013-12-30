@@ -45,6 +45,39 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test Orchestra\Notifier\OrchestraNotifier::send() method with callback
+     *
+     * @test
+     */
+    public function testSendMethodWithCallback()
+    {
+        $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
+        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
+        $view = 'foo.bar';
+        $data = array();
+
+        $callback = function ($mail) {
+            $mail->subject('foobar!!');
+        };
+
+        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
+
+        $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
+                ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
+                    $c($mailer);
+
+                    return array('hello@orchestraplatform.com');
+                })
+            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
+            ->shouldReceive('subject')->once()->with('foobar!!')->andReturnNull();
+
+        $stub = new OrchestraNotifier($mailer);
+
+        $this->assertTrue($stub->send($user, null, $view, $data, $callback));
+    }
+
+    /**
      * Test Orchestra\Notifier\OrchestraNotifier::send() method using
      * queue.
      *

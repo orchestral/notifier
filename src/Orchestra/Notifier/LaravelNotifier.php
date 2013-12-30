@@ -1,5 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
+use Closure;
 use Illuminate\Mail\Mailer as IlluminateMailer;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
@@ -29,13 +30,22 @@ class LaravelNotifier implements NotifierInterface
      * @param  string                  $subject
      * @param  string|array            $view
      * @param  array                   $data
+     * @param  Closure                 $callback
      * @return boolean
      */
-    public function send(UserProviderInterface $user, $subject, $view, array $data = array())
-    {
-        $sent = $this->mailer->send($view, $data, function ($mail) use ($user, $subject) {
+    public function send(
+        UserProviderInterface $user,
+        $subject,
+        $view,
+        array $data = array(),
+        Closure $callback = null
+    ) {
+
+        $sent = $this->mailer->send($view, $data, function ($mail) use ($user, $subject, $callback) {
             $mail->to($user->getNotifierEmail(), $user->getNotifierName());
             $mail->subject($subject);
+
+            is_callable($callback) and call_user_func_array($callback, func_get_args());
         });
 
         return (count($sent) > 0);
