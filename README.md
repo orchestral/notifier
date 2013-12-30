@@ -7,7 +7,7 @@ Orchestra Platform Notifier Component
 [![Total Downloads](https://poser.pugx.org/orchestra/notifier/downloads.png)](https://packagist.org/packages/orchestra/notifier) 
 [![Build Status](https://travis-ci.org/orchestral/notifier.png?branch=master)](https://travis-ci.org/orchestral/notifier) 
 [![Coverage Status](https://coveralls.io/repos/orchestral/notifier/badge.png?branch=master)](https://coveralls.io/r/orchestral/notifier?branch=master) 
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/orchestral/notifier/badges/quality-score.png?s=c45e8b240b7aedd08eaf70a0061c2b1d25c04f09)](https://scrutinizer-ci.com/g/orchestral/notifier/) 
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/orchestral/notifier/badges/quality-score.png?s=f9c6821fd536f8c4787a90bee7d5fc1ea58e416f)](https://scrutinizer-ci.com/g/orchestral/notifier/) 
 
 ## Quick Installation
 
