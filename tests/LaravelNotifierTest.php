@@ -22,13 +22,13 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodSucceed()
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
-        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
+        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
-            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
+        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
@@ -52,13 +52,13 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodFailed()
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
-        $user = m::mock('\Orchestra\Notifier\UserProviderInterface');
+        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = array();
 
-        $user->shouldReceive('getNotifierEmail')->once()->andReturn('hello@orchestraplatform.com')
-            ->shouldReceive('getNotifierName')->once()->andReturn('Administrator');
+        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
