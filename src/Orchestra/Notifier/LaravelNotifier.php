@@ -2,6 +2,7 @@
 
 use Closure;
 use Illuminate\Mail\Mailer as IlluminateMailer;
+use Illuminate\Support\Fluent;
 
 class LaravelNotifier implements NotifierInterface
 {
@@ -25,20 +26,17 @@ class LaravelNotifier implements NotifierInterface
     /**
      * Send notification via API.
      *
-     * @param  RecipientInterface  $user
-     * @param  string              $subject
-     * @param  string|array        $view
-     * @param  array               $data
-     * @param  \Closure            $callback
+     * @param  RecipientInterface           $user
+     * @param  \Illuminate\Support\Fluent   $message
+     * @param  \Closure                     $callback
      * @return boolean
      */
-    public function send(
-        RecipientInterface $user,
-        $subject,
-        $view,
-        array $data = array(),
-        Closure $callback = null
-    ) {
+    public function send(RecipientInterface $user, Fluent $message, Closure $callback = null)
+    {
+        $view    = $message->view;
+        $data    = $message->data;
+        $subject = $message->subject;
+
         // Send the email directly using Illuminate\Mail\Mailer interface.
         $sent = $this->mailer->send($view, $data, function ($mail) use ($user, $subject, $callback) {
             // Set the recipient detail.

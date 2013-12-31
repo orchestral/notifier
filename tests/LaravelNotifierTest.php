@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Notifier\TestCase;
 
 use Mockery as m;
+use Illuminate\Support\Fluent;
 use Orchestra\Notifier\LaravelNotifier;
 
 class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
@@ -23,9 +24,11 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+
         $subject = 'foobar';
-        $view = 'foo.bar';
-        $data = array();
+        $view    = 'foo.bar';
+        $data    = array();
+        $message = new Fluent(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -41,7 +44,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
 
         $stub = new LaravelNotifier($mailer);
 
-        $this->assertTrue($stub->send($user, $subject, $view, $data));
+        $this->assertTrue($stub->send($user, $message));
     }
 
     /**
@@ -53,9 +56,11 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer[send]');
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+
         $subject = 'foobar';
-        $view = 'foo.bar';
-        $data = array();
+        $view    = 'foo.bar';
+        $data    = array();
+        $message = new Fluent(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -71,6 +76,6 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
 
         $stub = new LaravelNotifier($mailer);
 
-        $this->assertFalse($stub->send($user, $subject, $view, $data));
+        $this->assertFalse($stub->send($user, $message));
     }
 }

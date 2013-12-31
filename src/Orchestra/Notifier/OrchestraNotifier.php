@@ -1,8 +1,9 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use Orchestra\Memory\Abstractable\Container;
 use Illuminate\Support\SerializableClosure;
+use Illuminate\Support\Fluent;
+use Orchestra\Memory\Abstractable\Container;
 
 class OrchestraNotifier extends Container implements NotifierInterface
 {
@@ -26,20 +27,17 @@ class OrchestraNotifier extends Container implements NotifierInterface
     /**
      * Send notification via API.
      *
-     * @param  RecipientInterface  $user
-     * @param  string              $subject
-     * @param  string|array        $view
-     * @param  array               $data
-     * @param  \Closure            $callback
+     * @param  RecipientInterface           $user
+     * @param  \Illuminate\Support\Fluent   $message
+     * @param  \Closure                     $callback
      * @return boolean
      */
-    public function send(
-        RecipientInterface $user,
-        $subject,
-        $view,
-        array $data = array(),
-        Closure $callback = null
-    ) {
+    public function send(RecipientInterface $user, Fluent $message, Closure $callback = null)
+    {
+        $view    = $message->view;
+        $data    = $message->data;
+        $subject = $message->subject;
+
         // In order to pass a Closure as "use" we need to actually convert
         // it into Serializable Closure, otherwise Laravel would throw an
         // exception.

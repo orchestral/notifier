@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Notifier\TestCase;
 
 use Mockery as m;
+use Illuminate\Support\Fluent;
 use Orchestra\Notifier\OrchestraNotifier;
 
 class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
@@ -23,9 +24,11 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+
         $subject = 'foobar';
-        $view = 'foo.bar';
-        $data = array();
+        $view    = 'foo.bar';
+        $data    = array();
+        $message = new Fluent(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -41,7 +44,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
 
         $stub = new OrchestraNotifier($mailer);
 
-        $this->assertTrue($stub->send($user, $subject, $view, $data));
+        $this->assertTrue($stub->send($user, $message));
     }
 
     /**
@@ -53,8 +56,10 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+
         $view = 'foo.bar';
         $data = array();
+        $message = new Fluent(compact('view', 'data'));
 
         $callback = function ($mail) {
             $mail->subject('foobar!!');
@@ -74,7 +79,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
 
         $stub = new OrchestraNotifier($mailer);
 
-        $this->assertTrue($stub->send($user, null, $view, $data, $callback));
+        $this->assertTrue($stub->send($user, $message, $callback));
     }
 
     /**
@@ -88,9 +93,11 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
         $memory = m::mock('\Orchestra\Memory\Provider[get]');
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+
         $subject = 'foobar';
-        $view = 'foo.bar';
-        $data = array();
+        $view    = 'foo.bar';
+        $data    = array();
+        $message = new Fluent(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -108,7 +115,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
         $stub = new OrchestraNotifier($mailer);
         $stub->attach($memory);
 
-        $this->assertTrue($stub->send($user, $subject, $view, $data));
+        $this->assertTrue($stub->send($user, $message));
     }
 
     /**
@@ -120,9 +127,11 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+
         $subject = 'foobar';
-        $view = 'foo.bar';
-        $data = array();
+        $view    = 'foo.bar';
+        $data    = array();
+        $message = new Fluent(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -138,6 +147,6 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
 
         $stub = new OrchestraNotifier($mailer);
 
-        $this->assertFalse($stub->send($user, $subject, $view, $data));
+        $this->assertFalse($stub->send($user, $message));
     }
 }
