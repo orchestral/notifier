@@ -2,7 +2,6 @@
 
 use Closure;
 use Orchestra\Memory\Abstractable\Container;
-use Illuminate\Auth\Reminders\RemindableInterface;
 use Illuminate\Support\SerializableClosure;
 
 class OrchestraNotifier extends Container implements NotifierInterface
