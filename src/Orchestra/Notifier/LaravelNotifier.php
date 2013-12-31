@@ -2,7 +2,6 @@
 
 use Closure;
 use Illuminate\Mail\Mailer as IlluminateMailer;
-use Illuminate\Auth\Reminders\RemindableInterface;
 
 class LaravelNotifier implements NotifierInterface
 {
