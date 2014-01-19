@@ -58,7 +58,7 @@ class Mailer extends Container
         // lot more convenient.
         $from = $this->memory->get('email.from');
 
-        if (is_array($from) and isset($from['address'])) {
+        if (is_array($from) && isset($from['address'])) {
             $this->mailer->alwaysFrom($from['address'], $from['name']);
         }
 

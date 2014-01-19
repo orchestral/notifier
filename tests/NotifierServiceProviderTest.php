@@ -49,8 +49,6 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app['path'] = "/var/laravel/app";
         $app['config'] = $config = m::mock('\Illuminate\Config\Repository');
         $app['files'] = $files = m::mock('\Illuminate\Filesystem\Filesystem');
-        $app['orchestra.memory'] = $memory = m::mock('\Orchestra\Memory\MemoryManager[makeOrFallback]');
-        $app['orchestra.mail'] = $mailer = m::mock('\Orchestra\Notifier\Mailer');
 
         $memoryProvider = m::mock('\Orchestra\Memory\Provider');
 
@@ -61,8 +59,6 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('isDirectory')->once()
                 ->with("{$app['path']}/views/packages/orchestra/notifier")->andReturn(false)
             ->shouldReceive('isDirectory')->once()->with("{$path}/views")->andReturn(false);
-        $memory->shouldReceive('makeOrFallback')->once()->andReturn($memoryProvider);
-        $mailer->shouldReceive('attach')->once()->with($memoryProvider)->andReturnNull();
 
         $stub = new NotifierServiceProvider($app);
 

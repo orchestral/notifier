@@ -56,20 +56,6 @@ class NotifierServiceProvider extends ServiceProvider
         $path = realpath(__DIR__.'/../../');
 
         $this->package('orchestra/notifier', 'orchestra/notifier', $path);
-
-        $this->registerMemoryEvent();
-    }
-
-    /**
-     * Register memory events during booting.
-     *
-     * @return void
-     */
-    protected function registerMemoryEvent()
-    {
-        $memory = $this->app['orchestra.memory']->makeOrFallback();
-
-        $this->app['orchestra.mail']->attach($memory);
     }
 
     /**

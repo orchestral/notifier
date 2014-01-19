@@ -43,10 +43,10 @@ class LaravelNotifier implements NotifierInterface
             $mail->to($user->getRecipientEmail(), $user->getRecipientName());
 
             // Only append the subject if it was provided.
-            ! empty($subject) and $mail->subject($subject);
+            ! empty($subject) && $mail->subject($subject);
 
             // Run any callback if provided.
-            is_callable($callback) and call_user_func_array($callback, func_get_args());
+            is_callable($callback) && call_user_func_array($callback, func_get_args());
         });
 
         return (count($sent) > 0);
