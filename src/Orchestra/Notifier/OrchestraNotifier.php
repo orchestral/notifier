@@ -50,10 +50,10 @@ class OrchestraNotifier extends Container implements NotifierInterface
             $message->to($user->getRecipientEmail(), $user->getRecipientName());
 
             // Only append the subject if it was provided.
-            ! empty($subject) and $message->subject($subject);
+            ! empty($subject) && $message->subject($subject);
 
             // Run any callback if provided.
-            is_callable($callback) and call_user_func_array($callback, func_get_args());
+            is_callable($callback) && call_user_func_array($callback, func_get_args());
         });
 
         // It impossible to get either the email is sent out straight away
