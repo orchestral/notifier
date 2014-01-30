@@ -4,14 +4,16 @@ use Closure;
 use InvalidArgumentException;
 use Illuminate\Support\SerializableClosure;
 use Illuminate\Mail\Mailer as M;
-use Orchestra\Memory\Abstractable\Container;
+use Orchestra\Memory\ContainerTrait;
 use Swift_Mailer;
 use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
 use Swift_SendmailTransport as SendmailTransport;
 
-class Mailer extends Container
+class Mailer
 {
+    use ContainerTrait;
+
     /**
      * Application instance.
      *
