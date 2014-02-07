@@ -22,7 +22,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodWithoutQueue()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
+        $mailer = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
 
         $subject = 'foobar';
@@ -54,7 +54,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodWithCallback()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
+        $mailer = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
 
         $view = 'foo.bar';
@@ -90,8 +90,8 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodUsingQueue()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
-        $memory = m::mock('\Orchestra\Memory\Provider[get]');
+        $mailer = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
+        $memory = m::mock('\Orchestra\Memory\Provider')->makePartial();
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
 
         $subject = 'foobar';
@@ -125,7 +125,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodFailed()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer[push]');
+        $mailer = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
 
         $subject = 'foobar';
