@@ -20,7 +20,7 @@
         "orchestra/memory": "2.2.*"
     },
     "require-dev": {
-        "mockery/mockery": "0.8.*",
+        "mockery/mockery": "0.9.*",
         "jeremeamia/superclosure": "1.0.*",
         "illuminate/auth": "4.2.*",
         "illuminate/mail": "4.2.*",

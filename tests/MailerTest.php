@@ -21,7 +21,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $this->app = new Container;
 
-        $memory = m::mock('\Orchestra\Memory\Provider[get]');
+        $memory = m::mock('\Orchestra\Memory\Provider')->makePartial();
 
         $memory->shouldReceive('get')->with('email')->andReturn(array('driver' => 'mail'))
             ->shouldReceive('get')->with('email.from')->andReturn(array(
@@ -116,7 +116,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodViaMail()
     {
         $app = array(
-            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider[get]'),
+            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
             'mailer' => $mailer = m::mock('Mailer'),
         );
 
@@ -142,7 +142,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodViaSendMail()
     {
         $app = array(
-            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider[get]'),
+            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
             'mailer' => $mailer = m::mock('Mailer'),
         );
 
@@ -171,7 +171,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodViaSmtp()
     {
         $app = array(
-            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider[get]'),
+            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
             'mailer' => $mailer = m::mock('Mailer'),
         );
 
@@ -205,7 +205,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodViaInvalidDriverThrowsException()
     {
         $app = array(
-            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider[get]'),
+            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
             'mailer' => $mailer = m::mock('Mailer'),
         );
 
