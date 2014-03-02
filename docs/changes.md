@@ -5,6 +5,10 @@ title: Notifier Change Log
 
 ## Version 2.1 {#v2-1}
 
+### v2.1.2@dev {#v2-1-2}
+
+* Add `Orchestra\Notifier\GenericRecipient`.
+
 ### v2.1.1 {#v2-1-1}
 
 * Handle attaching `orchestra/memory` on `orchestra.mail` service locator from `orchestra/foundation`.
