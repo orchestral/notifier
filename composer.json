@@ -11,8 +11,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Orchestra\\Notifier" : "src/"
+        "psr-4": {
+            "Orchestra\\Notifier\\" : "src/Notifier/"
         }
     },
     "require": {
