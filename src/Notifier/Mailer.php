@@ -4,6 +4,9 @@ use Closure;
 use InvalidArgumentException;
 use Illuminate\Support\SerializableClosure;
 use Illuminate\Mail\Mailer as M;
+use Illuminate\Mail\Transport\LogTransport;
+use Illuminate\Mail\Transport\MailgunTransport;
+use Illuminate\Mail\Transport\MandrillTransport;
 use Orchestra\Memory\ContainerTrait;
 use Swift_Mailer;
 use Swift_SmtpTransport as SmtpTransport;
@@ -190,6 +193,15 @@ class Mailer
             case 'mail':
                 return $this->registerMailTransport($config);
 
+            case 'mailgun':
+                return $this->registerMailgunTransport($config);
+
+            case 'mandrill':
+                return $this->registerMandrillTransport($config);
+
+            case 'log':
+                return $this->registerLogTransport($config);
+
             default:
                 throw new InvalidArgumentException('Invalid mail driver.');
         }
@@ -241,5 +253,44 @@ class Mailer
     {
         unset($config);
         return MailTransport::newInstance();
+    }
+
+    /**
+     * Register the Mailgun Swift Transport instance.
+     *
+     * @param  array  $config
+     * @return void
+     */
+    protected function registerMailgunTransport($config)
+    {
+        $this->app->bindShared('swift.transport', function() use ($config) {
+            return new MailgunTransport($config['secret'], $config['domain']);
+        });
+    }
+
+    /**
+     * Register the Mandrill Swift Transport instance.
+     *
+     * @param  array  $config
+     * @return void
+     */
+    protected function registerMandrillTransport($config)
+    {
+        $this->app->bindShared('swift.transport', function() use ($config) {
+            return new MandrillTransport($config['secret']);
+        });
+    }
+
+    /**
+     * Register the "Log" Swift Transport instance.
+     *
+     * @param  array  $config
+     * @return void
+     */
+    protected function registerLogTransport($config)
+    {
+        $this->app->bindShared('swift.transport', function($app) {
+            return new LogTransport($app['log']->getMonolog());
+        });
     }
 }
