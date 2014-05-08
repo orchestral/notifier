@@ -178,7 +178,7 @@ class Mailer
      * Register the Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerSwiftTransport($config)
     {
@@ -211,7 +211,7 @@ class Mailer
      * Register the SMTP Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerSmtpTransport($config)
     {
@@ -236,7 +236,7 @@ class Mailer
      * Register the Sendmail Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerSendmailTransport($config)
     {
@@ -247,11 +247,12 @@ class Mailer
      * Register the Mail Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerMailTransport($config)
     {
         unset($config);
+
         return MailTransport::newInstance();
     }
 
@@ -259,7 +260,7 @@ class Mailer
      * Register the Mailgun Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerMailgunTransport($config)
     {
@@ -270,7 +271,7 @@ class Mailer
      * Register the Mandrill Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerMandrillTransport($config)
     {
