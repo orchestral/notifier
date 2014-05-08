@@ -263,9 +263,7 @@ class Mailer
      */
     protected function registerMailgunTransport($config)
     {
-        $this->app->bindShared('swift.transport', function() use ($config) {
-            return new MailgunTransport($config['secret'], $config['domain']);
-        });
+        return new MailgunTransport($config['secret'], $config['domain']);
     }
 
     /**
@@ -276,9 +274,7 @@ class Mailer
      */
     protected function registerMandrillTransport($config)
     {
-        $this->app->bindShared('swift.transport', function() use ($config) {
-            return new MandrillTransport($config['secret']);
-        });
+        return new MandrillTransport($config['secret']);
     }
 
     /**
@@ -289,8 +285,6 @@ class Mailer
      */
     protected function registerLogTransport($config)
     {
-        $this->app->bindShared('swift.transport', function($app) {
-            return new LogTransport($app['log']->getMonolog());
-        });
+        return new LogTransport($this->app['log']->getMonolog());
     }
 }

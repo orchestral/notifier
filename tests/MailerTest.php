@@ -197,6 +197,98 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test Orchestra\Notifier\Mailer::send() method using mailgun.
+     *
+     * @test
+     */
+    public function testSendMethodViaMailgun()
+    {
+        $app = array(
+            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
+            'mailer' => $mailer = m::mock('Mailer'),
+        );
+
+        $memory->shouldReceive('get')->with('email')->andReturn(array(
+                'driver' => 'mailgun',
+                'secret' => 'auniquetoken',
+                'domain' => 'mailer.mailgun.org',
+            ))
+            ->shouldReceive('get')->with('email.from')->andReturn(array(
+                'address' => 'hello@orchestraplatform.com',
+                'name'    => 'Orchestra Platform',
+            ));
+
+        $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
+            ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
+            ->shouldReceive('send')->once()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
+
+        $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
+        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+    }
+
+    /**
+     * Test Orchestra\Notifier\Mailer::send() method using mandrill.
+     *
+     * @test
+     */
+    public function testSendMethodViaMandrill()
+    {
+        $app = array(
+            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
+            'mailer' => $mailer = m::mock('Mailer'),
+        );
+
+        $memory->shouldReceive('get')->with('email')->andReturn(array(
+                'driver' => 'mandrill',
+                'secret' => 'auniquetoken',
+            ))
+            ->shouldReceive('get')->with('email.from')->andReturn(array(
+                'address' => 'hello@orchestraplatform.com',
+                'name'    => 'Orchestra Platform',
+            ));
+
+        $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
+            ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
+            ->shouldReceive('send')->once()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
+
+        $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
+        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+    }
+
+    /**
+     * Test Orchestra\Notifier\Mailer::send() method using log.
+     *
+     * @test
+     */
+    public function testSendMethodViaLog()
+    {
+        $monolog = m::mock('\Psr\Log\LoggerInterface');
+
+        $app = array(
+            'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
+            'mailer' => $mailer = m::mock('Mailer'),
+            'log' => $logger = m::mock('\Illuminate\Log\Writer'),
+        );
+
+        $memory->shouldReceive('get')->with('email')->andReturn(array(
+                'driver' => 'log',
+            ))
+            ->shouldReceive('get')->with('email.from')->andReturn(array(
+                'address' => 'hello@orchestraplatform.com',
+                'name'    => 'Orchestra Platform',
+            ));
+
+        $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
+            ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
+            ->shouldReceive('send')->once()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
+
+        $logger->shouldReceive('getMonolog')->once()->andReturn($monolog);
+
+        $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
+        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+    }
+
+    /**
      * Test Orchestra\Notifier\Mailer::send() method using invalid driver
      * throws exception.
      *
