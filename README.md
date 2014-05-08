@@ -5,8 +5,8 @@ Orchestra Platform Notifier Component
 
 [![Latest Stable Version](https://poser.pugx.org/orchestra/notifier/v/stable.png)](https://packagist.org/packages/orchestra/notifier) 
 [![Total Downloads](https://poser.pugx.org/orchestra/notifier/downloads.png)](https://packagist.org/packages/orchestra/notifier) 
-[![Build Status](https://travis-ci.org/orchestral/notifier.png?branch=master)](https://travis-ci.org/orchestral/notifier) 
-[![Coverage Status](https://coveralls.io/repos/orchestral/notifier/badge.png?branch=master)](https://coveralls.io/r/orchestral/notifier?branch=master) 
+[![Build Status](https://travis-ci.org/orchestral/notifier.png?branch=2.2)](https://travis-ci.org/orchestral/notifier) 
+[![Coverage Status](https://coveralls.io/repos/orchestral/notifier/badge.png?branch=2.2)](https://coveralls.io/r/orchestral/notifier?branch=2.2) 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/orchestral/notifier/badges/quality-score.png?s=f9c6821fd536f8c4787a90bee7d5fc1ea58e416f)](https://scrutinizer-ci.com/g/orchestral/notifier/) 
 
 ## Quick Installation
@@ -16,7 +16,7 @@ To install through composer, simply put the following in your `composer.json` fi
 ```json
 {
 	"require": {
-		"orchestra/notifier": "2.2.*@dev"
+		"orchestra/notifier": "2.2.*"
 	}
 }
 ```
