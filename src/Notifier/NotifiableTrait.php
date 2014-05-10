@@ -1,6 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
-use Ochestra\Model\User;
+use Illuminate\Support\Contracts\ArrayableInterface;
 use Orchestra\Support\Facades\Notifier;
 use Orchestra\Support\Fluent;
 
@@ -9,24 +9,28 @@ trait NotifiableTrait
     /**
      * Send email notification to user
      *
-     * @param  Orchestra\Model\User   $user
-     * @param  string $subject
-     * @param  string $view
-     * @param  array  $data
+     * @param  Orchestra\Model\User|RecipientInterface  $user
+     * @param  string                                   $subject
+     * @param  string                                   $view
+     * @param  array                                    $data
      * @return boolean
      */
-    protected function sendNotification(User $user, $subject, $view, array $data)
+    protected function sendNotification(RecipientInterface $user, $subject, $view, array $data = [])
     {
-        $data = array_add($data, 'user', $user->toArray());
+        $entity = $user;
+
+        if ($user instanceof ArrayableInterface) {
+            $entity = $user->toArray();
+        }
+
+        $data = array_add($data, 'user', $entity);
 
         $message = new Fluent([
             'subject' => $subject,
-            'view' => $view,
-            'data' => $data
+            'view'    => $view,
+            'data'    => $data
         ]);
 
-        $sent = Notifier::send($user, $message);
-
-        return ($sent) ? true : false;
+        return Notifier::send($user, $message);
     }
 }
