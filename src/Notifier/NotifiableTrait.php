@@ -1,13 +1,14 @@
 <?php namespace Orchestra\Notifier;
- 
+
 use Ochestra\Model\User;
 use Orchestra\Support\Facades\Notifier;
- 
-trait NotifiableTrait {
- 
+use Orchestra\Support\Fluent;
+
+trait NotifiableTrait
+{
     /**
      * Send email notification to user
-     * 
+     *
      * @param  Orchestra\Model\User   $user
      * @param  string $subject
      * @param  string $view
@@ -17,16 +18,15 @@ trait NotifiableTrait {
     protected function sendNotification(User $user, $subject, $view, array $data)
     {
         $data = array_add($data, 'user', $user->toArray());
- 
+
         $message = new Fluent([
             'subject' => $subject,
             'view' => $view,
             'data' => $data
         ]);
- 
+
         $sent = Notifier::send($user, $message);
- 
+
         return ($sent) ? true : false;
     }
- 
 }
