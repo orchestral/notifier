@@ -1,8 +1,8 @@
 <?php namespace Orchestra\Notifier;
 
 use Illuminate\Support\Contracts\ArrayableInterface;
+use Illuminate\Support\Fluent;
 use Orchestra\Support\Facades\Notifier;
-use Orchestra\Support\Fluent;
 
 trait NotifiableTrait
 {
