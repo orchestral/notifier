@@ -3,10 +3,12 @@
 use Closure;
 use Illuminate\Support\SerializableClosure;
 use Illuminate\Support\Fluent;
-use Orchestra\Memory\Abstractable\Container;
+use Orchestra\Memory\ContainerTrait;
 
-class OrchestraNotifier extends Container implements NotifierInterface
+class OrchestraNotifier implements NotifierInterface
 {
+    use ContainerTrait;
+
     /**
      * Mailer instance.
      *
