@@ -3,13 +3,14 @@
 use Closure;
 use InvalidArgumentException;
 use Illuminate\Support\SerializableClosure;
-use Illuminate\Mail\Mailer as M;
+use Illuminate\Mail\Mailer as Mail;
 use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
 use Orchestra\Memory\ContainerTrait;
 use Orchestra\Support\Str;
 use Swift_Mailer;
+use Swift_Transport;
 use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
 use Swift_SendmailTransport as SendmailTransport;
@@ -46,18 +47,27 @@ class Mailer
     /**
      * Register the Swift Mailer instance.
      *
-     * @return void
+     * @return \Illuminate\Mail\Mailer
      */
     protected function getMailer()
     {
-        if ($this->mailer instanceof M) {
-            return $this->mailer;
+        if (! $this->mailer instanceof Mail) {
+            $transport = $this->registerSwiftTransport($this->memory->get('email'));
+
+            $this->setUp($this->app['mailer'], $transport);
         }
 
-        $this->mailer = $this->app['mailer'];
-        $config       = $this->memory->get('email');
-        $transport    = $this->registerSwiftTransport($config);
+        return $this->mailer;
+    }
 
+    /**
+     * Setup mailer.
+     *
+     * @param  \Illuminate\Mail\Mailer  $mailer
+     * @return \Illuminate\Mail\Mailer
+     */
+    protected function setUp(Mail $mailer, Swift_Transport $transport)
+    {
         // If a "from" address is set, we will set it on the mailer so that
         // all mail messages sent by the applications will utilize the same
         // "from" address on each one, which makes the developer's life a
@@ -65,12 +75,12 @@ class Mailer
         $from = $this->memory->get('email.from');
 
         if (is_array($from) && isset($from['address'])) {
-            $this->mailer->alwaysFrom($from['address'], $from['name']);
+            $mailer->alwaysFrom($from['address'], $from['name']);
         }
 
-        $this->mailer->setSwiftMailer(new Swift_Mailer($transport));
+        $mailer->setSwiftMailer(new Swift_Mailer($transport));
 
-        return $this->mailer;
+        $this->mailer = $mailer;
     }
 
     /**
