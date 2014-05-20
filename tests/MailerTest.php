@@ -205,7 +205,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = array(
             'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
-            'mailer' => $mailer = m::mock('Mailer'),
+            'mailer' => $mailer = m::mock('\Illuminate\Mail\Mailer'),
         );
 
         $memory->shouldReceive('get')->with('email')->andReturn(array(
@@ -235,7 +235,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = array(
             'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
-            'mailer' => $mailer = m::mock('Mailer'),
+            'mailer' => $mailer = m::mock('\Illuminate\Mail\Mailer'),
         );
 
         $memory->shouldReceive('get')->with('email')->andReturn(array(
@@ -266,7 +266,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
         $app = array(
             'orchestra.memory' => $memory = m::mock('\Orchestra\Memory\Provider')->makePartial(),
-            'mailer' => $mailer = m::mock('Mailer'),
+            'mailer' => $mailer = m::mock('\Illuminate\Mail\Mailer'),
             'log' => $logger = m::mock('\Illuminate\Log\Writer'),
         );
 
