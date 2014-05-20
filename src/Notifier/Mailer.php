@@ -8,6 +8,7 @@ use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
 use Orchestra\Memory\ContainerTrait;
+use Orchestra\Support\Str;
 use Swift_Mailer;
 use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
@@ -182,29 +183,12 @@ class Mailer
      */
     protected function registerSwiftTransport($config)
     {
-        switch ($config['driver'])
-        {
-            case 'smtp':
-                return $this->registerSmtpTransport($config);
-
-            case 'sendmail':
-                return $this->registerSendmailTransport($config);
-
-            case 'mail':
-                return $this->registerMailTransport($config);
-
-            case 'mailgun':
-                return $this->registerMailgunTransport($config);
-
-            case 'mandrill':
-                return $this->registerMandrillTransport($config);
-
-            case 'log':
-                return $this->registerLogTransport($config);
-
-            default:
-                throw new InvalidArgumentException('Invalid mail driver.');
+        $transport = 'register'.Str::studly($config['driver']).'Transport';
+        if (! method_exists($this, $transport)) {
+            throw new InvalidArgumentException('Invalid mail driver.');
         }
+
+        return call_user_func(array($this, $transport), $config);
     }
 
     /**
@@ -282,7 +266,7 @@ class Mailer
      * Register the "Log" Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerLogTransport($config)
     {

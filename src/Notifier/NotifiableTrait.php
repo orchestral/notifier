@@ -9,28 +9,32 @@ trait NotifiableTrait
     /**
      * Send email notification to user
      *
-     * @param  Orchestra\Model\User|RecipientInterface  $user
-     * @param  string                                   $subject
-     * @param  string                                   $view
-     * @param  array                                    $data
+     * @param  RecipientInterface                   $user
+     * @param  \Illuminate\Support\Fluent|string    $subject
+     * @param  string|null                          $view
+     * @param  array                                $data
      * @return boolean
      */
-    protected function sendNotification(RecipientInterface $user, $subject, $view, array $data = [])
+    protected function sendNotification(RecipientInterface $user, $subject, $view = null, array $data = [])
     {
         $entity = $user;
 
-        if ($user instanceof ArrayableInterface) {
-            $entity = $user->toArray();
+        if ($subject instanceof Fluent) {
+            $attributes = $subject->toArray();
+        } else {
+            if ($user instanceof ArrayableInterface) {
+                $entity = $user->toArray();
+            }
+
+            $data = array_add($data, 'user', $entity);
+
+            $attributes = [
+                'subject' => $subject,
+                'view'    => $view,
+                'data'    => $data
+            ];
         }
 
-        $data = array_add($data, 'user', $entity);
-
-        $message = new Fluent([
-            'subject' => $subject,
-            'view'    => $view,
-            'data'    => $data
-        ]);
-
-        return Notifier::send($user, $message);
+        return Notifier::send($user, new Fluent($attributes));
     }
 }

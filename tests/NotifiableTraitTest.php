@@ -3,6 +3,7 @@
 use Mockery as m;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Fluent;
 use Orchestra\Support\Facades\Notifier;
 
 class NotifiableTraitTest extends \PHPUnit_Framework_TestCase
@@ -30,12 +31,13 @@ class NotifiableTraitTest extends \PHPUnit_Framework_TestCase
             'fullname' => 'Administrator',
         ]);
 
-        $notifier->shouldReceive('send')->once()
+        $notifier->shouldReceive('send')->twice()
             ->with($user, m::type('\Illuminate\Support\Fluent'))->andReturn(true);
 
         Notifier::swap($notifier);
 
         $this->assertTrue($stub->notify($user));
+        $this->assertTrue($stub->notifyFluent($user));
     }
 }
 
@@ -46,5 +48,10 @@ class Notifiable
     public function notify($user)
     {
         return $this->sendNotification($user, 'foo', 'email.foo', []);
+    }
+
+    public function notifyFluent($user)
+    {
+        return $this->sendNotification($user, new Fluent(['subject' => 'foo', 'view' => 'email.foo', 'data' => []]));
     }
 }

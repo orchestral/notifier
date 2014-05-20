@@ -79,6 +79,9 @@ class OrchestraNotifier implements NotifierInterface
             return true;
         }
 
-        return (! $this->memory->get('email.queue', false));
+        $isQueue = $this->memory->get('email.queue', false);
+        $isApi   = $this->memory->get('email.driver');
+
+        return (! ($isQueue || in_array($isApi, array('mailgun', 'mandrill', 'log'))));
     }
 }
