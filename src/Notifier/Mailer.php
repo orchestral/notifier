@@ -5,6 +5,7 @@ use InvalidArgumentException;
 use Illuminate\Support\SerializableClosure;
 use Illuminate\Mail\Mailer as M;
 use Orchestra\Memory\Abstractable\Container;
+use Orchestra\Support\Str;
 use Swift_Mailer;
 use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
@@ -173,31 +174,24 @@ class Mailer extends Container
      * Register the Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerSwiftTransport($config)
     {
-        switch ($config['driver'])
-        {
-            case 'smtp':
-                return $this->registerSmtpTransport($config);
+        $transport = 'register'.Str::studly($config['driver']).'Transport';
 
-            case 'sendmail':
-                return $this->registerSendmailTransport($config);
-
-            case 'mail':
-                return $this->registerMailTransport($config);
-
-            default:
-                throw new InvalidArgumentException('Invalid mail driver.');
+        if (! method_exists($this, $transport)) {
+            throw new InvalidArgumentException('Invalid mail driver.');
         }
+
+        return call_user_func(array($this, $transport), $config);
     }
 
     /**
      * Register the SMTP Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerSmtpTransport($config)
     {
@@ -222,7 +216,7 @@ class Mailer extends Container
      * Register the Sendmail Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerSendmailTransport($config)
     {
@@ -233,11 +227,12 @@ class Mailer extends Container
      * Register the Mail Swift Transport instance.
      *
      * @param  array  $config
-     * @return void
+     * @return \Swift_Transport
      */
     protected function registerMailTransport($config)
     {
         unset($config);
+
         return MailTransport::newInstance();
     }
 }
