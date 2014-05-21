@@ -47,9 +47,11 @@ class Receipt
      */
     public function failed()
     {
-        $hasFailures = ! empty($this->failures());
+        if (! empty($this->failures())) {
+            return true;
+        }
 
-        return $hasFailures;
+        return false;
     }
 
     /**
