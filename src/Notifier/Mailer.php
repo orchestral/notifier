@@ -91,7 +91,7 @@ class Mailer
      * @param  array            $data
      * @param  Closure|string   $callback
      * @param  string           $queue
-     * @return \Illuminate\Mail\Mailer
+     * @return Receipt
      */
     public function push($view, array $data, $callback, $queue = null)
     {
@@ -112,7 +112,7 @@ class Mailer
      * @param  array            $data
      * @param  Closure|string   $callback
      * @param  string           $queue
-     * @return \Illuminate\Mail\Mailer
+     * @return Receipt
      */
     public function send($view, array $data, $callback)
     {
@@ -120,7 +120,7 @@ class Mailer
 
         $mailer->send($view, $data, $callback);
 
-        return $mailer;
+        return new Receipt($mailer, false);
     }
 
     /**
@@ -130,7 +130,7 @@ class Mailer
      * @param  array            $data
      * @param  Closure|string   $callback
      * @param  string           $queue
-     * @return \Illuminate\Mail\Mailer
+     * @return Receipt
      */
     public function queue($view, array $data, $callback, $queue = null)
     {
@@ -144,7 +144,7 @@ class Mailer
 
         $this->app['queue']->push('orchestra.mail@handleQueuedMessage', $with, $queue);
 
-        return $this->mailer ?: $this->app['mailer'];
+        return new Receipt($this->mailer ?: $this->app['mailer'], true);
     }
 
     /**

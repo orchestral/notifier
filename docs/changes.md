@@ -11,6 +11,7 @@ title: Notifier Change Log
 * Add `Orchestra\Notifier\NotifiableTrait`.
 * Add `Orchestra\Notifier\GenericRecipient`.
 * Handle attaching `orchestra/memory` on `orchestra.mail` service locator from `orchestra/foundation`.
+* Add `Orchestra\Notifier\Receipt` as a unified receipt object on all e-mail sending.
 
 ## Version 2.1 {#v2-1}
 

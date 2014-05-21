@@ -29,7 +29,7 @@ class LaravelNotifier implements NotifierInterface
      * @param  RecipientInterface           $user
      * @param  \Illuminate\Support\Fluent   $message
      * @param  \Closure                     $callback
-     * @return boolean
+     * @return Receipt
      */
     public function send(RecipientInterface $user, Fluent $message, Closure $callback = null)
     {
@@ -49,6 +49,6 @@ class LaravelNotifier implements NotifierInterface
             is_callable($callback) && call_user_func_array($callback, func_get_args());
         });
 
-        return empty($this->mailer->failures());
+        return new Receipt($this->mailer, false);
     }
 }

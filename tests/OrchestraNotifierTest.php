@@ -3,6 +3,7 @@
 use Mockery as m;
 use Illuminate\Support\Fluent;
 use Orchestra\Notifier\OrchestraNotifier;
+use Orchestra\Notifier\Receipt;
 
 class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,7 +23,8 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodWithoutQueue()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
+        $mailer = m::mock('\Illuminate\Mail\Mailer');
+        $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
 
         $subject = 'foobar';
@@ -33,18 +35,22 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
-        $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
+        $mailer->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
+            ->shouldReceive('subject')->once()->with($subject)->andReturnNull()
+            ->shouldReceive('failures')->once()->andReturn(array());
+
+        $notifier->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
                     $c($mailer);
 
-                    return array('hello@orchestraplatform.com');
-                })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
-            ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
+                    return new Receipt($mailer, false);
+                });
 
-        $stub = new OrchestraNotifier($mailer);
+        $stub = new OrchestraNotifier($notifier);
+        $receipt = $stub->send($user, $message);
 
-        $this->assertTrue($stub->send($user, $message));
+        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertTrue($receipt->sent());
     }
 
     /**
@@ -54,7 +60,8 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodWithCallback()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
+        $mailer = m::mock('\Illuminate\Mail\Mailer');
+        $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
 
         $view = 'foo.bar';
@@ -68,18 +75,22 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
-        $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
+        $mailer->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
+            ->shouldReceive('subject')->once()->with('foobar!!')->andReturnNull()
+            ->shouldReceive('failures')->once()->andReturn(array());
+
+        $notifier->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
                     $c($mailer);
 
-                    return array('hello@orchestraplatform.com');
-                })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
-            ->shouldReceive('subject')->once()->with('foobar!!')->andReturnNull();
+                    return new Receipt($mailer, false);
+                });
 
-        $stub = new OrchestraNotifier($mailer);
+        $stub = new OrchestraNotifier($notifier);
+        $receipt = $stub->send($user, $message, $callback);
 
-        $this->assertTrue($stub->send($user, $message, $callback));
+        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertTrue($receipt->sent());
     }
 
     /**
@@ -90,7 +101,8 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodUsingQueue()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
+        $mailer = m::mock('\Illuminate\Mail\Mailer');
+        $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
         $memory = m::mock('\Orchestra\Memory\Provider')->makePartial();
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
 
@@ -103,19 +115,24 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
         $memory->shouldReceive('get')->once()->with('email.queue', false)->andReturn(true);
-        $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
+
+        $mailer->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
+            ->shouldReceive('subject')->once()->with($subject)->andReturnNull()
+            ->shouldReceive('failures')->never();
+
+        $notifier->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
                     $c($mailer);
 
-                    return array();
-                })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
-            ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
+                    return new Receipt($mailer, true);
+                });
 
-        $stub = new OrchestraNotifier($mailer);
+        $stub = new OrchestraNotifier($notifier);
         $stub->attach($memory);
+        $receipt = $stub->send($user, $message);
 
-        $this->assertTrue($stub->send($user, $message));
+        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertTrue($receipt->sent());
     }
 
     /**
@@ -125,7 +142,8 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodFailed()
     {
-        $mailer = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
+        $mailer = m::mock('\Illuminate\Mail\Mailer');
+        $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
         $user = m::mock('\Orchestra\Notifier\RecipientInterface');
 
         $subject = 'foobar';
@@ -136,17 +154,21 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
-        $mailer->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
+        $mailer->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
+            ->shouldReceive('subject')->once()->with($subject)->andReturnNull()
+            ->shouldReceive('failures')->once()->andReturn(array('hello@orchestraplatform.com'));
+
+        $notifier->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
                     $c($mailer);
 
-                    return array();
-                })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
-            ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
+                    return new Receipt($mailer, false);
+                });
 
-        $stub = new OrchestraNotifier($mailer);
+        $stub = new OrchestraNotifier($notifier);
+        $receipt = $stub->send($user, $message);
 
-        $this->assertFalse($stub->send($user, $message));
+        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertFalse($receipt->sent());
     }
 }
