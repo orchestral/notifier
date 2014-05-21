@@ -69,6 +69,10 @@ class OrchestraNotifier implements NotifierInterface
      */
     protected function isUsingQueue()
     {
+        // It impossible to get either the email is sent out straight away
+        // when the mailer is only push to queue, in this case we should
+        // assume that sending is successful when using queue.
+
         $usingQueue = false;
         $usingApi   = 'mail';
 
