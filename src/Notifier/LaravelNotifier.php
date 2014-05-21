@@ -1,7 +1,7 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use Illuminate\Mail\Mailer as IlluminateMailer;
+use Illuminate\Mail\Mailer as Mail;
 use Illuminate\Support\Fluent;
 
 class LaravelNotifier implements NotifierInterface
@@ -18,7 +18,7 @@ class LaravelNotifier implements NotifierInterface
      *
      * @param  \Illuminate\Mail\Mailer  $mailer
      */
-    public function __construct(IlluminateMailer $mailer)
+    public function __construct(Mail $mailer)
     {
         $this->mailer = $mailer;
     }

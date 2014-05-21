@@ -1,6 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
-use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Mailer as Mail;
 
 class Receipt
 {
@@ -24,7 +24,7 @@ class Receipt
      * @param  \Illuminate\Mail\Mailer  $mailer
      * @param  boolean                  $usingQueue
      */
-    public function __construct(Mailer $mailer, $usingQueue = false)
+    public function __construct(Mail $mailer, $usingQueue = false)
     {
         $this->mailer = $mailer;
         $this->usingQueue = $usingQueue;
