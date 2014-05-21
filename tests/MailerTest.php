@@ -59,8 +59,8 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->twice()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->push('foo.bar', array('foo' => 'foobar'), ''));
-        $this->assertTrue($stub->push('foo.bar', array('foo' => 'foobar'), ''));
+        $this->assertEquals($mailer, $stub->push('foo.bar', array('foo' => 'foobar'), ''));
+        $this->assertEquals($mailer, $stub->push('foo.bar', array('foo' => 'foobar'), ''));
     }
 
     /**
@@ -87,7 +87,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->with('orchestra.mail@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->push($with['view'], $with['data'], $with['callback']));
+        $this->assertEquals($app['mailer'], $stub->push($with['view'], $with['data'], $with['callback']));
     }
 
     /**
@@ -105,7 +105,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+        $this->assertEquals($mailer, $stub->send('foo.bar', array('foo' => 'foobar'), ''));
     }
 
     /**
@@ -131,7 +131,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+        $this->assertEquals($mailer, $stub->send('foo.bar', array('foo' => 'foobar'), ''));
     }
 
     /**
@@ -160,7 +160,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+        $this->assertEquals($mailer, $stub->send('foo.bar', array('foo' => 'foobar'), ''));
     }
 
     /**
@@ -193,7 +193,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+        $this->assertEquals($mailer, $stub->send('foo.bar', array('foo' => 'foobar'), ''));
     }
 
     /**
@@ -223,7 +223,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+        $this->assertEquals($mailer, $stub->send('foo.bar', array('foo' => 'foobar'), ''));
     }
 
     /**
@@ -252,7 +252,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', array('foo' => 'foobar'), '')->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+        $this->assertEquals($mailer, $stub->send('foo.bar', array('foo' => 'foobar'), ''));
     }
 
     /**
@@ -285,7 +285,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $logger->shouldReceive('getMonolog')->once()->andReturn($monolog);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->send('foo.bar', array('foo' => 'foobar'), ''));
+        $this->assertEquals($mailer, $stub->send('foo.bar', array('foo' => 'foobar'), ''));
     }
 
     /**
@@ -329,7 +329,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->with('orchestra.mail@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->queue($with['view'], $with['data'], $with['callback']));
+        $this->assertEquals($app['mailer'], $stub->queue($with['view'], $with['data'], $with['callback']));
     }
 
     /**
@@ -354,7 +354,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->andReturn(true);
 
         $stub = with(new Mailer($app))->attach($app['orchestra.memory']);
-        $this->assertTrue($stub->queue($with['view'], $with['data'], $with['callback']));
+        $this->assertEquals($app['mailer'], $stub->queue($with['view'], $with['data'], $with['callback']));
     }
 
     /**
@@ -364,10 +364,9 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      */
     public function queueMessageDataProvdier()
     {
-        $closure = function () {
+        $callback = new SerializableClosure(function () {
 
-        };
-        $callback = new SerializableClosure($closure);
+        });
 
         return array(
             array(

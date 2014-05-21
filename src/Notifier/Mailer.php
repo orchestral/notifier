@@ -54,7 +54,7 @@ class Mailer
         if (! $this->mailer instanceof Mail) {
             $transport = $this->registerSwiftTransport($this->memory->get('email'));
 
-            $this->setUp($this->app['mailer'], $transport);
+            $this->mailer = $this->setUp($this->app['mailer'], $transport);
         }
 
         return $this->mailer;
@@ -80,7 +80,7 @@ class Mailer
 
         $mailer->setSwiftMailer(new Swift_Mailer($transport));
 
-        $this->mailer = $mailer;
+        return $mailer;
     }
 
     /**
@@ -116,7 +116,11 @@ class Mailer
      */
     public function send($view, array $data, $callback)
     {
-        return $this->getMailer()->send($view, $data, $callback);
+        $mailer = $this->getMailer();
+
+        $mailer->send($view, $data, $callback);
+
+        return $mailer;
     }
 
     /**
@@ -138,7 +142,9 @@ class Mailer
             'callback' => $callback,
         );
 
-        return $this->app['queue']->push('orchestra.mail@handleQueuedMessage', $with, $queue);
+        $this->app['queue']->push('orchestra.mail@handleQueuedMessage', $with, $queue);
+
+        return $this->mailer ?: $this->app['mailer'];
     }
 
     /**
@@ -194,6 +200,7 @@ class Mailer
     protected function registerSwiftTransport($config)
     {
         $transport = 'register'.Str::studly($config['driver']).'Transport';
+
         if (! method_exists($this, $transport)) {
             throw new InvalidArgumentException('Invalid mail driver.');
         }

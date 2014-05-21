@@ -38,7 +38,7 @@ class LaravelNotifier implements NotifierInterface
         $subject = $message->subject;
 
         // Send the email directly using Illuminate\Mail\Mailer interface.
-        $sent = $this->mailer->send($view, $data, function ($mail) use ($user, $subject, $callback) {
+        $this->mailer->send($view, $data, function ($mail) use ($user, $subject, $callback) {
             // Set the recipient detail.
             $mail->to($user->getRecipientEmail(), $user->getRecipientName());
 
@@ -49,6 +49,6 @@ class LaravelNotifier implements NotifierInterface
             is_callable($callback) && call_user_func_array($callback, func_get_args());
         });
 
-        return (count($sent) > 0);
+        return empty($this->mailer->failures());
     }
 }
