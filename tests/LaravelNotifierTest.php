@@ -43,8 +43,10 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
         $stub = new LaravelNotifier($mailer);
+        $receipt = $stub->send($user, $message);
 
-        $this->assertTrue($stub->send($user, $message));
+        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertTrue($receipt->sent());
     }
 
     /**
@@ -69,13 +71,16 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
                     $c($mailer);
 
-                    return array();
+                    return $mailer;
                 })
             ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
-            ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
+            ->shouldReceive('subject')->once()->with($subject)->andReturnNull()
+            ->shouldReceive('failures')->once()->andReturn(array('hello@orchestraplatform.com'));
 
         $stub = new LaravelNotifier($mailer);
+        $receipt = $stub->send($user, $message);
 
-        $this->assertFalse($stub->send($user, $message));
+        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertFalse($receipt->sent());
     }
 }

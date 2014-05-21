@@ -4,6 +4,7 @@ use Closure;
 use Illuminate\Support\SerializableClosure;
 use Illuminate\Support\Fluent;
 use Orchestra\Memory\ContainerTrait;
+use Orchestra\Memory\Provider;
 
 class OrchestraNotifier implements NotifierInterface
 {
@@ -32,7 +33,7 @@ class OrchestraNotifier implements NotifierInterface
      * @param  RecipientInterface           $user
      * @param  \Illuminate\Support\Fluent   $message
      * @param  \Closure                     $callback
-     * @return boolean
+     * @return Receipt
      */
     public function send(RecipientInterface $user, Fluent $message, Closure $callback = null)
     {
@@ -47,7 +48,7 @@ class OrchestraNotifier implements NotifierInterface
 
         // Send the notification using push which would allow Orchestra
         // Platform to choose either to use queue or send.
-        $sent = $this->mailer->push($view, $data, function ($message) use ($user, $subject, $callback) {
+        $receipt = $this->mailer->push($view, $data, function ($message) use ($user, $subject, $callback) {
             // Set the recipient detail.
             $message->to($user->getRecipientEmail(), $user->getRecipientName());
 
@@ -58,14 +59,7 @@ class OrchestraNotifier implements NotifierInterface
             is_callable($callback) && call_user_func_array($callback, func_get_args());
         });
 
-        // It impossible to get either the email is sent out straight away
-        // when the mailer is only push to queue, in this case we should
-        // assume that sending is successful when using queue.
-        if ($this->isNotQueued()) {
-            return (count($sent) > 0);
-        }
-
-        return true;
+        return $receipt->usingQueue($this->isUsingQueue());
     }
 
     /**
@@ -73,15 +67,20 @@ class OrchestraNotifier implements NotifierInterface
      *
      * @return boolean
      */
-    protected function isNotQueued()
+    protected function isUsingQueue()
     {
-        if (! isset($this->memory)) {
-            return true;
+        // It impossible to get either the email is sent out straight away
+        // when the mailer is only push to queue, in this case we should
+        // assume that sending is successful when using queue.
+
+        $usingQueue = false;
+        $usingApi   = 'mail';
+
+        if ($this->memory instanceof Provider) {
+            $usingQueue = $this->memory->get('email.queue', false);
+            $usingApi   = $this->memory->get('email.driver');
         }
 
-        $isQueue = $this->memory->get('email.queue', false);
-        $isApi   = $this->memory->get('email.driver');
-
-        return (! ($isQueue || in_array($isApi, array('mailgun', 'mandrill', 'log'))));
+        return ($usingQueue || in_array($usingApi, array('mailgun', 'mandrill', 'log')));
     }
 }
