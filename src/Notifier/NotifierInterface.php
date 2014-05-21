@@ -11,7 +11,7 @@ interface NotifierInterface
      * @param  RecipientInterface           $user
      * @param  \Illuminate\Support\Fluent   $message
      * @param  \Closure                     $callback
-     * @return boolean
+     * @return Receipt
      */
     public function send(RecipientInterface $user, Fluent $message, Closure $callback = null);
 }
