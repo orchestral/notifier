@@ -5,7 +5,7 @@ Orchestra Platform Notifier Component
 
 [![Latest Stable Version](https://poser.pugx.org/orchestra/notifier/v/stable.png)](https://packagist.org/packages/orchestra/notifier) 
 [![Total Downloads](https://poser.pugx.org/orchestra/notifier/downloads.png)](https://packagist.org/packages/orchestra/notifier) 
-[![Build Status](https://travis-ci.org/orchestral/notifier.png?branch=master)](https://travis-ci.org/orchestral/notifier) 
+[![Build Status](https://travis-ci.org/orchestral/notifier.svg?branch=master)](https://travis-ci.org/orchestral/notifier) 
 [![Coverage Status](https://coveralls.io/repos/orchestral/notifier/badge.png?branch=master)](https://coveralls.io/r/orchestral/notifier?branch=master) 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/orchestral/notifier/badges/quality-score.png?s=f9c6821fd536f8c4787a90bee7d5fc1ea58e416f)](https://scrutinizer-ci.com/g/orchestral/notifier/) 
 
@@ -16,7 +16,7 @@ To install through composer, simply put the following in your `composer.json` fi
 ```json
 {
 	"require": {
-		"orchestra/notifier": "2.2.*"
+		"orchestra/notifier": "2.3.*"
 	}
 }
 ```
@@ -36,4 +36,4 @@ Next add the service provider in `app/config/app.php`.
 ## Resources
 
 * [Documentation](http://orchestraplatform.com/docs/latest/components/notifier)
-* [Change Log](http://orchestraplatform.com/docs/latest/components/notifier/changes#v2-2)
+* [Change Log](http://orchestraplatform.com/docs/latest/components/notifier/changes#v2-3)
