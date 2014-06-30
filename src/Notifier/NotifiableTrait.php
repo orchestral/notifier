@@ -19,7 +19,7 @@ trait NotifiableTrait
     {
         $entity = $user;
 
-        if ($subject instanceof Fluent) {
+        if ($subject instanceof Fluent || $subject instanceof Message) {
             $attributes = $subject->toArray();
         } else {
             if ($user instanceof ArrayableInterface) {
@@ -35,6 +35,6 @@ trait NotifiableTrait
             ];
         }
 
-        return Notifier::send($user, new Fluent($attributes));
+        return Notifier::send($user, new Message($attributes));
     }
 }
