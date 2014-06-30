@@ -5,7 +5,7 @@ title: Notifier Change Log
 
 ## Version 2.2 {#v2-2}
 
-### v2.2.1@dev {#v2-2-1}
+### v2.2.1 {#v2-2-1}
 
 * Add `Orchestra\Notifier\Message` as an alias to `Illuminate\Support\Fluent`.
 
