@@ -2,6 +2,13 @@
 title: Notifier Change Log
 
 ---
+
+## Version 2.3 {#v2-3}
+
+### v2.3.0 {#v2-3-0}
+
+* Swap `Illuminate\Support\Fluent` with `Orchestra\Notifier\Message`.
+
 ## Version 2.2 {#v2-2}
 
 ### v2.2.0 {#v2-2-0}

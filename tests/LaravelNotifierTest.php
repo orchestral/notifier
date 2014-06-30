@@ -1,8 +1,8 @@
 <?php namespace Orchestra\Notifier\TestCase;
 
 use Mockery as m;
-use Illuminate\Support\Fluent;
 use Orchestra\Notifier\LaravelNotifier;
+use Orchestra\Notifier\Message;
 
 class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,7 +28,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
         $subject = 'foobar';
         $view    = 'foo.bar';
         $data    = array();
-        $message = new Fluent(compact('subject', 'view', 'data'));
+        $message = new Message(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -62,7 +62,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
         $subject = 'foobar';
         $view    = 'foo.bar';
         $data    = array();
-        $message = new Fluent(compact('subject', 'view', 'data'));
+        $message = new Message(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');

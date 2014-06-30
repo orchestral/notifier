@@ -1,7 +1,7 @@
 <?php namespace Orchestra\Notifier\TestCase;
 
 use Mockery as m;
-use Illuminate\Support\Fluent;
+use Orchestra\Notifier\Message;
 use Orchestra\Notifier\OrchestraNotifier;
 use Orchestra\Notifier\Receipt;
 
@@ -30,7 +30,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
         $subject = 'foobar';
         $view    = 'foo.bar';
         $data    = array();
-        $message = new Fluent(compact('subject', 'view', 'data'));
+        $message = new Message(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -66,7 +66,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
 
         $view = 'foo.bar';
         $data = array();
-        $message = new Fluent(compact('view', 'data'));
+        $message = new Message(compact('view', 'data'));
 
         $callback = function ($mail) {
             $mail->subject('foobar!!');
@@ -109,7 +109,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
         $subject = 'foobar';
         $view    = 'foo.bar';
         $data    = array();
-        $message = new Fluent(compact('subject', 'view', 'data'));
+        $message = new Message(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -149,7 +149,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
         $subject = 'foobar';
         $view    = 'foo.bar';
         $data    = array();
-        $message = new Fluent(compact('subject', 'view', 'data'));
+        $message = new Message(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
