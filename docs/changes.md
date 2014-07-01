@@ -20,6 +20,10 @@ title: Notifier Change Log
 
 ## Version 2.1 {#v2-1}
 
+### v2.1.3 {#v2-1-3}
+
+* Ensure `$subject` and `$data` is available to avoid variable not found error while sending using queue.
+
 ### v2.1.2 {#v2-1-2}
 
 * Add `Orchestra\Notifier\GenericRecipient`.
