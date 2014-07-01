@@ -11,7 +11,11 @@ title: Notifier Change Log
 
 ## Version 2.2 {#v2-2}
 
-### v2.2.1@dev {#v2-2-1}
+### v2.2.2 {#v2-2-2}
+
+* Ensure `$subject` and `$data` is available to avoid variable not found error while sending using queue.
+
+### v2.2.1 {#v2-2-1}
 
 * Add `Orchestra\Notifier\Message` as an alias to `Illuminate\Support\Fluent`.
 
@@ -25,6 +29,10 @@ title: Notifier Change Log
 * Add `Orchestra\Notifier\Receipt` as a unified receipt object on all e-mail sending.
 
 ## Version 2.1 {#v2-1}
+
+### v2.1.3 {#v2-1-3}
+
+* Ensure `$subject` and `$data` is available to avoid variable not found error while sending using queue.
 
 ### v2.1.2 {#v2-1-2}
 
