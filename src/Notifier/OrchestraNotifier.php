@@ -35,8 +35,8 @@ class OrchestraNotifier extends Container implements NotifierInterface
     public function send(RecipientInterface $user, Fluent $message, Closure $callback = null)
     {
         $view    = $message->view;
-        $data    = $message->data;
-        $subject = $message->subject;
+        $data    = $message->data ?: array();
+        $subject = $message->subject ?: '';
 
         // In order to pass a Closure as "use" we need to actually convert
         // it into Serializable Closure, otherwise Laravel would throw an
