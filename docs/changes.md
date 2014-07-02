@@ -11,6 +11,11 @@ title: Notifier Change Log
 
 ## Version 2.2 {#v2-2}
 
+### v2.2.3@dev {#v2-2-3}
+
+* Add `Orchestra\Notifier\Message::create()` helper.
+* Simplify `Orchestra\Notifier\NotifiableTrait`.
+
 ### v2.2.2 {#v2-2-2}
 
 * Ensure `$subject` and `$data` is available to avoid variable not found error while sending using queue.

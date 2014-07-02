@@ -21,20 +21,18 @@ trait NotifiableTrait
 
         if ($subject instanceof Fluent || $subject instanceof Message) {
             $attributes = $subject->toArray();
-        } else {
-            if ($user instanceof ArrayableInterface) {
-                $entity = $user->toArray();
-            }
 
-            $data = array_add($data, 'user', $entity);
-
-            $attributes = [
-                'subject' => $subject,
-                'view'    => $view,
-                'data'    => $data
-            ];
+            $data    = $attributes['data'];
+            $subject = $attributes['subject'];
+            $view    = $attributes['view'];
         }
 
-        return Notifier::send($user, new Message($attributes));
+        if ($user instanceof ArrayableInterface) {
+            $entity = $user->toArray();
+        }
+
+        $data = array_add($data, 'user', $entity);
+
+        return Notifier::send($user, Message::create($view, $data, $subject));
     }
 }
