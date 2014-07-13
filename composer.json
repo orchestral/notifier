@@ -1,8 +1,8 @@
 {
     "name": "orchestra/notifier",
     "description": "Orchestra Platform 2 User Notification Component",
-    "keywords": ["orchestra-platform", "orchestral", "laravel"],
     "license": "MIT",
+    "keywords": ["orchestra-platform", "orchestral", "laravel", "mailer"],
     "authors": [
         {
             "name": "Mior Muhammad Zaki",
