@@ -5,7 +5,7 @@ title: Notifier Change Log
 
 ## Version 2.2 {#v2-2}
 
-### v2.2.3@dev {#v2-2-3}
+### v2.2.3 {#v2-2-3}
 
 * Add `Orchestra\Notifier\Message::create()` helper.
 * Simplify `Orchestra\Notifier\NotifiableTrait`.
