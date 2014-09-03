@@ -153,7 +153,8 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             'mailer' => $mailer = m::mock('\Illuminate\Mail\Mailer'),
         );
 
-        $memory->shouldReceive('get')->with('email')->andReturn(array(
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->andReturn('sendmail')
+            ->shouldReceive('get')->with('email')->andReturn(array(
                 'driver'   => 'sendmail',
                 'sendmail' => '/bin/sendmail -t',
             ))
@@ -183,7 +184,8 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             'mailer' => $mailer = m::mock('\Illuminate\Mail\Mailer'),
         );
 
-        $memory->shouldReceive('get')->with('email')->andReturn(array(
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->andReturn('smtp')
+            ->shouldReceive('get')->with('email')->andReturn(array(
                 'driver'     => 'smtp',
                 'host'       => 'smtp.mailgun.org',
                 'port'       => 587,
@@ -217,7 +219,8 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             'mailer' => $mailer = m::mock('\Illuminate\Mail\Mailer'),
         );
 
-        $memory->shouldReceive('get')->with('email')->andReturn(array(
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mailgun')
+            ->shouldReceive('get')->with('email')->andReturn(array(
                 'driver' => 'mailgun',
                 'secret' => 'auniquetoken',
                 'domain' => 'mailer.mailgun.org',
@@ -248,7 +251,8 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             'mailer' => $mailer = m::mock('\Illuminate\Mail\Mailer'),
         );
 
-        $memory->shouldReceive('get')->with('email')->andReturn(array(
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mandrill')
+            ->shouldReceive('get')->with('email')->andReturn(array(
                 'driver' => 'mandrill',
                 'secret' => 'auniquetoken',
             ))
