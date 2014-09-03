@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Notifier;
 
 use Illuminate\Support\Contracts\ArrayableInterface;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Orchestra\Support\Facades\Notifier;
 
@@ -31,7 +32,7 @@ trait NotifiableTrait
             $entity = $user->toArray();
         }
 
-        $data = array_add($data, 'user', $entity);
+        $data = Arr::add($data, 'user', $entity);
 
         return Notifier::send($user, Message::create($view, $data, $subject));
     }
