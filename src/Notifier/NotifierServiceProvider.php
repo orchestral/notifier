@@ -30,7 +30,9 @@ class NotifierServiceProvider extends ServiceProvider
     protected function registerMailer()
     {
         $this->app->bindShared('orchestra.mail', function ($app) {
-            return new Mailer($app);
+            $transport = new TransportManager($app);
+
+            return new Mailer($app, $transport);
         });
     }
 

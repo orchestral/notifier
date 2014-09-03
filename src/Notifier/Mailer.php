@@ -1,19 +1,11 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use InvalidArgumentException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\SerializableClosure;
 use Illuminate\Mail\Mailer as Mail;
-use Illuminate\Mail\Transport\LogTransport;
-use Illuminate\Mail\Transport\MailgunTransport;
-use Illuminate\Mail\Transport\MandrillTransport;
 use Orchestra\Memory\ContainerTrait;
-use Orchestra\Support\Str;
 use Swift_Mailer;
-use Swift_Transport;
-use Swift_SmtpTransport as SmtpTransport;
-use Swift_MailTransport as MailTransport;
-use Swift_SendmailTransport as SendmailTransport;
 
 class Mailer
 {
@@ -22,7 +14,7 @@ class Mailer
     /**
      * Application instance.
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Container\Container
      */
     protected $app;
 
@@ -34,14 +26,22 @@ class Mailer
     protected $mailer;
 
     /**
+     * Transporter instance.
+     *
+     * @var TransportManager
+     */
+    protected $transport;
+
+    /**
      * Construct a new Mail instance.
      *
-     * @param  \Illuminate\Foundation\Application   $app
-     * @return void
+     * @param  \Illuminate\Container\Container  $app
+     * @param  TransportManager                 $transport
      */
-    public function __construct($app)
+    public function __construct($app, TransportManager $transport)
     {
         $this->app = $app;
+        $this->transport = $transport;
     }
 
     /**
@@ -52,35 +52,12 @@ class Mailer
     protected function getMailer()
     {
         if (! $this->mailer instanceof Mail) {
-            $transport = $this->registerSwiftTransport($this->memory->get('email'));
+            $this->transport->setMemoryProvider($this->memory);
 
-            $this->mailer = $this->setUp($this->app['mailer'], $transport);
+            $this->mailer = $this->resolveMailer();
         }
 
         return $this->mailer;
-    }
-
-    /**
-     * Setup mailer.
-     *
-     * @param  \Illuminate\Mail\Mailer  $mailer
-     * @return \Illuminate\Mail\Mailer
-     */
-    protected function setUp(Mail $mailer, Swift_Transport $transport)
-    {
-        // If a "from" address is set, we will set it on the mailer so that
-        // all mail messages sent by the applications will utilize the same
-        // "from" address on each one, which makes the developer's life a
-        // lot more convenient.
-        $from = $this->memory->get('email.from');
-
-        if (is_array($from) && isset($from['address'])) {
-            $mailer->alwaysFrom($from['address'], $from['name']);
-        }
-
-        $mailer->setSwiftMailer(new Swift_Mailer($transport));
-
-        return $mailer;
     }
 
     /**
@@ -110,8 +87,7 @@ class Mailer
      *
      * @param  string           $view
      * @param  array            $data
-     * @param  Closure|string   $callback
-     * @param  string           $queue
+     * @param  \Closure|string  $callback
      * @return Receipt
      */
     public function send($view, array $data, $callback)
@@ -128,7 +104,7 @@ class Mailer
      *
      * @param  string           $view
      * @param  array            $data
-     * @param  Closure|string   $callback
+     * @param  \Closure|string  $callback
      * @param  string           $queue
      * @return Receipt
      */
@@ -192,101 +168,26 @@ class Mailer
     }
 
     /**
-     * Register the Swift Transport instance.
+     * Setup mailer.
      *
-     * @param  array  $config
-     * @return \Swift_Transport
+     * @return \Illuminate\Mail\Mailer
      */
-    protected function registerSwiftTransport($config)
+    protected function resolveMailer()
     {
-        $transport = 'register'.Str::studly($config['driver']).'Transport';
+        $config = $this->memory->get('email');
+        $from   = $this->memory->get('email.from');
+        $mailer = $this->app['mailer'];
 
-        if (! method_exists($this, $transport)) {
-            throw new InvalidArgumentException('Invalid mail driver.');
+        // If a "from" address is set, we will set it on the mailer so that
+        // all mail messages sent by the applications will utilize the same
+        // "from" address on each one, which makes the developer's life a
+        // lot more convenient.
+        if (is_array($from) && isset($from['address'])) {
+            $mailer->alwaysFrom($from['address'], $from['name']);
         }
 
-        return call_user_func(array($this, $transport), $config);
-    }
+        $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));
 
-    /**
-     * Register the SMTP Swift Transport instance.
-     *
-     * @param  array  $config
-     * @return \Swift_Transport
-     */
-    protected function registerSmtpTransport($config)
-    {
-        $transport = SmtpTransport::newInstance($config['host'], $config['port']);
-
-        if (isset($config['encryption'])) {
-            $transport->setEncryption($config['encryption']);
-        }
-
-        // Once we have the transport we will check for the presence of a username
-        // and password. If we have it we will set the credentials on the Swift
-        // transporter instance so that we'll properly authenticate delivery.
-        if (isset($config['username'])) {
-            $transport->setUsername($config['username']);
-            $transport->setPassword($config['password']);
-        }
-
-        return $transport;
-    }
-
-    /**
-     * Register the Sendmail Swift Transport instance.
-     *
-     * @param  array  $config
-     * @return \Swift_Transport
-     */
-    protected function registerSendmailTransport($config)
-    {
-        return SendmailTransport::newInstance($config['sendmail']);
-    }
-
-    /**
-     * Register the Mail Swift Transport instance.
-     *
-     * @param  array  $config
-     * @return \Swift_Transport
-     */
-    protected function registerMailTransport($config)
-    {
-        unset($config);
-
-        return MailTransport::newInstance();
-    }
-
-    /**
-     * Register the Mailgun Swift Transport instance.
-     *
-     * @param  array  $config
-     * @return \Swift_Transport
-     */
-    protected function registerMailgunTransport($config)
-    {
-        return new MailgunTransport($config['secret'], $config['domain']);
-    }
-
-    /**
-     * Register the Mandrill Swift Transport instance.
-     *
-     * @param  array  $config
-     * @return \Swift_Transport
-     */
-    protected function registerMandrillTransport($config)
-    {
-        return new MandrillTransport($config['secret']);
-    }
-
-    /**
-     * Register the "Log" Swift Transport instance.
-     *
-     * @param  array  $config
-     * @return \Swift_Transport
-     */
-    protected function registerLogTransport($config)
-    {
-        return new LogTransport($this->app['log']->getMonolog());
+        return $mailer;
     }
 }

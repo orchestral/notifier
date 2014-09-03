@@ -1,5 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 
 class Message extends Fluent
@@ -28,7 +29,7 @@ class Message extends Fluent
      */
     public function getData()
     {
-        return array_get($this->attributes, 'data', []);
+        return Arr::get($this->attributes, 'data', []);
     }
 
     /**
@@ -38,7 +39,7 @@ class Message extends Fluent
      */
     public function getSubject()
     {
-        return array_get($this->attributes, 'subject', '');
+        return Arr::get($this->attributes, 'subject', '');
     }
 
     /**
@@ -48,6 +49,6 @@ class Message extends Fluent
      */
     public function getView()
     {
-        return array_get($this->attributes, 'view');
+        return Arr::get($this->attributes, 'view');
     }
 }
