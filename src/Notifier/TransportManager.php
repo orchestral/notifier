@@ -10,7 +10,6 @@ use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
 use Swift_SendmailTransport as SendmailTransport;
 
-
 class TransportManager extends Manager
 {
     use ContainerTrait;
