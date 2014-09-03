@@ -1,21 +1,21 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use Illuminate\Mail\Mailer as Mail;
+use Illuminate\Contracts\Mail\Mailer as Mail;
 
 class LaravelNotifier implements NotifierInterface
 {
     /**
      * Mailer instance.
      *
-     * @var \Illuminate\Mail\Mailer
+     * @var \Illuminate\Contracts\Mail\Mailer
      */
     protected $mailer;
 
     /**
      * Setup Illuminate Mailer.
      *
-     * @param  \Illuminate\Mail\Mailer  $mailer
+     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      */
     public function __construct(Mail $mailer)
     {
@@ -36,7 +36,7 @@ class LaravelNotifier implements NotifierInterface
         $data    = $message->data;
         $subject = $message->subject;
 
-        // Send the email directly using Illuminate\Mail\Mailer interface.
+        // Send the email directly using Illuminate\Contracts\Mail\Mailer interface.
         $this->mailer->send($view, $data, function ($mail) use ($user, $subject, $callback) {
             // Set the recipient detail.
             $mail->to($user->getRecipientEmail(), $user->getRecipientName());

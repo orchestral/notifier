@@ -1,13 +1,13 @@
 <?php namespace Orchestra\Notifier;
 
-use Illuminate\Mail\Mailer as Mail;
+use Illuminate\Contracts\Mail\Mailer as Mail;
 
 class Receipt
 {
     /**
      * Mailer instance.
      *
-     * @var \Illuminate\Mail\Mailer
+     * @var \Illuminate\Contracts\Mail\Mailer
      */
     protected $mailer;
 
@@ -21,8 +21,8 @@ class Receipt
     /**
      * Construct a new mail receipt.
      *
-     * @param  \Illuminate\Mail\Mailer  $mailer
-     * @param  boolean                  $usingQueue
+     * @param  \Illuminate\Contracts\Mail\Mailer    $mailer
+     * @param  bool                                 $usingQueue
      */
     public function __construct(Mail $mailer, $usingQueue = false)
     {
@@ -33,7 +33,7 @@ class Receipt
     /**
      * Return true when all e-mail has been sent.
      *
-     * @return boolean
+     * @return bool
      */
     public function sent()
     {
@@ -43,7 +43,7 @@ class Receipt
     /**
      * Return true if any of the e-mail failed to be sent.
      *
-     * @return boolean
+     * @return bool
      */
     public function failed()
     {
@@ -65,8 +65,8 @@ class Receipt
     /**
      * Set whether or not e-mail is sent via queue/delayed.
      *
-     * @param  boolean  $usingQueue
-     * @return Receipt
+     * @param  bool $usingQueue
+     * @return $this
      */
     public function usingQueue($usingQueue = false)
     {
@@ -78,7 +78,7 @@ class Receipt
     /**
      * Get if e-mail is queued/delayed.
      *
-     * @return boolean
+     * @return bool
      */
     public function isQueued()
     {

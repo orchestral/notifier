@@ -1,9 +1,8 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use Illuminate\Support\Arr;
+use Illuminate\Contracts\Mail\Mailer as Mail;
 use Illuminate\Support\SerializableClosure;
-use Illuminate\Mail\Mailer as Mail;
 use Orchestra\Memory\ContainerTrait;
 use Swift_Mailer;
 
@@ -21,7 +20,7 @@ class Mailer
     /**
      * Mailer instance.
      *
-     * @var \Illuminate\Mail\Mailer
+     * @var \Illuminate\Contracts\Mail\Mailer
      */
     protected $mailer;
 
@@ -47,7 +46,7 @@ class Mailer
     /**
      * Register the Swift Mailer instance.
      *
-     * @return \Illuminate\Mail\Mailer
+     * @return \Illuminate\Contracts\Mail\Mailer
      */
     protected function getMailer()
     {
@@ -170,7 +169,7 @@ class Mailer
     /**
      * Setup mailer.
      *
-     * @return \Illuminate\Mail\Mailer
+     * @return \Illuminate\Contracts\Mail\Mailer
      */
     protected function resolveMailer()
     {
