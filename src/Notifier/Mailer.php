@@ -174,7 +174,6 @@ class Mailer
      */
     protected function resolveMailer()
     {
-        $config = $this->memory->get('email');
         $from   = $this->memory->get('email.from');
         $mailer = $this->app['mailer'];
 
