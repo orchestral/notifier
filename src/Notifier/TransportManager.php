@@ -96,9 +96,14 @@ class TransportManager extends Manager
         return new LogTransport($this->app['log']->getMonolog());
     }
 
+    /**
+     * Get transport configuration.
+     *
+     * @return array
+     */
     protected function getTransportConfig()
     {
-        return $this->memory->get('email');
+        return $this->memory->get('email', []);
     }
 
     /**
