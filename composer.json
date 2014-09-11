@@ -1,6 +1,6 @@
 {
     "name": "orchestra/notifier",
-    "description": "Orchestra Platform 2 User Notification Component",
+    "description": "User Notification Component for Orchestra Platform",
     "license": "MIT",
     "keywords": ["orchestra-platform", "orchestral", "laravel", "mailer"],
     "authors": [
@@ -17,20 +17,20 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "illuminate/contracts": "4.3.*",
-        "orchestra/memory": "2.3.*"
+        "illuminate/contracts": "5.0.*",
+        "orchestra/memory": "3.0.*"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
         "jeremeamia/superclosure": "1.0.*",
-        "illuminate/auth": "4.3.*",
-        "illuminate/mail": "4.3.*",
-        "illuminate/queue": "4.3.*",
-        "illuminate/support": "4.3.*"
+        "illuminate/auth": "5.0.*",
+        "illuminate/mail": "5.0.*",
+        "illuminate/queue": "5.0.*",
+        "illuminate/support": "5.0.*"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.3-dev"
+            "dev-master": "3.0-dev"
         }
     },
     "minimum-stability": "dev"
