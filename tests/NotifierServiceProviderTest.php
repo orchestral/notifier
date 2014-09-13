@@ -46,7 +46,7 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
         $path = realpath(__DIR__.'/../src/');
         $app = new Container;
 
-        $app['path'] = "/var/laravel/app";
+        $app['path.base'] = '/var/laravel';
         $app['config'] = $config = m::mock('\Illuminate\Config\Repository');
         $app['files'] = $files = m::mock('\Illuminate\Filesystem\Filesystem');
 
@@ -57,7 +57,7 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
         $files->shouldReceive('isDirectory')->once()->with("{$path}/config")->andReturn(true)
             ->shouldReceive('isDirectory')->once()->with("{$path}/lang")->andReturn(false)
             ->shouldReceive('isDirectory')->once()
-                ->with("{$app['path']}/views/packages/orchestra/notifier")->andReturn(false)
+                ->with("{$app['path.base']}/resources/views/packages/orchestra/notifier")->andReturn(false)
             ->shouldReceive('isDirectory')->once()->with("{$path}/views")->andReturn(false);
 
         $stub = new NotifierServiceProvider($app);
