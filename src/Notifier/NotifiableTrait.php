@@ -1,6 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
-use Illuminate\Contracts\Support\ArrayableInterface;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Orchestra\Support\Facades\Notifier;
@@ -28,7 +28,7 @@ trait NotifiableTrait
             $view    = $attributes['view'];
         }
 
-        if ($user instanceof ArrayableInterface) {
+        if ($user instanceof Arrayable) {
             $entity = $user->toArray();
         }
 
