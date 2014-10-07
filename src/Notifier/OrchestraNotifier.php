@@ -1,10 +1,10 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use Illuminate\Support\SerializableClosure;
 use Illuminate\Support\Fluent;
-use Orchestra\Memory\ContainerTrait;
 use Orchestra\Memory\Provider;
+use Orchestra\Memory\ContainerTrait;
+use Illuminate\Support\SerializableClosure;
 
 class OrchestraNotifier implements NotifierInterface
 {
