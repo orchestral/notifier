@@ -1,13 +1,13 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use InvalidArgumentException;
-use Illuminate\Support\SerializableClosure;
-use Illuminate\Mail\Mailer as Mail;
-use Orchestra\Memory\Abstractable\Container;
-use Orchestra\Support\Str;
 use Swift_Mailer;
 use Swift_Transport;
+use Orchestra\Support\Str;
+use InvalidArgumentException;
+use Illuminate\Mail\Mailer as Mail;
+use Illuminate\Support\SerializableClosure;
+use Orchestra\Memory\Abstractable\Container;
 use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
 use Swift_SendmailTransport as SendmailTransport;
@@ -51,7 +51,7 @@ class Mailer extends Container
 
             $this->setUp($this->app['mailer'], $transport);
         }
-        
+
         return $this->mailer;
     }
 

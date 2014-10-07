@@ -1,8 +1,8 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use Illuminate\Support\SerializableClosure;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\SerializableClosure;
 use Orchestra\Memory\Abstractable\Container;
 
 class OrchestraNotifier extends Container implements NotifierInterface
