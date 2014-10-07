@@ -1,10 +1,10 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use Illuminate\Contracts\Mail\Mailer as Mail;
-use Illuminate\Support\SerializableClosure;
-use Orchestra\Memory\ContainerTrait;
 use Swift_Mailer;
+use Orchestra\Memory\ContainerTrait;
+use Illuminate\Support\SerializableClosure;
+use Illuminate\Contracts\Mail\Mailer as Mail;
 
 class Mailer
 {
