@@ -2,9 +2,9 @@
 
 use Closure;
 use Illuminate\Contracts\Mail\Mailer as Mail;
-use Orchestra\Contracts\Notification\Message;
 use Orchestra\Contracts\Notification\Recipient;
 use Orchestra\Contracts\Notification\Notification;
+use Orchestra\Contracts\Notification\Message as MessageContract;
 
 class LaravelNotifier implements Notification
 {
@@ -33,7 +33,7 @@ class LaravelNotifier implements Notification
      * @param  \Closure  $callback
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function send(Recipient $user, Message $message, Closure $callback = null)
+    public function send(Recipient $user, MessageContract $message, Closure $callback = null)
     {
         $view    = $message->view;
         $data    = $message->data;
