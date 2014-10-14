@@ -1,31 +1,30 @@
 <?php namespace Orchestra\Notifier;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Fluent;
 use Orchestra\Support\Facades\Notifier;
+use Illuminate\Contracts\Support\Arrayable;
+use Orchestra\Contracts\Notification\Recipient;
+use Orchestra\Contracts\Notification\Message as MessageContract;
 
 trait NotifiableTrait
 {
     /**
      * Send email notification to user
      *
-     * @param  RecipientInterface                   $user
-     * @param  \Illuminate\Support\Fluent|string    $subject
-     * @param  string|null                          $view
-     * @param  array                                $data
-     * @return boolean
+     * @param  \Orchestra\Contracts\Notification\Recipient  $user
+     * @param  \Orchestra\Contracts\Notification\Message|string  $subject
+     * @param  string|null  $view
+     * @param  array  $data
+     * @return bool
      */
-    protected function sendNotification(RecipientInterface $user, $subject, $view = null, array $data = [])
+    protected function sendNotification(Recipient $user, $subject, $view = null, array $data = [])
     {
         $entity = $user;
 
-        if ($subject instanceof Fluent || $subject instanceof Message) {
-            $attributes = $subject->toArray();
-
-            $data    = $attributes['data'];
-            $subject = $attributes['subject'];
-            $view    = $attributes['view'];
+        if ($subject instanceof MessageContract) {
+            $data    = $subject->getData();
+            $subject = $subject->getSubject();
+            $view    = $subject->getView();
         }
 
         if ($user instanceof Arrayable) {

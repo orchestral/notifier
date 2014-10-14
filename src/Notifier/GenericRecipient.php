@@ -1,6 +1,8 @@
 <?php namespace Orchestra\Notifier;
 
-class GenericRecipient implements RecipientInterface
+use Orchestra\Contracts\Notification\Recipient;
+
+class GenericRecipient implements Recipient
 {
     /**
      * Recipient e-mail address.

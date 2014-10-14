@@ -25,7 +25,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view    = 'foo.bar';
@@ -62,7 +62,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $view = 'foo.bar';
         $data = array();
@@ -104,7 +104,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
         $mailer = m::mock('\Illuminate\Mail\Mailer');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
         $memory = m::mock('\Orchestra\Memory\Provider')->makePartial();
-        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view    = 'foo.bar';
@@ -144,7 +144,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view    = 'foo.bar';

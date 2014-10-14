@@ -23,7 +23,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodSucceed()
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer')->makePartial();
-        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view    = 'foo.bar';
@@ -57,7 +57,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     public function testSendMethodFailed()
     {
         $mailer = m::mock('\Illuminate\Mail\Mailer')->makePartial();
-        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view    = 'foo.bar';

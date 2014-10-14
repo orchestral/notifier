@@ -15,7 +15,7 @@ class GenericRecipientTest extends \PHPUnit_Framework_TestCase
         $name  = 'Administrator';
         $stub  = new GenericRecipient($email, $name);
 
-        $this->assertInstanceOf('\Orchestra\Notifier\RecipientInterface', $stub);
+        $this->assertInstanceOf('\Orchestra\Contracts\Notification\Recipient', $stub);
         $this->assertEquals($email, $stub->getRecipientEmail());
         $this->assertEquals($name, $stub->getRecipientName());
     }

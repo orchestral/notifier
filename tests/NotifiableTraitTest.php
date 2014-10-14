@@ -35,8 +35,8 @@ class NotifiableTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendNotificationTraitMethod()
     {
-        $user = m::mock('\Orchestra\Notifier\RecipientInterface', '\Illuminate\Contracts\Support\Arrayable');
-        $notifier = m::mock('\Orchestra\Notifier\NotifierInterface');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient', '\Illuminate\Contracts\Support\Arrayable');
+        $notifier = m::mock('\Orchestra\Contracts\Notification\Notification');
         $stub = new Notifiable;
 
         $user->shouldReceive('toArray')->twice()->andReturn([

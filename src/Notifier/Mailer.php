@@ -27,7 +27,7 @@ class Mailer
     /**
      * Transporter instance.
      *
-     * @var TransportManager
+     * @var \Orchestra\Notifier\TransportManager
      */
     protected $transport;
 
@@ -35,7 +35,7 @@ class Mailer
      * Construct a new Mail instance.
      *
      * @param  \Illuminate\Container\Container  $app
-     * @param  TransportManager                 $transport
+     * @param  \Orchestra\Notifier\TransportManager  $transport
      */
     public function __construct($app, TransportManager $transport)
     {
@@ -65,9 +65,9 @@ class Mailer
      *
      * @param  string           $view
      * @param  array            $data
-     * @param  Closure|string   $callback
+     * @param  \Closure|string  $callback
      * @param  string           $queue
-     * @return Receipt
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function push($view, array $data, $callback, $queue = null)
     {
@@ -87,7 +87,7 @@ class Mailer
      * @param  string           $view
      * @param  array            $data
      * @param  \Closure|string  $callback
-     * @return Receipt
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function send($view, array $data, $callback)
     {
@@ -105,7 +105,7 @@ class Mailer
      * @param  array            $data
      * @param  \Closure|string  $callback
      * @param  string           $queue
-     * @return Receipt
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function queue($view, array $data, $callback, $queue = null)
     {

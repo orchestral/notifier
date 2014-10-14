@@ -4,8 +4,11 @@ use Closure;
 use Orchestra\Memory\Provider;
 use Orchestra\Memory\ContainerTrait;
 use Illuminate\Support\SerializableClosure;
+use Orchestra\Contracts\Notification\Message as MessageContract;
+use Orchestra\Contracts\Notification\Recipient;
+use Orchestra\Contracts\Notification\Notification;
 
-class OrchestraNotifier implements NotifierInterface
+class OrchestraNotifier implements Notification
 {
     use ContainerTrait;
 
@@ -29,12 +32,12 @@ class OrchestraNotifier implements NotifierInterface
     /**
      * Send notification via API.
      *
-     * @param  RecipientInterface   $user
-     * @param  Message              $message
-     * @param  \Closure             $callback
-     * @return Receipt
+     * @param  \Orchestra\Contracts\Notification\Recipient  $user
+     * @param  \Orchestra\Contracts\Notification\Message  $message
+     * @param  \Closure  $callback
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function send(RecipientInterface $user, Message $message, Closure $callback = null)
+    public function send(Recipient $user, MessageContract $message, Closure $callback = null)
     {
         $view    = $message->view;
         $data    = $message->data ?: array();
@@ -64,7 +67,7 @@ class OrchestraNotifier implements NotifierInterface
     /**
      * Determine if mailer using queue.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isUsingQueue()
     {

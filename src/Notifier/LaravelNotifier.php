@@ -2,8 +2,11 @@
 
 use Closure;
 use Illuminate\Contracts\Mail\Mailer as Mail;
+use Orchestra\Contracts\Notification\Message;
+use Orchestra\Contracts\Notification\Recipient;
+use Orchestra\Contracts\Notification\Notification;
 
-class LaravelNotifier implements NotifierInterface
+class LaravelNotifier implements Notification
 {
     /**
      * Mailer instance.
@@ -25,12 +28,12 @@ class LaravelNotifier implements NotifierInterface
     /**
      * Send notification via API.
      *
-     * @param  RecipientInterface   $user
-     * @param  Message              $message
-     * @param  \Closure             $callback
-     * @return Receipt
+     * @param  \Orchestra\Contracts\Notification\Recipient  $user
+     * @param  \Orchestra\Contracts\Notification\Message  $message
+     * @param  \Closure  $callback
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function send(RecipientInterface $user, Message $message, Closure $callback = null)
+    public function send(Recipient $user, Message $message, Closure $callback = null)
     {
         $view    = $message->view;
         $data    = $message->data;

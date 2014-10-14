@@ -1,8 +1,9 @@
 <?php namespace Orchestra\Notifier;
 
 use Illuminate\Contracts\Mail\Mailer as Mail;
+use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 
-class Receipt
+class Receipt implements ReceiptContract
 {
     /**
      * Mailer instance.

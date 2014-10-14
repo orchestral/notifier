@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
+use Orchestra\Contracts\Notification\Message as MessageContract;
 
-class Message extends Fluent
+class Message extends Fluent implements MessageContract
 {
     /**
      * Create a new Message instance.
@@ -11,9 +12,9 @@ class Message extends Fluent
      * @param  string|array $view
      * @param  array        $data
      * @param  string|null  $subject
-     * @return Message
+     * @return static
      */
-    public static function create($view, array $data = array(), $subject = null)
+    public static function create($view, array $data = [], $subject = null)
     {
         return new static([
             'view'    => $view,
