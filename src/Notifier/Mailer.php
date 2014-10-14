@@ -63,7 +63,7 @@ class Mailer
      * Allow Orchestra Platform to either use send or queue based on
      * settings.
      *
-     * @param  string           $view
+     * @param  string|array     $view
      * @param  array            $data
      * @param  \Closure|string  $callback
      * @param  string           $queue
@@ -84,7 +84,7 @@ class Mailer
     /**
      * Force Orchestra Platform to send email directly.
      *
-     * @param  string           $view
+     * @param  string|array     $view
      * @param  array            $data
      * @param  \Closure|string  $callback
      * @return \Orchestra\Contracts\Notification\Receipt
@@ -101,7 +101,7 @@ class Mailer
     /**
      * Force Orchestra Platform to send email using queue.
      *
-     * @param  string           $view
+     * @param  string|array     $view
      * @param  array            $data
      * @param  \Closure|string  $callback
      * @param  string           $queue
