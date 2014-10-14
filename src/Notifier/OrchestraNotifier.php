@@ -39,9 +39,9 @@ class OrchestraNotifier implements Notification
      */
     public function send(Recipient $user, MessageContract $message, Closure $callback = null)
     {
-        $view    = $message->view;
-        $data    = $message->data ?: array();
-        $subject = $message->subject ?: '';
+        $view    = $message->getView();
+        $data    = $message->getData() ?: [];
+        $subject = $message->getSubject() ?: '';
 
         // In order to pass a Closure as "use" we need to actually convert
         // it into Serializable Closure, otherwise Laravel would throw an
@@ -83,6 +83,6 @@ class OrchestraNotifier implements Notification
             $usingApi   = $this->memory->get('email.driver');
         }
 
-        return ($usingQueue || in_array($usingApi, array('mailgun', 'mandrill', 'log')));
+        return ($usingQueue || in_array($usingApi, ['mailgun', 'mandrill', 'log']));
     }
 }

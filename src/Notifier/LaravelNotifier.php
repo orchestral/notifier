@@ -35,9 +35,9 @@ class LaravelNotifier implements Notification
      */
     public function send(Recipient $user, MessageContract $message, Closure $callback = null)
     {
-        $view    = $message->view;
-        $data    = $message->data;
-        $subject = $message->subject;
+        $view    = $message->getView();
+        $data    = $message->getData();
+        $subject = $message->getSubject();
 
         // Send the email directly using Illuminate\Contracts\Mail\Mailer interface.
         $this->mailer->send($view, $data, function ($mail) use ($user, $subject, $callback) {
