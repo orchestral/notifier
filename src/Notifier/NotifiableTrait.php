@@ -23,8 +23,8 @@ trait NotifiableTrait
 
         if ($subject instanceof MessageContract) {
             $data    = $subject->getData();
-            $subject = $subject->getSubject();
             $view    = $subject->getView();
+            $subject = $subject->getSubject();
         }
 
         if ($user instanceof Arrayable) {

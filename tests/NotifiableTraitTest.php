@@ -1,9 +1,9 @@
 <?php namespace Orchestra\Notifier\TestCase;
 
 use Mockery as m;
+use Orchestra\Notifier\Message;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\Fluent;
 use Orchestra\Support\Facades\Notifier;
 
 class NotifiableTraitTest extends \PHPUnit_Framework_TestCase
@@ -45,7 +45,7 @@ class NotifiableTraitTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $notifier->shouldReceive('send')->twice()
-            ->with($user, m::type('\Illuminate\Support\Fluent'))->andReturn(true);
+            ->with($user, m::type('\Orchestra\Contracts\Notification\Message'))->andReturn(true);
 
         Notifier::swap($notifier);
 
@@ -65,6 +65,6 @@ class Notifiable
 
     public function notifyFluent($user)
     {
-        return $this->sendNotification($user, new Fluent(['subject' => 'foo', 'view' => 'email.foo', 'data' => []]));
+        return $this->sendNotification($user, new Message(['view' => 'email.foo', 'data' => [], 'subject' => 'foo']));
     }
 }
