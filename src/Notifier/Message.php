@@ -50,6 +50,6 @@ class Message extends Fluent implements MessageContract
      */
     public function getView()
     {
-        return Arr::get($this->attributes, 'view', '');
+        return Arr::get($this->attributes, 'view');
     }
 }
