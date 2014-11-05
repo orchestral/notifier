@@ -56,7 +56,7 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodFailed()
     {
-        $mailer = m::mock('\Illuminate\Mail\Mailer')->makePartial();
+        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';

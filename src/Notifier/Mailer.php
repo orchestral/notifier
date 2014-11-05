@@ -140,7 +140,7 @@ class Mailer
     /**
      * Handle a queued e-mail message job.
      *
-     * @param  \Illuminate\Queue\Jobs\Job  $job
+     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  array  $data
      * @return void
      */

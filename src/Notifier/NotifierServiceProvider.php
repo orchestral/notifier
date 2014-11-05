@@ -1,6 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
-use Illuminate\Support\ServiceProvider;
+use Orchestra\Support\Providers\ServiceProvider;
 
 class NotifierServiceProvider extends ServiceProvider
 {
@@ -58,7 +58,7 @@ class NotifierServiceProvider extends ServiceProvider
     {
         $path = realpath(__DIR__.'/../');
 
-        $this->package('orchestra/notifier', 'orchestra/notifier', $path);
+        $this->addConfigComponent('orchestra/notifier', 'orchestra/notifier', $path.'/config');
     }
 
     /**

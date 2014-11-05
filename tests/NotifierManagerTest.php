@@ -82,7 +82,7 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container;
 
-        $app['config'] = $config = m::mock('\Illuminate\Config\Repository');
+        $app['config'] = $config = m::mock('\Illuminate\Contracts\Config\Repository');
 
         $config->shouldReceive('set')->once()
             ->with('orchestra/notifier::driver', 'foo')->andReturnNull();

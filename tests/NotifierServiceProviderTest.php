@@ -21,7 +21,7 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterMethod()
     {
-        $app = m::mock('\Illuminate\Container\Container');
+        $app = m::mock('\Illuminate\Contracts\Container\Container');
 
         $app->shouldReceive('singleton')->once()->with('orchestra.mail', m::type('Closure'))
                 ->andReturnUsing(function ($n, $c) use ($app) {
@@ -47,19 +47,12 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = new Container;
 
         $app['path.base'] = '/var/laravel';
-        $app['config'] = $config = m::mock('\Illuminate\Config\Repository');
+        $app['config'] = $config = m::mock('\Illuminate\Contracts\Config\Repository');
         $app['files'] = $files = m::mock('\Illuminate\Filesystem\Filesystem');
-
-        $memoryProvider = m::mock('\Orchestra\Memory\Provider');
 
         $config->shouldReceive('package')->once()
                 ->with('orchestra/notifier', "{$path}/config", 'orchestra/notifier')->andReturnNull();
-        $files->shouldReceive('isDirectory')->once()->with("{$path}/config")->andReturn(true)
-            ->shouldReceive('isDirectory')->once()->with("{$path}/lang")->andReturn(false)
-            ->shouldReceive('isDirectory')->once()
-                ->with("{$app['path.base']}/resources/views/packages/orchestra/notifier")->andReturn(false)
-            ->shouldReceive('isDirectory')->once()->with("{$path}/views")->andReturn(false);
-
+        $files->shouldReceive('isDirectory')->once()->with("{$path}/config")->andReturn(true);
         $stub = new NotifierServiceProvider($app);
 
         $stub->boot();
