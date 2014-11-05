@@ -1,27 +1,30 @@
 <?php namespace Orchestra\Notifier;
 
 use Illuminate\Support\Manager;
+use Orchestra\Notifier\Handlers\Laravel;
+use Orchestra\Notifier\Handlers\Orchestra;
 
 class NotifierManager extends Manager
 {
     /**
      * Create Laravel driver.
      *
-     * @return OrchestraNotifier
+     * @return Orchestra
      */
     protected function createLaravelDriver()
     {
-        return new LaravelNotifier($this->app['mailer']);
+        return new Laravel($this->app['mailer']);
     }
 
     /**
      * Create Orchestra Platform driver.
      *
-     * @return OrchestraNotifier
+     * @return Orchestra
      */
     protected function createOrchestraDriver()
     {
-        $notifier = new OrchestraNotifier($this->app['orchestra.mail']);
+        $notifier = new Orchestra($this->app['orchestra.mail']);
+
         $notifier->attach($this->app['orchestra.memory']->makeOrFallback());
 
         return $notifier;

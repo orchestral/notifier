@@ -24,15 +24,15 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container;
 
-        $app['config'] = $config = m::mock('\Illuminate\Config\Repository');
-        $app['mailer'] = $mailer = m::mock('\Illuminate\Mail\Mailer');
+        $app['config'] = $config = m::mock('\Illuminate\Contracts\Config\Repository');
+        $app['mailer'] = $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
 
         $config->shouldReceive('get')->once()
             ->with('orchestra/notifier::driver', 'laravel')->andReturn('laravel');
 
         $stub = new NotifierManager($app);
 
-        $this->assertInstanceOf('\Orchestra\Notifier\LaravelNotifier', $stub->driver());
+        $this->assertInstanceOf('\Orchestra\Notifier\Handlers\Laravel', $stub->driver());
     }
 
     /**
@@ -48,11 +48,11 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
         $app['orchestra.mail'] = $mailer = m::mock('\Orchestra\Notifier\Mailer');
         $app['orchestra.memory'] = $memory = m::mock('\Orchestra\Memory\MemoryManager');
 
-        $memory->shouldReceive('makeOrFallback')->once()->andReturn(m::mock('\Orchestra\Memory\Provider'));
+        $memory->shouldReceive('makeOrFallback')->once()->andReturn(m::mock('\Orchestra\Contracts\Memory\Provider'));
 
         $stub = new NotifierManager($app);
 
-        $this->assertInstanceOf('\Orchestra\Notifier\OrchestraNotifier', $stub->driver('orchestra'));
+        $this->assertInstanceOf('\Orchestra\Notifier\Handlers\Orchestra', $stub->driver('orchestra'));
     }
 
     /**
@@ -65,11 +65,11 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container;
 
-        $app['mailer'] = $mailer = m::mock('\Illuminate\Mail\Mailer');
+        $app['mailer'] = $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
 
         $stub = new NotifierManager($app);
 
-        $this->assertInstanceOf('\Orchestra\Notifier\LaravelNotifier', $stub->driver('laravel'));
+        $this->assertInstanceOf('\Orchestra\Notifier\Handlers\Laravel', $stub->driver('laravel'));
     }
 
     /**

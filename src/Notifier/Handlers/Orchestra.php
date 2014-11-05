@@ -1,14 +1,15 @@
-<?php namespace Orchestra\Notifier;
+<?php namespace Orchestra\Notifier\Handlers;
 
 use Closure;
+use Orchestra\Notifier\Mailer;
 use Orchestra\Memory\ContainerTrait;
 use Orchestra\Contracts\Memory\Provider;
 use Illuminate\Support\SerializableClosure;
-use Orchestra\Contracts\Notification\Message as MessageContract;
 use Orchestra\Contracts\Notification\Recipient;
 use Orchestra\Contracts\Notification\Notification;
+use Orchestra\Contracts\Notification\Message as MessageContract;
 
-class OrchestraNotifier implements Notification
+class Orchestra implements Notification
 {
     use ContainerTrait;
 

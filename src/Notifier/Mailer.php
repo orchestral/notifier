@@ -63,10 +63,10 @@ class Mailer
      * Allow Orchestra Platform to either use send or queue based on
      * settings.
      *
-     * @param  string|array     $view
-     * @param  array            $data
+     * @param  string|array  $view
+     * @param  array  $data
      * @param  \Closure|string  $callback
-     * @param  string           $queue
+     * @param  string  $queue
      * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function push($view, array $data, $callback, $queue = null)
@@ -84,8 +84,8 @@ class Mailer
     /**
      * Force Orchestra Platform to send email directly.
      *
-     * @param  string|array     $view
-     * @param  array            $data
+     * @param  string|array  $view
+     * @param  array  $data
      * @param  \Closure|string  $callback
      * @return \Orchestra\Contracts\Notification\Receipt
      */
@@ -101,10 +101,10 @@ class Mailer
     /**
      * Force Orchestra Platform to send email using queue.
      *
-     * @param  string|array     $view
-     * @param  array            $data
+     * @param  string|array  $view
+     * @param  array  $data
      * @param  \Closure|string  $callback
-     * @param  string           $queue
+     * @param  string  $queue
      * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function queue($view, array $data, $callback, $queue = null)

@@ -1,11 +1,11 @@
-<?php namespace Orchestra\Notifier\TestCase;
+<?php namespace Orchestra\Notifier\Handlers\TestCase;
 
 use Mockery as m;
 use Orchestra\Notifier\Message;
-use Orchestra\Notifier\OrchestraNotifier;
 use Orchestra\Notifier\Receipt;
+use Orchestra\Notifier\Handlers\Orchestra;
 
-class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
+class OrchestraTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Teardown the test environment.
@@ -46,7 +46,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, false);
                 });
 
-        $stub = new OrchestraNotifier($notifier);
+        $stub = new Orchestra($notifier);
         $receipt = $stub->send($user, $message);
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
@@ -86,7 +86,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, false);
                 });
 
-        $stub = new OrchestraNotifier($notifier);
+        $stub = new Orchestra($notifier);
         $receipt = $stub->send($user, $message, $callback);
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
@@ -127,7 +127,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, true);
                 });
 
-        $stub = new OrchestraNotifier($notifier);
+        $stub = new Orchestra($notifier);
         $stub->attach($memory);
         $receipt = $stub->send($user, $message);
 
@@ -165,7 +165,7 @@ class OrchestraNotifierTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, false);
                 });
 
-        $stub = new OrchestraNotifier($notifier);
+        $stub = new Orchestra($notifier);
         $receipt = $stub->send($user, $message);
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);

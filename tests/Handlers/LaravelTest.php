@@ -1,10 +1,10 @@
-<?php namespace Orchestra\Notifier\TestCase;
+<?php namespace Orchestra\Notifier\Handlers\TestCase;
 
 use Mockery as m;
-use Orchestra\Notifier\LaravelNotifier;
 use Orchestra\Notifier\Message;
+use Orchestra\Notifier\Handlers\Laravel;
 
-class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
+class LaravelTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Teardown the test environment.
@@ -42,7 +42,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
-        $stub = new LaravelNotifier($mailer);
+        $stub = new Laravel($mailer);
         $receipt = $stub->send($user, $message);
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
@@ -77,7 +77,7 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull()
             ->shouldReceive('failures')->once()->andReturn(array('hello@orchestraplatform.com'));
 
-        $stub = new LaravelNotifier($mailer);
+        $stub = new Laravel($mailer);
         $receipt = $stub->send($user, $message);
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
