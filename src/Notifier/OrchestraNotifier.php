@@ -1,8 +1,8 @@
 <?php namespace Orchestra\Notifier;
 
 use Closure;
-use Orchestra\Memory\Provider;
 use Orchestra\Memory\ContainerTrait;
+use Orchestra\Contracts\Memory\Provider;
 use Illuminate\Support\SerializableClosure;
 use Orchestra\Contracts\Notification\Message as MessageContract;
 use Orchestra\Contracts\Notification\Recipient;

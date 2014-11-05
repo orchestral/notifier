@@ -78,7 +78,7 @@ class Mailer
             $method = 'send';
         }
 
-        return call_user_func(array($this, $method), $view, $data, $callback, $queue);
+        return call_user_func([$this, $method], $view, $data, $callback, $queue);
     }
 
     /**
@@ -111,11 +111,11 @@ class Mailer
     {
         $callback = $this->buildQueueCallable($callback);
 
-        $with = array(
+        $with = [
             'view'     => $view,
             'data'     => $data,
             'callback' => $callback,
-        );
+        ];
 
         $this->app['queue']->push('orchestra.mail@handleQueuedMessage', $with, $queue);
 

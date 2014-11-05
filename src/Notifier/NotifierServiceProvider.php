@@ -19,6 +19,7 @@ class NotifierServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerMailer();
+
         $this->registerNotifier();
     }
 
@@ -29,7 +30,7 @@ class NotifierServiceProvider extends ServiceProvider
     */
     protected function registerMailer()
     {
-        $this->app->bindShared('orchestra.mail', function ($app) {
+        $this->app->singleton('orchestra.mail', function ($app) {
             $transport = new TransportManager($app);
 
             return new Mailer($app, $transport);
@@ -43,7 +44,7 @@ class NotifierServiceProvider extends ServiceProvider
     */
     protected function registerNotifier()
     {
-        $this->app->bindShared('orchestra.notifier', function ($app) {
+        $this->app->singleton('orchestra.notifier', function ($app) {
             return new NotifierManager($app);
         });
     }
@@ -67,6 +68,6 @@ class NotifierServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('orchestra.mail', 'orchestra.notifier');
+        return ['orchestra.mail', 'orchestra.notifier'];
     }
 }

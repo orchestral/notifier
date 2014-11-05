@@ -23,11 +23,11 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = m::mock('\Illuminate\Container\Container');
 
-        $app->shouldReceive('bindShared')->once()->with('orchestra.mail', m::type('Closure'))
+        $app->shouldReceive('singleton')->once()->with('orchestra.mail', m::type('Closure'))
                 ->andReturnUsing(function ($n, $c) use ($app) {
                     return $c($app);
                 })
-            ->shouldReceive('bindShared')->once()->with('orchestra.notifier', m::type('Closure'))
+            ->shouldReceive('singleton')->once()->with('orchestra.notifier', m::type('Closure'))
                 ->andReturnUsing(function ($n, $c) use ($app) {
                     return $c($app);
                 });
