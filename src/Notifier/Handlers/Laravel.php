@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Notifier\Handlers;
 
 use Closure;
+use Illuminate\Mail\Message;
 use Orchestra\Notifier\Receipt;
 use Illuminate\Contracts\Mail\Mailer as Mail;
 use Orchestra\Contracts\Notification\Recipient;
@@ -41,7 +42,7 @@ class Laravel implements Notification
         $subject = $message->getSubject();
 
         // Send the email directly using Illuminate\Contracts\Mail\Mailer interface.
-        $this->mailer->send($view, $data, function ($mail) use ($user, $subject, $callback) {
+        $this->mailer->send($view, $data, function (Message $mail) use ($user, $subject, $callback) {
             // Set the recipient detail.
             $mail->to($user->getRecipientEmail(), $user->getRecipientName());
 
