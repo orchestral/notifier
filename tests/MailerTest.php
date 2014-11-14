@@ -409,7 +409,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->app;
         $mailer = $app['mailer'];
-        $job = m::mock('Job');
+        $job = m::mock('\Illuminate\Contracts\Queue\Job');
 
         $job->shouldReceive('delete')->once()->andReturn(null);
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)

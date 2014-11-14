@@ -22,28 +22,28 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodSucceed()
     {
-        $mailer = m::mock('\Illuminate\Mail\Mailer')->makePartial();
-        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $mailer  = m::mock('\Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('\Illuminate\Mail\Message');
+        $user    = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view    = 'foo.bar';
         $data    = array();
-        $message = new Message(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
-
         $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
-                ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
-                    $c($mailer);
+                ->andReturnUsing(function ($v, $d, $c) use ($mailer, $message) {
+                    $c($message);
 
-                    return array('hello@orchestraplatform.com');
+                    return $mailer;
                 })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
+            ->shouldReceive('failures')->once()->andReturn(array());
+        $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
         $stub = new Laravel($mailer);
-        $receipt = $stub->send($user, $message);
+        $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
         $this->assertTrue($receipt->sent());
@@ -56,29 +56,28 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodFailed()
     {
-        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $mailer  = m::mock('\Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('\Illuminate\Mail\Message');
+        $user    = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view    = 'foo.bar';
         $data    = array();
-        $message = new Message(compact('subject', 'view', 'data'));
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
-
         $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
-                ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
-                    $c($mailer);
+                ->andReturnUsing(function ($v, $d, $c) use ($mailer, $message) {
+                    $c($message);
 
                     return $mailer;
                 })
-            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
-            ->shouldReceive('subject')->once()->with($subject)->andReturnNull()
             ->shouldReceive('failures')->once()->andReturn(array('hello@orchestraplatform.com'));
+        $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
+            ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
         $stub = new Laravel($mailer);
-        $receipt = $stub->send($user, $message);
+        $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
         $this->assertFalse($receipt->sent());
