@@ -1,6 +1,7 @@
 <?php namespace Orchestra\Notifier\Handlers;
 
 use Closure;
+use Illuminate\Mail\Message;
 use Orchestra\Notifier\Mailer;
 use Orchestra\Memory\ContainerTrait;
 use Orchestra\Contracts\Memory\Provider;
@@ -51,7 +52,7 @@ class Orchestra implements Notification
 
         // Send the notification using push which would allow Orchestra
         // Platform to choose either to use queue or send.
-        $receipt = $this->mailer->push($view, $data, function ($message) use ($user, $subject, $callback) {
+        $receipt = $this->mailer->push($view, $data, function (Message $message) use ($user, $subject, $callback) {
             // Set the recipient detail.
             $message->to($user->getRecipientEmail(), $user->getRecipientName());
 
