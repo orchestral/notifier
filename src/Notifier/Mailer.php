@@ -2,6 +2,7 @@
 
 use Closure;
 use Swift_Mailer;
+use Illuminate\Contracts\Queue\Job;
 use Orchestra\Memory\ContainerTrait;
 use Illuminate\Support\SerializableClosure;
 use Illuminate\Contracts\Mail\Mailer as Mail;
@@ -144,7 +145,7 @@ class Mailer
      * @param  array  $data
      * @return void
      */
-    public function handleQueuedMessage($job, $data)
+    public function handleQueuedMessage(Job $job, $data)
     {
         $this->send($data['view'], $data['data'], $this->getQueuedCallable($data));
 
