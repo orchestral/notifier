@@ -1,7 +1,7 @@
-Orchestra Platform Notifier Component
+Notifier Component for Orchestra Platform
 ==============
 
-`Orchestra\Notifier` add a simplify approach to notifier the application user using mail (or other notification service) that is managed using `Orchestra\Notifier\NotifierManager`.
+Notifier Component add a simplify approach to notifier the application user using mail (or other notification service) that is managed using `Orchestra\Notifier\NotifierManager`.
 
 [![Latest Stable Version](https://img.shields.io/github/release/orchestral/notifier.svg?style=flat)](https://packagist.org/packages/orchestra/notifier)
 [![Total Downloads](https://img.shields.io/packagist/dt/orchestra/notifier.svg?style=flat)](https://packagist.org/packages/orchestra/notifier)
