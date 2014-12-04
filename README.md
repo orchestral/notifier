@@ -7,7 +7,7 @@ Orchestra Platform Notifier Component
 [![Total Downloads](https://img.shields.io/packagist/dt/orchestra/notifier.svg?style=flat)](https://packagist.org/packages/orchestra/notifier)
 [![MIT License](https://img.shields.io/packagist/l/orchestra/notifier.svg?style=flat)](https://packagist.org/packages/orchestra/notifier)
 [![Build Status](https://img.shields.io/travis/orchestral/notifier/2.2.svg?style=flat)](https://travis-ci.org/orchestral/notifier)
-[![Coverage Status](https://img.shields.io/coveralls/orchestral/notifier/2.2.svg?style=flat)](https://coveralls.io/r/orchestral/notifier?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/orchestral/notifier/2.2.svg?style=flat)](https://coveralls.io/r/orchestral/notifier?branch=2.2)
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/notifier/2.2.svg?style=flat)](https://scrutinizer-ci.com/g/orchestral/notifier/)
 
 ## Quick Installation
