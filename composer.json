@@ -12,7 +12,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Orchestra\\Notifier\\" : "src/Notifier/"
+            "Orchestra\\Notifier\\" : "src/"
         }
     },
     "require": {
