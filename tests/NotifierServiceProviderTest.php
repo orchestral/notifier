@@ -43,16 +43,16 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBootMethod()
     {
-        $path = realpath(__DIR__.'/../src/');
+        $path = realpath(__DIR__.'/../');
         $app = new Container;
 
         $app['path.base'] = '/var/laravel';
         $app['config'] = $config = m::mock('\Illuminate\Contracts\Config\Repository');
         $app['files'] = $files = m::mock('\Illuminate\Filesystem\Filesystem');
 
+        $files->shouldReceive('isDirectory')->once()->with("{$path}/resources/config")->andReturn(true);
         $config->shouldReceive('package')->once()
-                ->with('orchestra/notifier', "{$path}/config", 'orchestra/notifier')->andReturnNull();
-        $files->shouldReceive('isDirectory')->once()->with("{$path}/config")->andReturn(true);
+                ->with('orchestra/notifier', "{$path}/resources/config", 'orchestra/notifier')->andReturnNull();
         $stub = new NotifierServiceProvider($app);
 
         $stub->boot();
