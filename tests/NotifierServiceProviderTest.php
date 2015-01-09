@@ -47,7 +47,7 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = new Container;
 
         $app['path.base'] = '/var/laravel';
-        $app['config'] = $config = m::mock('\Illuminate\Contracts\Config\Repository');
+        $app['config'] = $config = m::mock('\Orchestra\Contracts\Config\PackageRepository');
         $app['files'] = $files = m::mock('\Illuminate\Filesystem\Filesystem');
 
         $files->shouldReceive('isDirectory')->once()->with("{$path}/resources/config")->andReturn(true);

@@ -17,15 +17,12 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "illuminate/contracts": "5.0.*",
-        "orchestra/contracts": "3.0.*",
         "orchestra/memory": "3.0.*"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
         "jeremeamia/superclosure": "1.0.*",
-        "illuminate/mail": "5.0.*",
-        "illuminate/support": "5.0.*"
+        "illuminate/mail": "5.0.*"
     },
     "extra": {
         "branch-alias": {
