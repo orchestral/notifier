@@ -53,9 +53,7 @@ class OrchestraNotifier extends Container implements NotifierInterface
             ! empty($subject) && $message->subject($subject);
 
             // Run any callback if provided.
-            if (isset($callback) && is_callable($callback)) {
-                call_user_func_array($callback, func_get_args());
-            }
+            is_callable($callback) && call_user_func_array($callback, func_get_args());
         });
 
         // It impossible to get either the email is sent out straight away
