@@ -46,7 +46,9 @@ class LaravelNotifier implements NotifierInterface
             ! empty($subject) && $mail->subject($subject);
 
             // Run any callback if provided.
-            is_callable($callback) && call_user_func_array($callback, func_get_args());
+            if (isset($callback) && is_callable($callback)) {
+                call_user_func_array($callback, func_get_args());
+            }
         });
 
         return new Receipt($this->mailer, false);

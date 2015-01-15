@@ -56,7 +56,9 @@ class OrchestraNotifier implements NotifierInterface
             ! empty($subject) && $message->subject($subject);
 
             // Run any callback if provided.
-            is_callable($callback) && call_user_func_array($callback, func_get_args());
+            if (isset($callback) && is_callable($callback)) {
+                call_user_func_array($callback, func_get_args());
+            }
         });
 
         return $receipt->usingQueue($this->isUsingQueue());
