@@ -48,6 +48,41 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test Orchestra\Notifier\LaravelNotifier::send() method with callback
+     *
+     * @test
+     */
+    public function testSendMethodWithCallback()
+    {
+        $mailer = m::mock('\Illuminate\Mail\Mailer')->makePartial();
+        $user = m::mock('\Orchestra\Notifier\RecipientInterface');
+
+        $view = 'foo.bar';
+        $data = array();
+        $message = new Fluent(compact('view', 'data'));
+
+        $callback = function ($mail) {
+            $mail->subject('foobar!!');
+        };
+
+        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
+            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
+
+        $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
+                ->andReturnUsing(function ($v, $d, $c) use ($mailer) {
+                    $c($mailer);
+
+                    return array('hello@orchestraplatform.com');
+                })
+            ->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
+            ->shouldReceive('subject')->once()->with('foobar!!')->andReturnNull();
+
+        $stub = new LaravelNotifier($mailer);
+
+        $this->assertTrue($stub->send($user, $message, $callback));
+    }
+
+    /**
      * Test Orchestra\Notifier\LaravelNotifier::send() method failed.
      *
      * @test
