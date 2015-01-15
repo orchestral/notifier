@@ -80,8 +80,10 @@ class LaravelNotifierTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('subject')->once()->with('foobar!!')->andReturnNull();
 
         $stub = new LaravelNotifier($mailer);
+        $receipt = $stub->send($user, $message, $callback);
 
-        $this->assertTrue($stub->send($user, $message, $callback));
+        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertTrue($receipt->sent());
     }
 
     /**
