@@ -59,8 +59,6 @@ class Orchestra implements Notification
             // Only append the subject if it was provided.
             ! empty($subject) && $message->subject($subject);
 
-            $callback = isset($callback) ? $callback : null;
-
             // Run any callback if provided.
             is_callable($callback) && call_user_func_array($callback, func_get_args());
         });
