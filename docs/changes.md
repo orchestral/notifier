@@ -5,6 +5,10 @@ title: Notifier Change Log
 
 ## Version 2.2 {#v2-2}
 
+### v2.2.4 {#v2-2-4}
+
+* Change visibility of `Orchestra\Notifier\Mailer::getMailer()`.
+
 ### v2.2.3 {#v2-2-3}
 
 * Add `Orchestra\Notifier\Message::create()` helper.
