@@ -49,7 +49,7 @@ class Mailer
      *
      * @return \Illuminate\Contracts\Mail\Mailer
      */
-    protected function getMailer()
+    public function getMailer()
     {
         if (! $this->mailer instanceof Mail) {
             $this->transport->setMemoryProvider($this->memory);

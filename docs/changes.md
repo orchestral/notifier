@@ -11,6 +11,10 @@ title: Notifier Change Log
 
 ## Version 2.2 {#v2-2}
 
+### v2.2.4 {#v2-2-4}
+
+* Change visibility of `Orchestra\Notifier\Mailer::getMailer()`.
+
 ### v2.2.3 {#v2-2-3}
 
 * Add `Orchestra\Notifier\Message::create()` helper.
@@ -34,6 +38,10 @@ title: Notifier Change Log
 * Add `Orchestra\Notifier\Receipt` as a unified receipt object on all e-mail sending.
 
 ## Version 2.1 {#v2-1}
+
+### v2.1.4 {#v2-1-4}
+
+* Change visibility of `Orchestra\Notifier\Mailer::getMailer()`.
 
 ### v2.1.3 {#v2-1-3}
 
