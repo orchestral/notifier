@@ -44,7 +44,7 @@ class Mailer extends Container
      *
      * @return \Illuminate\Mail\Mailer
      */
-    protected function getMailer()
+    public function getMailer()
     {
         if (! $this->mailer instanceof Mail) {
             $transport = $this->registerSwiftTransport($this->memory->get('email'));
