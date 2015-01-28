@@ -1,9 +1,9 @@
 <?php namespace Orchestra\Notifier\TestCase;
 
 use Mockery as m;
-use Illuminate\Container\Container;
-use Illuminate\Support\SerializableClosure;
 use Orchestra\Notifier\Mailer;
+use Illuminate\Container\Container;
+use SuperClosure\SerializableClosure;
 use Orchestra\Notifier\TransportManager;
 
 class MailerTest extends \PHPUnit_Framework_TestCase

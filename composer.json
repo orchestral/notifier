@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
-        "jeremeamia/superclosure": "1.0.*",
+        "jeremeamia/superclosure": "2.0.*",
         "illuminate/mail": "5.0.*"
     },
     "extra": {
