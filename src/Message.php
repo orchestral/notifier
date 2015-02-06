@@ -9,8 +9,8 @@ class Message extends Fluent implements MessageContract
     /**
      * Create a new Message instance.
      *
-     * @param  string|array $view
-     * @param  array        $data
+     * @param  string|array  $view
+     * @param  array  $data
      * @param  string|null  $subject
      * @return static
      */
