@@ -15,15 +15,15 @@ class Receipt implements ReceiptContract
     /**
      * Set if mail was sent using queue.
      *
-     * @var boolean
+     * @var bool
      */
     protected $usingQueue = false;
 
     /**
      * Construct a new mail receipt.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailer    $mailer
-     * @param  bool                                 $usingQueue
+     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
+     * @param  bool  $usingQueue
      */
     public function __construct(Mail $mailer, $usingQueue = false)
     {
@@ -66,7 +66,7 @@ class Receipt implements ReceiptContract
     /**
      * Set whether or not e-mail is sent via queue/delayed.
      *
-     * @param  bool $usingQueue
+     * @param  bool  $usingQueue
      * @return $this
      */
     public function usingQueue($usingQueue = false)

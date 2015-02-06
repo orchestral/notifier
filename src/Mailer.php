@@ -14,7 +14,7 @@ class Mailer
     /**
      * Application instance.
      *
-     * @var \Illuminate\Container\Container
+     * @var \Illuminate\Contracts\Container\Container
      */
     protected $app;
 
@@ -35,7 +35,7 @@ class Mailer
     /**
      * Construct a new Mail instance.
      *
-     * @param  \Illuminate\Container\Container  $app
+     * @param  \Illuminate\Contracts\Container\Container  $app
      * @param  \Orchestra\Notifier\TransportManager  $transport
      */
     public function __construct($app, TransportManager $transport)

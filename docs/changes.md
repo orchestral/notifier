@@ -5,8 +5,12 @@ title: Notifier Change Log
 
 ## Version 3.0 {#v3-0}
 
-### v3.0.0@dev {#v3-0-0}
+### v3.0.0 {#v3-0-0}
 
+* Update support to Laravel Framework v5.0.
+* Simplify PSR-4 path.
+* Rename `Orchestra\Notifier\LaravelNotifier` to `Orchestra\Notifier\Handlers\Laravel`.
+* Rename `Orchestra\Notifier\OrchestraNotifier` to `Orchestra\Notifier\Handlers\Orchestra`.
 * Swap `Illuminate\Support\Fluent` with `Orchestra\Notifier\Message`.
 
 ## Version 2.2 {#v2-2}
