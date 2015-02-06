@@ -1,7 +1,7 @@
-Orchestra Platform Notifier Component
+Notifier Component for Orchestra Platform
 ==============
 
-`Orchestra\Notifier` add a simplify approach to notifier the application user using mail (or other notification service) that is managed using `Orchestra\Notifier\NotifierManager`.
+Notifier Component add a simplify approach to notifier the application user using mail (or other notification service) that is managed using `Orchestra\Notifier\NotifierManager`.
 
 [![Latest Stable Version](https://img.shields.io/github/release/orchestral/notifier.svg?style=flat)](https://packagist.org/packages/orchestra/notifier)
 [![Total Downloads](https://img.shields.io/packagist/dt/orchestra/notifier.svg?style=flat)](https://packagist.org/packages/orchestra/notifier)
@@ -10,7 +10,21 @@ Orchestra Platform Notifier Component
 [![Coverage Status](https://img.shields.io/coveralls/orchestral/notifier/2.2.svg?style=flat)](https://coveralls.io/r/orchestral/notifier?branch=2.2)
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/orchestral/notifier/2.2.svg?style=flat)](https://scrutinizer-ci.com/g/orchestral/notifier/)
 
-## Quick Installation
+## Table of Content
+
+* [Version Compatibility](#version-compatibility)
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Resources](#resources)
+
+## Version Compatibility
+
+Laravel    | Notifier
+:----------|:----------
+ 4.1.x     | 2.1.x
+ 4.2.x     | 2.2.x
+
+## Installation
 
 To install through composer, simply put the following in your `composer.json` file:
 
@@ -22,16 +36,26 @@ To install through composer, simply put the following in your `composer.json` fi
 }
 ```
 
-Next add the service provider in `app/config/app.php`.
+And then run `composer install` from the terminal.
+
+### Quick Installation
+
+Above installation can also be simplify by using the following command:
+
+    composer require "orchestra/notifier=2.2.*"
+
+## Configuration
+
+Add following service providers in `app/config/app.php`.
 
 ```php
-'providers' => array(
+'providers' => [
 
 	// ...
 
 	'Orchestra\Notifier\NotifierServiceProvider',
 
-),
+],
 ```
 
 ## Resources
