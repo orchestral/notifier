@@ -24,10 +24,10 @@ class NotifierServiceProvider extends ServiceProvider
     }
 
     /**
-    * Register the service provider for mail.
-    *
-    * @return void
-    */
+     * Register the service provider for mail.
+     *
+     * @return void
+     */
     protected function registerMailer()
     {
         $this->app->singleton('orchestra.mail', function ($app) {
@@ -38,10 +38,10 @@ class NotifierServiceProvider extends ServiceProvider
     }
 
     /**
-    * Register the service provider for notifier.
-    *
-    * @return void
-    */
+     * Register the service provider for notifier.
+     *
+     * @return void
+     */
     protected function registerNotifier()
     {
         $this->app->singleton('orchestra.notifier', function ($app) {

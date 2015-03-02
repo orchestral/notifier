@@ -37,6 +37,7 @@ class Orchestra implements Notification
      * @param  \Orchestra\Contracts\Notification\Recipient  $user
      * @param  \Orchestra\Contracts\Notification\Message  $message
      * @param  \Closure  $callback
+     *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function send(Recipient $user, MessageContract $message, Closure $callback = null)

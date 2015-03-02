@@ -12,6 +12,7 @@ class Message extends Fluent implements MessageContract
      * @param  string|array  $view
      * @param  array  $data
      * @param  string|null  $subject
+     *
      * @return static
      */
     public static function create($view, array $data = [], $subject = null)

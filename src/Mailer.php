@@ -40,7 +40,7 @@ class Mailer
      */
     public function __construct($app, TransportManager $transport)
     {
-        $this->app = $app;
+        $this->app       = $app;
         $this->transport = $transport;
     }
 
@@ -68,6 +68,7 @@ class Mailer
      * @param  array  $data
      * @param  \Closure|string  $callback
      * @param  string  $queue
+     *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function push($view, array $data, $callback, $queue = null)
@@ -88,6 +89,7 @@ class Mailer
      * @param  string|array  $view
      * @param  array  $data
      * @param  \Closure|string  $callback
+     *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function send($view, array $data, $callback)
@@ -106,6 +108,7 @@ class Mailer
      * @param  array  $data
      * @param  \Closure|string  $callback
      * @param  string  $queue
+     *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function queue($view, array $data, $callback, $queue = null)
@@ -127,6 +130,7 @@ class Mailer
      * Build the callable for a queued e-mail job.
      *
      * @param  mixed  $callback
+     *
      * @return mixed
      */
     protected function buildQueueCallable($callback)
@@ -143,6 +147,7 @@ class Mailer
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  array  $data
+     *
      * @return void
      */
     public function handleQueuedMessage(Job $job, $data)
@@ -156,6 +161,7 @@ class Mailer
      * Get the true callable for a queued e-mail message.
      *
      * @param  array  $data
+     *
      * @return mixed
      */
     protected function getQueuedCallable(array $data)

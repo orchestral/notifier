@@ -44,6 +44,7 @@ class NotifierManager extends Manager
      * Set the default driver.
      *
      * @param  string  $name
+     *
      * @return string
      */
     public function setDefaultDriver($name)
