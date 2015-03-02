@@ -27,7 +27,7 @@ class Receipt implements ReceiptContract
      */
     public function __construct(Mail $mailer, $usingQueue = false)
     {
-        $this->mailer = $mailer;
+        $this->mailer     = $mailer;
         $this->usingQueue = $usingQueue;
     }
 
@@ -67,6 +67,7 @@ class Receipt implements ReceiptContract
      * Set whether or not e-mail is sent via queue/delayed.
      *
      * @param  bool  $usingQueue
+     *
      * @return $this
      */
     public function usingQueue($usingQueue = false)

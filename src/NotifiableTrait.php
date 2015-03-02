@@ -9,12 +9,13 @@ use Orchestra\Contracts\Notification\Message as MessageContract;
 trait NotifiableTrait
 {
     /**
-     * Send email notification to user
+     * Send email notification to user.
      *
      * @param  \Orchestra\Contracts\Notification\Recipient  $user
      * @param  \Orchestra\Contracts\Notification\Message|string  $subject
      * @param  string|null  $view
      * @param  array  $data
+     *
      * @return bool
      */
     protected function sendNotification(Recipient $user, $subject, $view = null, array $data = [])
