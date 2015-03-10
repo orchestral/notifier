@@ -22,7 +22,7 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateDefaultDriverMethod()
     {
-        $app = new Container;
+        $app = new Container();
 
         $app['config'] = $config = m::mock('\Illuminate\Contracts\Config\Repository');
         $app['mailer'] = $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
@@ -43,9 +43,9 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateOrchestraDriverMethod()
     {
-        $app = new Container;
+        $app = new Container();
 
-        $app['orchestra.mail'] = $mailer = m::mock('\Orchestra\Notifier\Mailer');
+        $app['orchestra.mail']   = $mailer   = m::mock('\Orchestra\Notifier\Mailer');
         $app['orchestra.memory'] = $memory = m::mock('\Orchestra\Memory\MemoryManager');
 
         $memory->shouldReceive('makeOrFallback')->once()->andReturn(m::mock('\Orchestra\Contracts\Memory\Provider'));
@@ -63,7 +63,7 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateLaravelDriverMethod()
     {
-        $app = new Container;
+        $app = new Container();
 
         $app['mailer'] = $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
 
@@ -80,7 +80,7 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDefaultDriverMethod()
     {
-        $app = new Container;
+        $app = new Container();
 
         $app['config'] = $config = m::mock('\Illuminate\Contracts\Config\Repository');
 

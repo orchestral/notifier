@@ -28,7 +28,7 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
 
         $subject = 'foobar';
         $view    = 'foo.bar';
-        $data    = array();
+        $data    = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -38,11 +38,11 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
 
                     return $mailer;
                 })
-            ->shouldReceive('failures')->once()->andReturn(array());
+            ->shouldReceive('failures')->once()->andReturn([]);
         $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
-        $stub = new Laravel($mailer);
+        $stub    = new Laravel($mailer);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
@@ -50,7 +50,7 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Notifier\LaravelNotifier::send() method with callback
+     * Test Orchestra\Notifier\LaravelNotifier::send() method with callback.
      *
      * @test
      */
@@ -62,7 +62,7 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
 
         $subject = 'foobar';
         $view    = 'foo.bar';
-        $data    = array();
+        $data    = [];
 
         $callback = function ($mail) {
             $mail->subject('foobar!!');
@@ -77,7 +77,7 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
 
                     return $mailer;
                 })
-            ->shouldReceive('failures')->once()->andReturn(array());
+            ->shouldReceive('failures')->once()->andReturn([]);
         $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull()
             ->shouldReceive('subject')->once()->with('foobar!!')->andReturnNull();
@@ -103,7 +103,7 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
 
         $subject = 'foobar';
         $view    = 'foo.bar';
-        $data    = array();
+        $data    = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -113,11 +113,11 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
 
                     return $mailer;
                 })
-            ->shouldReceive('failures')->once()->andReturn(array('hello@orchestraplatform.com'));
+            ->shouldReceive('failures')->once()->andReturn(['hello@orchestraplatform.com']);
         $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
-        $stub = new Laravel($mailer);
+        $stub    = new Laravel($mailer);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);

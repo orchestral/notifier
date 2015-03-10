@@ -30,13 +30,13 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
 
         $subject = 'foobar';
         $view    = 'foo.bar';
-        $data    = array();
+        $data    = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
         $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
-        $mailer->shouldReceive('failures')->once()->andReturn(array());
+        $mailer->shouldReceive('failures')->once()->andReturn([]);
         $notifier->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer, $message) {
                     $c($message);
@@ -44,7 +44,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, false);
                 });
 
-        $stub = new Orchestra($notifier);
+        $stub    = new Orchestra($notifier);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
@@ -52,7 +52,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Orchestra\Notifier\OrchestraNotifier::send() method with callback
+     * Test Orchestra\Notifier\OrchestraNotifier::send() method with callback.
      *
      * @test
      */
@@ -64,7 +64,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
         $user     = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $view = 'foo.bar';
-        $data = array();
+        $data = [];
 
         $callback = function ($mail) {
             $mail->subject('foobar!!');
@@ -74,7 +74,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
         $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with('foobar!!')->andReturnNull();
-        $mailer->shouldReceive('failures')->once()->andReturn(array());
+        $mailer->shouldReceive('failures')->once()->andReturn([]);
         $notifier->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer, $message) {
                     $c($message);
@@ -82,7 +82,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, false);
                 });
 
-        $stub = new Orchestra($notifier);
+        $stub    = new Orchestra($notifier);
         $receipt = $stub->send($user, new Message(compact('view', 'data')), $callback);
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
@@ -105,7 +105,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
 
         $subject = 'foobar';
         $view    = 'foo.bar';
-        $data    = array();
+        $data    = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -142,13 +142,13 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
 
         $subject = 'foobar';
         $view    = 'foo.bar';
-        $data    = array();
+        $data    = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
         $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
-        $mailer->shouldReceive('failures')->once()->andReturn(array('hello@orchestraplatform.com'));
+        $mailer->shouldReceive('failures')->once()->andReturn(['hello@orchestraplatform.com']);
         $notifier->shouldReceive('push')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer, $message) {
                     $c($message);
@@ -156,7 +156,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, false);
                 });
 
-        $stub = new Orchestra($notifier);
+        $stub    = new Orchestra($notifier);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
