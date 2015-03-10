@@ -11,7 +11,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testInstanceSignature()
     {
-        $stub = new Message;
+        $stub = new Message();
 
         $this->assertInstanceOf('\Illuminate\Support\Fluent', $stub);
     }

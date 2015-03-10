@@ -44,10 +44,10 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testBootMethod()
     {
         $path = realpath(__DIR__.'/../');
-        $app = new Container;
+        $app  = new Container();
 
         $app['path.base'] = '/var/laravel';
-        $app['config'] = $config = m::mock('\Orchestra\Contracts\Config\PackageRepository');
+        $app['config']    = $config    = m::mock('\Orchestra\Contracts\Config\PackageRepository');
 
         $config->shouldReceive('package')->once()
                 ->with('orchestra/notifier', "{$path}/resources/config", 'orchestra/notifier')->andReturnNull();
@@ -63,10 +63,10 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testProvidesMethod()
     {
-        $app  = new Container;
+        $app  = new Container();
         $stub = new NotifierServiceProvider($app);
 
-        $this->assertEquals(array('orchestra.mail', 'orchestra.notifier'), $stub->provides());
+        $this->assertEquals(['orchestra.mail', 'orchestra.notifier'], $stub->provides());
     }
 
     /**
@@ -76,7 +76,7 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testServiceIsDeferred()
     {
-        $app  = new Container;
+        $app  = new Container();
         $stub = new NotifierServiceProvider($app);
 
         $this->assertTrue($stub->isDeferred());
