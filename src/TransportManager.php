@@ -1,11 +1,13 @@
 <?php namespace Orchestra\Notifier;
 
+use Aws\Ses\SesClient;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
 use Orchestra\Memory\ContainerTrait;
 use Illuminate\Mail\Transport\LogTransport;
+use Illuminate\Mail\Transport\SesTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
-use Swift_Transport;
 use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
 use Swift_SendmailTransport as SendmailTransport;
@@ -50,6 +52,24 @@ class TransportManager extends Manager
         $config = $this->getTransportConfig();
 
         return SendmailTransport::newInstance($config['sendmail']);
+    }
+
+    /**
+     * Create an instance of the Amazon SES Swift Transport driver.
+     *
+     * @return \Swift_SendmailTransport
+     */
+    protected function createSesDriver()
+    {
+        $config = $this->getTransportConfig();
+
+        $sesClient = SesClient::factory([
+            'key'    => $config['key'],
+            'secret' => $config['secret'],
+            'region' => Arr::get($config, 'region') ?: 'us-east-1',
+        ]);
+
+        return new SesTransport($sesClient);
     }
 
     /**
