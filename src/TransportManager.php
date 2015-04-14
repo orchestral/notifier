@@ -66,7 +66,7 @@ class TransportManager extends Manager
         $sesClient = SesClient::factory([
             'key'    => $config['key'],
             'secret' => $config['secret'],
-            'region' => Arr::get($config, 'region') ?: 'us-east-1',
+            'region' => Arr::get($config, 'domain') ?: 'us-east-1',
         ]);
 
         return new SesTransport($sesClient);
