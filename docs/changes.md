@@ -5,6 +5,10 @@ title: Notifier Change Log
 
 ## Version 3.0 {#v3-0}
 
+### v3.0.1 {#v3-0-1}
+
+* Add Amazon SES Transport support.
+
 ### v3.0.0 {#v3-0-0}
 
 * Update support to Laravel Framework v5.0.

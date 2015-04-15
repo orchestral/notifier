@@ -100,7 +100,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
         $mailer   = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message  = m::mock('\Illuminate\Mail\Message');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $memory   = m::mock('\Orchestra\Memory\Provider')->makePartial();
+        $memory   = m::mock('\Orchestra\Contracts\Memory\Provider');
         $user     = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
@@ -109,7 +109,8 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
-        $memory->shouldReceive('get')->once()->with('email.queue', false)->andReturn(true);
+        $memory->shouldReceive('get')->once()->with('email.queue', false)->andReturn(true)
+            ->shouldReceive('get')->once()->with('email.driver')->andReturn('mail');
         $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
         $mailer->shouldReceive('failures')->never();
