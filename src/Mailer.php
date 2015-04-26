@@ -187,7 +187,7 @@ class Mailer
         // all mail messages sent by the applications will utilize the same
         // "from" address on each one, which makes the developer's life a
         // lot more convenient.
-        if (is_array($from) && isset($from['address'])) {
+        if (is_array($from) && ! empty($from['address'])) {
             $mailer->alwaysFrom($from['address'], $from['name']);
         }
 
