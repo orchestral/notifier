@@ -23,7 +23,7 @@
 		"mockery/mockery": "0.9.*",
 		"jeremeamia/superclosure": "2.0.*",
 		"illuminate/mail": "5.1.*",
-		"aws/aws-sdk-php": "~2.4"
+		"aws/aws-sdk-php": "~3.0"
 	},
 	"extra": {
 		"branch-alias": {
