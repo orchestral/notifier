@@ -5,6 +5,11 @@ title: Notifier Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.1 {#v3-1-1}
+
+* Add support for latest `aws/aws-sdk-php` (~3.0).
+* Add support for latest `guzzlehttp/guzzle`.
+
 ### v3.1.0 {#v3-1-0}
 
 * Update support to Laravel Framework v5.1.
