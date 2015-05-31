@@ -1,8 +1,8 @@
 <?php namespace Orchestra\Notifier;
 
 use Aws\Ses\SesClient;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
+use GuzzleHttp\Client as HttpClient;
 use Orchestra\Memory\ContainerTrait;
 use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\SesTransport;
@@ -63,13 +63,17 @@ class TransportManager extends Manager
     {
         $config = $this->getTransportConfig();
 
-        $sesClient = SesClient::factory([
-            'key'    => $config['key'],
-            'secret' => $config['secret'],
-            'region' => Arr::get($config, 'region') ?: 'us-east-1',
+        $client = new SesClient([
+            'credentials' => [
+                'key'    => $config['key'],
+                'secret' => $config['secret'],
+            ],
+            'region'  => $config['region'],
+            'service' => 'email',
+            'version' => 'latest',
         ]);
 
-        return new SesTransport($sesClient);
+        return new SesTransport($client);
     }
 
     /**
@@ -89,9 +93,10 @@ class TransportManager extends Manager
      */
     protected function createMailgunDriver()
     {
+        $client = new HttpClient();
         $config = $this->getTransportConfig();
 
-        return new MailgunTransport($config['secret'], $config['domain']);
+        return new MailgunTransport($client, $config['secret'], $config['domain']);
     }
 
     /**
@@ -101,9 +106,10 @@ class TransportManager extends Manager
      */
     protected function createMandrillDriver()
     {
+        $client = new HttpClient();
         $config = $this->getTransportConfig();
 
-        return new MandrillTransport($config['secret']);
+        return new MandrillTransport($client, $config['secret']);
     }
 
     /**
