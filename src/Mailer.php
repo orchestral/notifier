@@ -121,9 +121,9 @@ class Mailer
             'callback' => $callback,
         ];
 
-        $this->app['queue']->push('orchestra.mail@handleQueuedMessage', $with, $queue);
+        $this->app->make('queue')->push('orchestra.mail@handleQueuedMessage', $with, $queue);
 
-        return new Receipt($this->mailer ?: $this->app['mailer'], true);
+        return new Receipt($this->mailer ?: $this->app->make('mailer'), true);
     }
 
     /**
@@ -181,7 +181,7 @@ class Mailer
     protected function resolveMailer()
     {
         $from   = $this->memory->get('email.from');
-        $mailer = $this->app['mailer'];
+        $mailer = $this->app->make('mailer');
 
         // If a "from" address is set, we will set it on the mailer so that
         // all mail messages sent by the applications will utilize the same
