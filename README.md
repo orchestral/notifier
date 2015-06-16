@@ -56,7 +56,7 @@ Add following service providers in `config/app.php`.
 
 	// ...
 
-	'Orchestra\Notifier\NotifierServiceProvider',
+	Orchestra\Notifier\NotifierServiceProvider::class,
 
 ],
 ```
