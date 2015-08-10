@@ -18,10 +18,10 @@ class MessageTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateFactoryMethod()
     {
-        $view    = 'foo.bar';
-        $data    = ['data' => 'foo'];
+        $view = 'foo.bar';
+        $data = ['data' => 'foo'];
         $subject = "Hello world";
-        $stub    = Message::create($view, $data, $subject);
+        $stub = Message::create($view, $data, $subject);
 
         $this->assertEquals($view, $stub->view);
         $this->assertEquals($data, $stub->data);

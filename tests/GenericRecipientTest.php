@@ -12,8 +12,8 @@ class GenericRecipientTest extends \PHPUnit_Framework_TestCase
     public function testGenericRecipient()
     {
         $email = 'admin@orchestraplatform.com';
-        $name  = 'Administrator';
-        $stub  = new GenericRecipient($email, $name);
+        $name = 'Administrator';
+        $stub = new GenericRecipient($email, $name);
 
         $this->assertInstanceOf('\Orchestra\Contracts\Notification\Recipient', $stub);
         $this->assertEquals($email, $stub->getRecipientEmail());

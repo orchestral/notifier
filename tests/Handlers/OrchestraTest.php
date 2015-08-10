@@ -23,14 +23,14 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodWithoutQueue()
     {
-        $mailer   = m::mock('\Illuminate\Contracts\Mail\Mailer');
+        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $message  = m::mock('\Illuminate\Mail\Message');
-        $user     = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $message = m::mock('\Illuminate\Mail\Message');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
-        $view    = 'foo.bar';
-        $data    = [];
+        $view = 'foo.bar';
+        $data = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -44,7 +44,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, false);
                 });
 
-        $stub    = new Orchestra($notifier);
+        $stub = new Orchestra($notifier);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
@@ -58,10 +58,10 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodWithCallback()
     {
-        $mailer   = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $message  = m::mock('\Illuminate\Mail\Message');
+        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('\Illuminate\Mail\Message');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $user     = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $view = 'foo.bar';
         $data = [];
@@ -82,7 +82,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, false);
                 });
 
-        $stub    = new Orchestra($notifier);
+        $stub = new Orchestra($notifier);
         $receipt = $stub->send($user, new Message(compact('view', 'data')), $callback);
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
@@ -97,15 +97,15 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodUsingQueue()
     {
-        $mailer   = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $message  = m::mock('\Illuminate\Mail\Message');
+        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('\Illuminate\Mail\Message');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $memory   = m::mock('\Orchestra\Contracts\Memory\Provider');
-        $user     = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $memory = m::mock('\Orchestra\Contracts\Memory\Provider');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
-        $view    = 'foo.bar';
-        $data    = [];
+        $view = 'foo.bar';
+        $data = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -136,14 +136,14 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodFailed()
     {
-        $mailer   = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $message  = m::mock('\Illuminate\Mail\Message');
+        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('\Illuminate\Mail\Message');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $user     = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
-        $view    = 'foo.bar';
-        $data    = [];
+        $view = 'foo.bar';
+        $data = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -157,7 +157,7 @@ class OrchestraTest extends \PHPUnit_Framework_TestCase
                     return new Receipt($mailer, false);
                 });
 
-        $stub    = new Orchestra($notifier);
+        $stub = new Orchestra($notifier);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
