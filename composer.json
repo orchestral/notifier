@@ -25,6 +25,9 @@
 		"illuminate/mail": "~5.1.0",
 		"aws/aws-sdk-php": "~3.0"
 	},
+	"suggest": {
+		"fedeisas/laravel-mail-css-inliner": "Allow to use inline css styling for outgoing emails (~1.3)."
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "3.2-dev"
