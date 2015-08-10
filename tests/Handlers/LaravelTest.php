@@ -22,13 +22,13 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodSucceed()
     {
-        $mailer  = m::mock('\Illuminate\Contracts\Mail\Mailer');
+        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message = m::mock('\Illuminate\Mail\Message');
-        $user    = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
-        $view    = 'foo.bar';
-        $data    = [];
+        $view = 'foo.bar';
+        $data = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -42,7 +42,7 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
         $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
-        $stub    = new Laravel($mailer);
+        $stub = new Laravel($mailer);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
@@ -56,13 +56,13 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodWithCallback()
     {
-        $mailer  = m::mock('\Illuminate\Contracts\Mail\Mailer');
+        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message = m::mock('\Illuminate\Mail\Message');
-        $user    = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
-        $view    = 'foo.bar';
-        $data    = [];
+        $view = 'foo.bar';
+        $data = [];
 
         $callback = function ($mail) {
             $mail->subject('foobar!!');
@@ -97,13 +97,13 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMethodFailed()
     {
-        $mailer  = m::mock('\Illuminate\Contracts\Mail\Mailer');
+        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message = m::mock('\Illuminate\Mail\Message');
-        $user    = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
-        $view    = 'foo.bar';
-        $data    = [];
+        $view = 'foo.bar';
+        $data = [];
 
         $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
             ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
@@ -117,7 +117,7 @@ class LaravelTest extends \PHPUnit_Framework_TestCase
         $message->shouldReceive('to')->once()->with('hello@orchestraplatform.com', 'Administrator')->andReturnNull()
             ->shouldReceive('subject')->once()->with($subject)->andReturnNull();
 
-        $stub    = new Laravel($mailer);
+        $stub = new Laravel($mailer);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);

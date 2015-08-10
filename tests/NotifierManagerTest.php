@@ -45,7 +45,7 @@ class NotifierManagerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app['orchestra.mail']   = $mailer   = m::mock('\Orchestra\Notifier\Mailer');
+        $app['orchestra.mail'] = $mailer = m::mock('\Orchestra\Notifier\Mailer');
         $app['orchestra.memory'] = $memory = m::mock('\Orchestra\Memory\MemoryManager');
 
         $memory->shouldReceive('makeOrFallback')->once()->andReturn(m::mock('\Orchestra\Contracts\Memory\Provider'));

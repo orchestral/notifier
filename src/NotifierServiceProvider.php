@@ -1,5 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
+use Orchestra\Notifier\Plugin\CssInliner;
 use Orchestra\Support\Providers\ServiceProvider;
 
 class NotifierServiceProvider extends ServiceProvider
@@ -59,6 +60,11 @@ class NotifierServiceProvider extends ServiceProvider
         $path = realpath(__DIR__.'/../resources');
 
         $this->addConfigComponent('orchestra/notifier', 'orchestra/notifier', "{$path}/config");
+
+        $plugin = new CssInliner();
+
+        $this->app->make('mailer')->getSwiftMailer()->registerPlugin($plugin);
+        $this->app->make('orchestra.mail')->getSwiftMailer()->registerPlugin($plugin);
     }
 
     /**
