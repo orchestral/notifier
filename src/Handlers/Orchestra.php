@@ -24,7 +24,7 @@ class Orchestra implements Notification
     /**
      * Construct a new Orchestra Platform notifier.
      *
-     * @param  Mailer  $mailer
+     * @param  \Orchestra\Notifier\Mailer  $mailer
      */
     public function __construct(Mailer $mailer)
     {
