@@ -1,6 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
-use Orchestra\Notifier\Plugin\CssInliner;
+use Orchestra\Notifier\Plugins\CssInliner;
 use Orchestra\Support\Providers\ServiceProvider;
 
 class NotifierServiceProvider extends ServiceProvider

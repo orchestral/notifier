@@ -51,7 +51,7 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app['mailer'] = $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $app['orchestra.mail'] = $orchestraMailer = m::mock('\Orchestra\Notifier\Mailer');
         $swiftMailer = m::mock('\Swift_Mailer')->makePartial();
-        $plugin = m::type('\Orchestra\Notifier\Plugin\CssInliner');
+        $plugin = m::type('\Orchestra\Notifier\Plugins\CssInliner');
 
         $mailer->shouldReceive('getSwiftMailer')->once()->andReturn($swiftMailer);
         $orchestraMailer->shouldReceive('getSwiftMailer')->once()->andReturn($swiftMailer);

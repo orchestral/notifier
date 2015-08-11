@@ -1,4 +1,4 @@
-<?php namespace Orchestra\Notifier\Plugin;
+<?php namespace Orchestra\Notifier\Plugins;
 
 use Swift_Events_SendEvent;
 use Swift_Events_SendListener;
