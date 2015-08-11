@@ -64,7 +64,6 @@ class NotifierServiceProvider extends ServiceProvider
         $plugin = new CssInliner();
 
         $this->app->make('mailer')->getSwiftMailer()->registerPlugin($plugin);
-        $this->app->make('orchestra.mail')->getSwiftMailer()->registerPlugin($plugin);
     }
 
     /**

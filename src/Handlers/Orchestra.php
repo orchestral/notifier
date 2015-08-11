@@ -17,7 +17,7 @@ class Orchestra implements Notification
     /**
      * Mailer instance.
      *
-     * @var Mailer
+     * @var \Orchestra\Notifier\Mailer
      */
     protected $mailer;
 
