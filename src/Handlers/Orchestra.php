@@ -17,14 +17,14 @@ class Orchestra implements Notification
     /**
      * Mailer instance.
      *
-     * @var Mailer
+     * @var \Orchestra\Notifier\Mailer
      */
     protected $mailer;
 
     /**
      * Construct a new Orchestra Platform notifier.
      *
-     * @param  Mailer  $mailer
+     * @param  \Orchestra\Notifier\Mailer  $mailer
      */
     public function __construct(Mailer $mailer)
     {
