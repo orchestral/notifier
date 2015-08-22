@@ -61,9 +61,11 @@ class NotifierServiceProvider extends ServiceProvider
 
         $this->addConfigComponent('orchestra/notifier', 'orchestra/notifier', "{$path}/config");
 
-        $plugin = new CssInliner();
+        $this->app->afterResolving('mailer', function ($mailer) {
+            $plugin = new CssInliner();
 
-        $this->app->make('mailer')->getSwiftMailer()->registerPlugin($plugin);
+            $mailer->getSwiftMailer()->registerPlugin($plugin);
+        });
     }
 
     /**
