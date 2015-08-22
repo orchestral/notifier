@@ -62,6 +62,7 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
         $stub = new NotifierServiceProvider($app);
 
         $stub->boot();
+        $app->make('mailer');
     }
 
     /**
