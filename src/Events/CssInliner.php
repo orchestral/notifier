@@ -1,5 +1,6 @@
 <?php namespace Orchestra\Notifier\Events;
 
+use Swift_Message;
 use Illuminate\Support\Str;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
@@ -8,9 +9,10 @@ class CssInliner
     /**
      * Handle converting to inline CSS.
      *
+     * @param  \Swift_Message  $message
      * @return void
      */
-    public function handle()
+    public function handle(Swift_Message $message)
     {
         $converter = new CssToInlineStyles();
         $converter->setEncoding($message->getCharset());
