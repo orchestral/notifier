@@ -60,12 +60,6 @@ class NotifierServiceProvider extends ServiceProvider
         $path = realpath(__DIR__.'/../resources');
 
         $this->addConfigComponent('orchestra/notifier', 'orchestra/notifier', "{$path}/config");
-
-        $this->app->afterResolving('mailer', function ($mailer) {
-            $plugin = new CssInliner();
-
-            $mailer->getSwiftMailer()->registerPlugin($plugin);
-        });
     }
 
     /**

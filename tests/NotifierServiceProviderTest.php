@@ -49,11 +49,6 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app['path.base'] = '/var/laravel';
         $app['config'] = $config = m::mock('\Orchestra\Contracts\Config\PackageRepository');
         $app['mailer'] = $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $swiftMailer = m::mock('\Swift_Mailer')->makePartial();
-        $plugin = m::type('\Orchestra\Notifier\Plugins\CssInliner');
-
-        $mailer->shouldReceive('getSwiftMailer')->once()->andReturn($swiftMailer);
-        $swiftMailer->shouldReceive('registerPlugin')->once()->with($plugin)->andReturnNull();
 
         $config->shouldReceive('package')->once()
                 ->with('orchestra/notifier', "{$path}/resources/config", 'orchestra/notifier')
@@ -62,7 +57,6 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
         $stub = new NotifierServiceProvider($app);
 
         $stub->boot();
-        $app->make('mailer');
     }
 
     /**

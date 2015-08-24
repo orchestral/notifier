@@ -5,6 +5,11 @@ title: Notifier Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.5 {#v3-1-5}
+
+* Add `Orchestra\Notifier\Events\CssInliner`.
+* Allow to easily attach the new `CssInliner` events class via `Orchestra\Notifier\MailServiceProvider`.
+
 ### v3.1.4 {#v3-1-4}
 
 * Only resolve `mailer` service location to attach Inline CSS plugin when needed.
