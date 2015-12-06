@@ -1,15 +1,16 @@
 <?php namespace Orchestra\Notifier;
 
 use Aws\Ses\SesClient;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
 use GuzzleHttp\Client as HttpClient;
 use Orchestra\Memory\ContainerTrait;
+use Swift_MailTransport as MailTransport;
+use Swift_SmtpTransport as SmtpTransport;
 use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\SesTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
-use Swift_SmtpTransport as SmtpTransport;
-use Swift_MailTransport as MailTransport;
 use Swift_SendmailTransport as SendmailTransport;
 
 class TransportManager extends Manager
@@ -93,8 +94,9 @@ class TransportManager extends Manager
      */
     protected function createMailgunDriver()
     {
-        $client = new HttpClient();
         $config = $this->getTransportConfig();
+
+        $client = new HttpClient(Arr::get($config, 'guzzle', []));
 
         return new MailgunTransport($client, $config['secret'], $config['domain']);
     }
@@ -106,8 +108,9 @@ class TransportManager extends Manager
      */
     protected function createMandrillDriver()
     {
-        $client = new HttpClient();
         $config = $this->getTransportConfig();
+
+        $client = new HttpClient(Arr::get($config, 'guzzle', []));
 
         return new MandrillTransport($client, $config['secret']);
     }
