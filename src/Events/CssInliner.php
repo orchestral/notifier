@@ -10,6 +10,7 @@ class CssInliner
      * Handle converting to inline CSS.
      *
      * @param  \Swift_Message  $message
+     *
      * @return void
      */
     public function handle(Swift_Message $message)
