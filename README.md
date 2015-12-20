@@ -16,6 +16,7 @@ Notifier Component add a simplify approach to notifier the application user usin
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Resources](#resources)
+* [Change Log](http://orchestraplatform.com/docs/latest/components/notifier/changes#v3-3)
 
 ## Version Compatibility
 
@@ -25,7 +26,7 @@ Laravel    | Notifier
  4.2.x     | 2.2.x
  5.0.x     | 3.0.x
  5.1.x     | 3.1.x
- 5.2.x     | 3.2.x@dev
+ 5.2.x     | 3.2.x
  5.3.x     | 3.3.x@dev
 
 ## Installation
@@ -65,4 +66,4 @@ Add following service providers in `config/app.php`.
 ## Resources
 
 * [Documentation](http://orchestraplatform.com/docs/latest/components/notifier)
-* [Change Log](http://orchestraplatform.com/docs/latest/components/notifier/changes#v3-1)
+
