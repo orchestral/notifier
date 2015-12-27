@@ -2,6 +2,7 @@
 
 use Swift_Message;
 use Illuminate\Support\Str;
+use Illuminate\Mail\Events\MessageSending;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 class CssInliner
@@ -9,12 +10,13 @@ class CssInliner
     /**
      * Handle converting to inline CSS.
      *
-     * @param  \Swift_Message  $message
+     * @param  \Illuminate\Mail\Events\MessageSending  $sending
      *
      * @return void
      */
-    public function handle(Swift_Message $message)
+    public function handle(MessageSending $sending)
     {
+        $messsage  = $sending->message;
         $converter = new CssToInlineStyles();
         $converter->setEncoding($message->getCharset());
         $converter->setUseInlineStylesBlock();
