@@ -1,6 +1,5 @@
 <?php namespace Orchestra\Notifier\Events;
 
-use Swift_Message;
 use Illuminate\Support\Str;
 use Illuminate\Mail\Events\MessageSending;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
