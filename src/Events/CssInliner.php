@@ -15,7 +15,8 @@ class CssInliner
      */
     public function handle(MessageSending $sending)
     {
-        $messsage  = $sending->message;
+        $message = $sending->message;
+
         $converter = new CssToInlineStyles();
         $converter->setEncoding($message->getCharset());
         $converter->setUseInlineStylesBlock();
