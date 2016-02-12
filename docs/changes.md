@@ -5,6 +5,10 @@ title: Notifier Change Log
 
 ## Version 3.0 {#v3-0}
 
+### v3.0.2 {#v3-0-2}
+
+* Add `Orchestra\Notifier\TransportManager::getConfig()` and `Orchestra\Notifier\TransportManager::getSecureConfig()`.
+
 ### v3.0.1 {#v3-0-1}
 
 * Add Amazon SES Transport support.
