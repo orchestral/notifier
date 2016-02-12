@@ -22,8 +22,7 @@ class TransportManager extends Manager
      */
     public function __construct($app)
     {
-        $this->app       = $app;
-        $this->encrypter = $app->make('encrypter');
+        $this->app = $app;
     }
 
     /**

@@ -25,7 +25,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
@@ -57,7 +56,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
         $app->instance('queue', $queue = m::mock('QueueListener'));
@@ -95,7 +93,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
@@ -124,7 +121,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
@@ -153,7 +149,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
@@ -182,7 +177,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', $encrypter = m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
@@ -217,7 +211,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', $encrypter = m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
@@ -247,7 +240,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', $encrypter = m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
@@ -278,7 +270,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
         $app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
         $app->instance('log', $logger = m::mock('\Illuminate\Log\Writer'));
@@ -311,7 +302,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
@@ -340,7 +330,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
         $app->instance('queue', $queue = m::mock('QueueListener'));
@@ -377,7 +366,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     public function testQueueMethodWhenClassNameIsGiven()
     {$app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
         $app->instance('queue', $queue = m::mock('QueueListener'));
@@ -439,7 +427,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Container();
 
-        $app->instance('encrypter', m::mock('\Illuminate\Contracts\Encryption\Encrypter'));
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
