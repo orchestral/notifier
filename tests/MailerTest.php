@@ -157,10 +157,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
-        $memory->shouldReceive('get')->with('email', [])->andReturn([
-                'driver' => 'sendmail',
-                'sendmail' => '/bin/sendmail -t',
-            ])
+        $memory->shouldReceive('get')->with('email.sendmail', null)->andReturn('/bin/sendmail -t')
             ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('sendmail')
             ->shouldReceive('get')->with('email.from')->andReturn([
                 'address' => 'hello@orchestraplatform.com',
@@ -190,13 +187,12 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
         $memory->shouldReceive('get')->with('email', [])->andReturn([
-                'driver' => 'smtp',
                 'host' => 'smtp.mailgun.org',
                 'port' => 587,
                 'encryption' => 'tls',
                 'username' => 'hello@orchestraplatform.com',
-                'password' => 123456,
             ])
+            ->shouldReceive('secureGet')->with('email.password', null)->andReturn(123456)
             ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('smtp')
             ->shouldReceive('get')->with('email.from')->andReturn([
                 'address' => 'hello@orchestraplatform.com',
@@ -206,8 +202,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
-
-        $encrypter->shouldReceive('decrypt')->once()->with(123456)->andReturn(123456);
 
         $transport = new TransportManager($app);
         $stub = with(new Mailer($app, $transport))->attach($memory);
@@ -227,12 +221,9 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
-        $memory->shouldReceive('get')->with('email', [])->andReturn([
-                'driver' => 'mailgun',
-                'secret' => 'auniquetoken',
-                'domain' => 'mailer.mailgun.org',
-            ])
+        $memory->shouldReceive('secureGet')->with('email.secret', null)->andReturn('auniquetoken')
             ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mailgun')
+            ->shouldReceive('get')->with('email.domain', null)->andReturn('mailer.mailgun.org')
             ->shouldReceive('get')->with('email.from')->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
@@ -241,8 +232,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
-
-        $encrypter->shouldReceive('decrypt')->once()->with('auniquetoken')->andReturn('auniquetoken');
 
         $transport = new TransportManager($app);
         $stub = with(new Mailer($app, $transport))->attach($memory);
@@ -262,10 +251,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
 
-        $memory->shouldReceive('get')->with('email', [])->andReturn([
-                'driver' => 'mandrill',
-                'secret' => 'auniquetoken',
-            ])
+        $memory->shouldReceive('secureGet')->with('email.secret', null)->andReturn('auniquetoken')
             ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mandrill')
             ->shouldReceive('get')->with('email.from')->andReturn([
                 'address' => 'hello@orchestraplatform.com',
@@ -275,8 +261,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
-
-        $encrypter->shouldReceive('decrypt')->once()->with('auniquetoken')->andReturn('auniquetoken');
 
         $transport = new TransportManager($app);
         $stub = with(new Mailer($app, $transport))->attach($memory);

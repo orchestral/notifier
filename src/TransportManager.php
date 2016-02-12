@@ -33,7 +33,7 @@ class TransportManager extends Manager
      */
     protected function createSmtpDriver()
     {
-        $config = $this->getConfig();
+        $config = $this->getTransportConfig();
 
         $transport = SmtpTransport::newInstance($config['host'], $config['port']);
 
@@ -46,7 +46,7 @@ class TransportManager extends Manager
         // transporter instance so that we'll properly authenticate delivery.
         if (isset($config['username'])) {
             $transport->setUsername($config['username']);
-            $transport->setPassword($this->getDecryptedConfig($config['password']));
+            $transport->setPassword($this->getSecureConfig('password'));
         }
 
         return $transport;
@@ -59,9 +59,7 @@ class TransportManager extends Manager
      */
     protected function createSendmailDriver()
     {
-        $config = $this->getConfig();
-
-        return SendmailTransport::newInstance($config['sendmail']);
+        return SendmailTransport::newInstance($this->getConfig('sendmail'));
     }
 
     /**
@@ -97,8 +95,6 @@ class TransportManager extends Manager
      */
     protected function createMailgunDriver()
     {
-        $config = $this->getConfig();
-
         return new MailgunTransport($this->getSecureConfig('secret'), $this->getConfig('domain'));
     }
 
@@ -109,8 +105,6 @@ class TransportManager extends Manager
      */
     protected function createMandrillDriver()
     {
-        $config = $this->getConfig();
-
         return new MandrillTransport($this->getSecureConfig('secret'));
     }
 
