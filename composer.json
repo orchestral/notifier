@@ -18,7 +18,7 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/encryption": "5.0.*",
-        "orchestra/memory": "3.0.*"
+        "orchestra/memory": "~3.0.6"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

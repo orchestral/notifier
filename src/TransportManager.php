@@ -1,7 +1,6 @@
 <?php namespace Orchestra\Notifier;
 
 use Aws\Ses\SesClient;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
 use Orchestra\Memory\ContainerTrait;
 use Illuminate\Mail\Transport\LogTransport;
@@ -11,7 +10,6 @@ use Illuminate\Mail\Transport\MandrillTransport;
 use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
 use Swift_SendmailTransport as SendmailTransport;
-use Illuminate\Contracts\Encryption\DecryptException;
 
 class TransportManager extends Manager
 {
@@ -35,7 +33,7 @@ class TransportManager extends Manager
      */
     protected function createSmtpDriver()
     {
-        $config = $this->getTransportConfig();
+        $config = $this->getConfig();
 
         $transport = SmtpTransport::newInstance($config['host'], $config['port']);
 
@@ -61,7 +59,7 @@ class TransportManager extends Manager
      */
     protected function createSendmailDriver()
     {
-        $config = $this->getTransportConfig();
+        $config = $this->getConfig();
 
         return SendmailTransport::newInstance($config['sendmail']);
     }
@@ -73,12 +71,10 @@ class TransportManager extends Manager
      */
     protected function createSesDriver()
     {
-        $config = $this->getTransportConfig();
-
         $sesClient = SesClient::factory([
-            'key'    => $this->getDecryptedConfig($config['key']),
-            'secret' => $this->getDecryptedConfig($config['secret']),
-            'region' => Arr::get($config, 'region') ?: 'us-east-1',
+            'key'    => $this->getSecureConfig('key'),
+            'secret' => $this->getSecureConfig('secret'),
+            'region' => $this->getConfig('region', 'us-east-1'),
         ]);
 
         return new SesTransport($sesClient);
@@ -101,9 +97,9 @@ class TransportManager extends Manager
      */
     protected function createMailgunDriver()
     {
-        $config = $this->getTransportConfig();
+        $config = $this->getConfig();
 
-        return new MailgunTransport($this->getDecryptedConfig($config['secret']), $config['domain']);
+        return new MailgunTransport($this->getSecureConfig('secret'), $this->getConfig('domain'));
     }
 
     /**
@@ -113,9 +109,9 @@ class TransportManager extends Manager
      */
     protected function createMandrillDriver()
     {
-        $config = $this->getTransportConfig();
+        $config = $this->getConfig();
 
-        return new MandrillTransport($this->getDecryptedConfig($config['secret']));
+        return new MandrillTransport($this->getSecureConfig('secret'));
     }
 
     /**
@@ -139,6 +135,32 @@ class TransportManager extends Manager
     }
 
     /**
+     * Get transport configuration.
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     *
+     * @return array
+     */
+    public function getConfig($key, $default = null)
+    {
+        return $this->memory->get("email.{$key}", $default);
+    }
+
+    /**
+     * Get transport encrypted configuration.
+     *
+     * @param  string|null  $key
+     * @param  mixed  $default
+     *
+     * @return array
+     */
+    public function getSecureConfig($key = null, $default = null)
+    {
+        return $this->memory->secureGet("email.{$key}", $default);
+    }
+
+    /**
      * Get the default driver name.
      *
      * @return string
@@ -146,21 +168,5 @@ class TransportManager extends Manager
     public function getDefaultDriver()
     {
         return $this->memory->get('email.driver', 'mail');
-    }
-
-    /**
-     * Get decrypted configuration value.
-     *
-     * @param  string  $value
-     *
-     * @return string
-     */
-    public function getDecryptedConfig($value)
-    {
-        try {
-            return $this->encrypter->decrypt($value);
-        } catch (DecryptException $e) {
-            return $value;
-        }
     }
 }
