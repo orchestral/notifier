@@ -12,22 +12,10 @@ use Illuminate\Mail\Transport\SesTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
 use Swift_SendmailTransport as SendmailTransport;
-use Illuminate\Contracts\Encryption\DecryptException;
 
 class TransportManager extends Manager
 {
     use ContainerTrait;
-
-    /**
-     * Create a new manager instance.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     */
-    public function __construct($app)
-    {
-        $this->app       = $app;
-        $this->encrypter = $app->make('encrypter');
-    }
 
     /**
      * Register the SMTP Swift Transport instance.
@@ -49,7 +37,7 @@ class TransportManager extends Manager
         // transporter instance so that we'll properly authenticate delivery.
         if (isset($config['username'])) {
             $transport->setUsername($config['username']);
-            $transport->setPassword($this->getDecryptedConfig($config['password']));
+            $transport->setPassword($this->getSecureConfig('password'));
         }
 
         return $transport;
@@ -62,9 +50,7 @@ class TransportManager extends Manager
      */
     protected function createSendmailDriver()
     {
-        $config = $this->getTransportConfig();
-
-        return SendmailTransport::newInstance($config['sendmail']);
+        return SendmailTransport::newInstance($this->getConfig('sendmail'));
     }
 
     /**
@@ -74,14 +60,12 @@ class TransportManager extends Manager
      */
     protected function createSesDriver()
     {
-        $config = $this->getTransportConfig();
-
         $client = new SesClient([
             'credentials' => [
-                'key'    => $this->getDecryptedConfig($config['key']),
-                'secret' => $this->getDecryptedConfig($config['secret']),
+                'key'    => $this->getSecureConfig('key'),
+                'secret' => $this->getSecureConfig('secret'),
             ],
-            'region'  => $config['region'],
+            'region'  => $this->getConfig('region'),
             'service' => 'email',
             'version' => 'latest',
         ]);
@@ -106,11 +90,9 @@ class TransportManager extends Manager
      */
     protected function createMailgunDriver()
     {
-        $config = $this->getTransportConfig();
+        $client = new HttpClient($this->getConfig('guzzle', []));
 
-        $client = new HttpClient(Arr::get($config, 'guzzle', []));
-
-        return new MailgunTransport($client, $this->getDecryptedConfig($config['secret']), $config['domain']);
+        return new MailgunTransport($client, $this->getSecureConfig('secret'), $this->getConfig('domain'));
     }
 
     /**
@@ -120,11 +102,9 @@ class TransportManager extends Manager
      */
     protected function createMandrillDriver()
     {
-        $config = $this->getTransportConfig();
+        $client = new HttpClient($this->getConfig('guzzle', []));
 
-        $client = new HttpClient(Arr::get($config, 'guzzle', []));
-
-        return new MandrillTransport($client, $this->getDecryptedConfig($config['secret']));
+        return new MandrillTransport($client, $this->getSecureConfig('secret'));
     }
 
     /**
@@ -148,6 +128,32 @@ class TransportManager extends Manager
     }
 
     /**
+     * Get transport configuration.
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     *
+     * @return array
+     */
+    public function getConfig($key, $default = null)
+    {
+        return $this->memory->get("email.{$key}", $default);
+    }
+
+    /**
+     * Get transport encrypted configuration.
+     *
+     * @param  string|null  $key
+     * @param  mixed  $default
+     *
+     * @return array
+     */
+    public function getSecureConfig($key = null, $default = null)
+    {
+        return $this->memory->secureGet("email.{$key}", $default);
+    }
+
+    /**
      * Get the default driver name.
      *
      * @return string
@@ -155,21 +161,5 @@ class TransportManager extends Manager
     public function getDefaultDriver()
     {
         return $this->memory->get('email.driver', 'mail');
-    }
-
-    /**
-     * Get decrypted configuration value.
-     *
-     * @param  string  $value
-     *
-     * @return string
-     */
-    public function getDecryptedConfig($value)
-    {
-        try {
-            return $this->encrypter->decrypt($value);
-        } catch (DecryptException $e) {
-            return $value;
-        }
     }
 }
