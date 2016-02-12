@@ -27,6 +27,7 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
                 ->andReturnUsing(function ($n, $c) use ($app) {
                     return $c($app);
                 })
+            ->shouldReceive('make')->once()->with('encrypter')->andReturn(m::mock('\Illuminate\Contracts\Encryption\Encrypter'))
             ->shouldReceive('singleton')->once()->with('orchestra.notifier', m::type('Closure'))
                 ->andReturnUsing(function ($n, $c) use ($app) {
                     return $c($app);

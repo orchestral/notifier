@@ -11,10 +11,22 @@ use Illuminate\Mail\Transport\MandrillTransport;
 use Swift_SmtpTransport as SmtpTransport;
 use Swift_MailTransport as MailTransport;
 use Swift_SendmailTransport as SendmailTransport;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class TransportManager extends Manager
 {
     use ContainerTrait;
+
+    /**
+     * Create a new manager instance.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     */
+    public function __construct($app)
+    {
+        $this->app       = $app;
+        $this->encrypter = $app->make('encrypter');
+    }
 
     /**
      * Register the SMTP Swift Transport instance.
@@ -36,7 +48,7 @@ class TransportManager extends Manager
         // transporter instance so that we'll properly authenticate delivery.
         if (isset($config['username'])) {
             $transport->setUsername($config['username']);
-            $transport->setPassword($config['password']);
+            $transport->setPassword($this->getDecryptedConfig($config['password']));
         }
 
         return $transport;
@@ -64,8 +76,8 @@ class TransportManager extends Manager
         $config = $this->getTransportConfig();
 
         $sesClient = SesClient::factory([
-            'key'    => $config['key'],
-            'secret' => $config['secret'],
+            'key'    => $this->getDecryptedConfig($config['key']),
+            'secret' => $this->getDecryptedConfig($config['secret']),
             'region' => Arr::get($config, 'region') ?: 'us-east-1',
         ]);
 
@@ -91,7 +103,7 @@ class TransportManager extends Manager
     {
         $config = $this->getTransportConfig();
 
-        return new MailgunTransport($config['secret'], $config['domain']);
+        return new MailgunTransport($this->getDecryptedConfig($config['secret']), $config['domain']);
     }
 
     /**
@@ -103,7 +115,7 @@ class TransportManager extends Manager
     {
         $config = $this->getTransportConfig();
 
-        return new MandrillTransport($config['secret']);
+        return new MandrillTransport($this->getDecryptedConfig($config['secret']));
     }
 
     /**
@@ -113,7 +125,7 @@ class TransportManager extends Manager
      */
     protected function createLogDriver()
     {
-        return new LogTransport($this->app['log']->getMonolog());
+        return new LogTransport($this->app->make('log')->getMonolog());
     }
 
     /**
@@ -134,5 +146,21 @@ class TransportManager extends Manager
     public function getDefaultDriver()
     {
         return $this->memory->get('email.driver', 'mail');
+    }
+
+    /**
+     * Get decrypted configuration value.
+     *
+     * @param  string  $value
+     *
+     * @return string
+     */
+    public function getDecryptedConfig($value)
+    {
+        try {
+            return $this->encrypter->decrypt($value);
+        } catch (DecryptException $e) {
+            return $value;
+        }
     }
 }

@@ -1,34 +1,35 @@
 {
-	"name": "orchestra/notifier",
-	"description": "User Notification Component for Orchestra Platform",
-	"keywords": ["orchestra-platform", "orchestral", "laravel", "mailer"],
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Mior Muhammad Zaki",
-			"email": "crynobone@gmail.com",
-			"homepage": "https://github.com/crynobone"
-		}
-	],
-	"autoload": {
-		"psr-4": {
-			"Orchestra\\Notifier\\" : "src/"
-		}
-	},
-	"require": {
-		"php": ">=5.4.0",
-		"orchestra/memory": "3.0.*"
-	},
-	"require-dev": {
-		"mockery/mockery": "0.9.*",
-		"jeremeamia/superclosure": "2.0.*",
-		"illuminate/mail": "5.0.*",
-		"aws/aws-sdk-php": "~2.4"
-	},
-	"extra": {
-		"branch-alias": {
-			"dev-master": "3.2-dev"
-		}
-	},
-	"minimum-stability": "dev"
+    "name": "orchestra/notifier",
+    "description": "User Notification Component for Orchestra Platform",
+    "keywords": ["orchestra-platform", "orchestral", "laravel", "mailer"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mior Muhammad Zaki",
+            "email": "crynobone@gmail.com",
+            "homepage": "https://github.com/crynobone"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Orchestra\\Notifier\\" : "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/encryption": "5.0.*",
+        "orchestra/memory": "3.0.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+        "jeremeamia/superclosure": "2.0.*",
+        "illuminate/mail": "5.0.*",
+        "aws/aws-sdk-php": "~2.4"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.2-dev"
+        }
+    },
+    "minimum-stability": "dev"
 }
