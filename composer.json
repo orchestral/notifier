@@ -17,6 +17,7 @@
     },
     "require": {
         "php": ">=5.5.0",
+        "illuminate/encryption": "~5.1.0",
         "orchestra/memory": "~3.1.0",
         "tijsverkoyen/css-to-inline-styles": "~1.2"
     },
