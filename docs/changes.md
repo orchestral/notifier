@@ -5,6 +5,10 @@ title: Notifier Change Log
 
 ## Version 3.0 {#v3-0}
 
+### v3.0.3 {#v3-0-3}
+
+* Deferred requiring `encrypter` service location until it's actually needed. Solved issue when artisan command is required on fresh installation where application key is not available.
+
 ### v3.0.2 {#v3-0-2}
 
 * Add `Orchestra\Notifier\TransportManager::getConfig()` and `Orchestra\Notifier\TransportManager::getSecureConfig()`.
