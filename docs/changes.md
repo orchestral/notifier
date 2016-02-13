@@ -5,6 +5,10 @@ title: Notifier Change Log
 
 ## Version 3.2 {#v3-2}
 
+### v3.2.2 {#v3-2-2}
+
+* Add `Orchestra\Notifier\TransportManager::getConfig()` and `Orchestra\Notifier\TransportManager::getSecureConfig()`.
+
 ### v3.2.1 {#v3-2-1}
 
 * Update typehint to `mailer.sending` event to `Illuminate\Mail\Events\MessageSending`.
