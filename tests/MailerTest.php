@@ -217,6 +217,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $memory->shouldReceive('secureGet')->with('email.secret', null)->andReturn('auniquetoken')
             ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mailgun')
             ->shouldReceive('get')->with('email.domain', null)->andReturn('mailer.mailgun.org')
+            ->shouldReceive('get')->with('email.guzzle', [])->andReturn([])
             ->shouldReceive('get')->with('email.from')->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
@@ -245,6 +246,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
         $memory->shouldReceive('secureGet')->with('email.secret', null)->andReturn('auniquetoken')
             ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mandrill')
+            ->shouldReceive('get')->with('email.guzzle', [])->andReturn([])
             ->shouldReceive('get')->with('email.from')->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
