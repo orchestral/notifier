@@ -5,6 +5,10 @@ title: Notifier Change Log
 
 ## Version 3.1 {#v3-1}
 
+### v3.1.6 {#v3-1-6}
+
+* Add `Orchestra\Notifier\TransportManager::getConfig()` and `Orchestra\Notifier\TransportManager::getSecureConfig()`.
+
 ### v3.1.5 {#v3-1-5}
 
 * Add `Orchestra\Notifier\Events\CssInliner`.
