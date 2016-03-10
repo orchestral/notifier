@@ -11,6 +11,7 @@ use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\SesTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
+use Illuminate\Mail\Transport\SparkPostTransport;
 use Swift_SendmailTransport as SendmailTransport;
 
 class TransportManager extends Manager
@@ -90,9 +91,11 @@ class TransportManager extends Manager
      */
     protected function createMailgunDriver()
     {
-        $client = new HttpClient($this->getConfig('guzzle', []));
-
-        return new MailgunTransport($client, $this->getSecureConfig('secret'), $this->getConfig('domain'));
+        return new MailgunTransport(
+            new HttpClient($this->getConfig('guzzle', [])),
+            $this->getSecureConfig('secret'),
+            $this->getConfig('domain')
+        );
     }
 
     /**
@@ -102,9 +105,10 @@ class TransportManager extends Manager
      */
     protected function createMandrillDriver()
     {
-        $client = new HttpClient($this->getConfig('guzzle', []));
-
-        return new MandrillTransport($client, $this->getSecureConfig('secret'));
+        return new MandrillTransport(
+            new HttpClient($this->getConfig('guzzle', [])),
+            $this->getSecureConfig('secret')
+        );
     }
 
     /**
@@ -115,6 +119,19 @@ class TransportManager extends Manager
     protected function createLogDriver()
     {
         return new LogTransport($this->app->make('log')->getMonolog());
+    }
+
+    /**
+     * Create an instance of the SparkPost Swift Transport driver.
+     *
+     * @return \Illuminate\Mail\Transport\SparkPostTransport
+     */
+    protected function createSparkPostDriver()
+    {
+        return new SparkPostTransport(
+            new HttpClient($this->getConfig('guzzle', [])),
+            $this->getSecureConfig('secret')
+        );
     }
 
     /**
