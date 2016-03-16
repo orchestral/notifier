@@ -3,7 +3,7 @@
 use Closure;
 use Illuminate\Mail\Message;
 use Orchestra\Notifier\Mailer;
-use Orchestra\Memory\ContainerTrait;
+use Orchestra\Memory\Memorizable;
 use SuperClosure\SerializableClosure;
 use Orchestra\Contracts\Memory\Provider;
 use Orchestra\Contracts\Notification\Recipient;
@@ -12,7 +12,7 @@ use Orchestra\Contracts\Notification\Message as MessageContract;
 
 class Orchestra implements Notification
 {
-    use ContainerTrait;
+    use Memorizable;
 
     /**
      * Mailer instance.
@@ -61,7 +61,7 @@ class Orchestra implements Notification
             ! empty($subject) && $message->subject($subject);
 
             // Run any callback if provided.
-            is_callable($callback) && call_user_func_array($callback, func_get_args());
+            is_callable($callback) && $callback(...func_get_args());
         });
 
         return $receipt->usingQueue($this->isUsingQueue());

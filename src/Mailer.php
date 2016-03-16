@@ -2,14 +2,14 @@
 
 use Closure;
 use Swift_Mailer;
+use Orchestra\Memory\Memorizable;
 use Illuminate\Contracts\Queue\Job;
-use Orchestra\Memory\ContainerTrait;
 use SuperClosure\SerializableClosure;
 use Illuminate\Contracts\Mail\Mailer as Mail;
 
 class Mailer
 {
-    use ContainerTrait;
+    use Memorizable;
 
     /**
      * Application instance.
