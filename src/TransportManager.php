@@ -1,10 +1,9 @@
 <?php namespace Orchestra\Notifier;
 
 use Aws\Ses\SesClient;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
+use Orchestra\Memory\Memorizable;
 use GuzzleHttp\Client as HttpClient;
-use Orchestra\Memory\ContainerTrait;
 use Swift_MailTransport as MailTransport;
 use Swift_SmtpTransport as SmtpTransport;
 use Illuminate\Mail\Transport\LogTransport;
@@ -16,7 +15,7 @@ use Swift_SendmailTransport as SendmailTransport;
 
 class TransportManager extends Manager
 {
-    use ContainerTrait;
+    use Memorizable;
 
     /**
      * Register the SMTP Swift Transport instance.

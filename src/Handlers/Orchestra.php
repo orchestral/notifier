@@ -3,7 +3,7 @@
 use Closure;
 use Illuminate\Mail\Message;
 use Orchestra\Notifier\Mailer;
-use Orchestra\Memory\ContainerTrait;
+use Orchestra\Memory\Memorizable;
 use SuperClosure\SerializableClosure;
 use Orchestra\Contracts\Memory\Provider;
 use Orchestra\Contracts\Notification\Recipient;
@@ -12,7 +12,7 @@ use Orchestra\Contracts\Notification\Message as MessageContract;
 
 class Orchestra implements Notification
 {
-    use ContainerTrait;
+    use Memorizable;
 
     /**
      * Mailer instance.
