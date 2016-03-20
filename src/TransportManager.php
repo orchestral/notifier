@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier;
+<?php
+
+namespace Orchestra\Notifier;
 
 use Aws\Ses\SesClient;
 use Illuminate\Support\Manager;

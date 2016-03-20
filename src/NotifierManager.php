@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier;
+<?php
+
+namespace Orchestra\Notifier;
 
 use Illuminate\Support\Manager;
 use Orchestra\Notifier\Handlers\Laravel;

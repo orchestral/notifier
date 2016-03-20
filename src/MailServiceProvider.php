@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier;
+<?php
+
+namespace Orchestra\Notifier;
 
 use Orchestra\Notifier\Events\CssInliner;
 use Illuminate\Mail\Events\MessageSending;

@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier\Events;
+<?php
+
+namespace Orchestra\Notifier\Events;
 
 use Illuminate\Support\Str;
 use Illuminate\Mail\Events\MessageSending;

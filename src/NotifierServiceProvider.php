@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier;
+<?php
+
+namespace Orchestra\Notifier;
 
 use Orchestra\Support\Providers\ServiceProvider;
 

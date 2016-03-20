@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier;
+<?php
+
+namespace Orchestra\Notifier;
 
 use Illuminate\Support\Arr;
 use Orchestra\Support\Facades\Notifier;

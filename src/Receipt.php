@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier;
+<?php
+
+namespace Orchestra\Notifier;
 
 use Illuminate\Contracts\Mail\Mailer as Mail;
 use Orchestra\Contracts\Notification\Receipt as ReceiptContract;

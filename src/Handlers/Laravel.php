@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier\Handlers;
+<?php
+
+namespace Orchestra\Notifier\Handlers;
 
 use Closure;
 use Illuminate\Mail\Message;
