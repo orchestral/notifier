@@ -82,7 +82,7 @@ class Mailer
             $method = 'send';
         }
 
-        return call_user_func([$this, $method], $view, $data, $callback, $queue);
+        return $this->{$method}($view, $data, $callback, $queue);
     }
 
     /**
