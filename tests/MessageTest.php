@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier\TestCase;
+<?php
+
+namespace Orchestra\Notifier\TestCase;
 
 use Orchestra\Notifier\Message;
 

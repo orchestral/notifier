@@ -1,4 +1,6 @@
-<?php namespace Orchestra\Notifier\Handlers\TestCase;
+<?php
+
+namespace Orchestra\Notifier\Handlers\TestCase;
 
 use Mockery as m;
 use Orchestra\Notifier\Message;

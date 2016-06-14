@@ -3,6 +3,16 @@ title: Notifier Change Log
 
 ---
 
+## Version 3.3 {#v3-3}
+
+### v3.3.0 {#v3-3-0}
+
+* Update support to Laravel Framework v5.3.
+* Update typehint to `mailer.sending` event to `Illuminate\Mail\Events\MessageSending`.
+* Add `Orchestra\Notifier\TransportManager::getConfig()` and `Orchestra\Notifier\TransportManager::getSecureConfig()`.
+* Add support for SparkPost Mail Transport.
+* Add `Orchestra\Notifier\Notifiable` to replace deprecated `Orchestra\Notifier\NotifiableTrait`.
+
 ## Version 3.2 {#v3-2}
 
 ### v3.2.4 {#v3-2-4}
