@@ -3,6 +3,7 @@
 namespace Orchestra\Notifier;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Orchestra\Support\Facades\Notifier;
 use Illuminate\Contracts\Support\Arrayable;
 use Orchestra\Contracts\Notification\Recipient;
@@ -10,6 +11,23 @@ use Orchestra\Contracts\Notification\Message as MessageContract;
 
 trait Notifiable
 {
+    /**
+     * Send email notification to user.
+     *
+     * @param  \Illuminate\Support\Collection  $users
+     * @param  \Orchestra\Contracts\Notification\Message|string  $subject
+     * @param  string|null  $view
+     * @param  array  $data
+     *
+     * @return bool
+     */
+    protected function sendNotifications(Collection $users, $subject, $view = null, array $data = [])
+    {
+        foreach ($users->all() as $user) {
+            $this->sendNotification($user, $subject, $view, $data);
+        }
+    }
+
     /**
      * Send email notification to user.
      *
