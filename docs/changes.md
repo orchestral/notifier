@@ -5,6 +5,10 @@ title: Notifier Change Log
 
 ## Version 3.3 {#v3-3}
 
+### v3.3.1 {#v3-3-1}
+
+* Add `Orchestra\Notifier\Notifiable::sendNotifications()` method.
+
 ### v3.3.0 {#v3-3-0}
 
 * Update support to Laravel Framework v5.3.
