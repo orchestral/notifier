@@ -80,14 +80,14 @@ class Orchestra implements Notification
         // when the mailer is only push to queue, in this case we should
         // assume that sending is successful when using queue.
 
-        $usingQueue = false;
-        $usingApi   = 'mail';
+        $queue  = false;
+        $driver = 'mail';
 
         if ($this->memory instanceof Provider) {
-            $usingQueue = $this->memory->get('email.queue', false);
-            $usingApi   = $this->memory->get('email.driver');
+            $queue  = $this->memory->get('email.queue', false);
+            $driver = $this->memory->get('email.driver');
         }
 
-        return ($usingQueue || in_array($usingApi, ['mailgun', 'mandrill', 'log']));
+        return ($queue || in_array($driver, ['mailgun', 'mandrill', 'log']));
     }
 }
