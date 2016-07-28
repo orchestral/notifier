@@ -4,10 +4,13 @@ namespace Orchestra\Notifier;
 
 use Closure;
 use Swift_Mailer;
+use Illuminate\Support\Str;
 use Orchestra\Memory\Memorizable;
 use Illuminate\Contracts\Queue\Job;
 use SuperClosure\SerializableClosure;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Contracts\Queue\Factory as QueueContract;
+use Illuminate\Contracts\Mail\Mailable as MailableContract;
 
 class Mailer
 {
@@ -28,6 +31,13 @@ class Mailer
     protected $mailer;
 
     /**
+     * The queue implementation.
+     *
+     * @var \Illuminate\Contracts\Queue\Factory
+     */
+    protected $queue;
+
+    /**
      * Transporter instance.
      *
      * @var \Orchestra\Notifier\TransportManager
@@ -44,6 +54,32 @@ class Mailer
     {
         $this->app       = $app;
         $this->transport = $transport;
+    }
+
+    /**
+     * Set the global from address and name.
+     *
+     * @param  string  $address
+     * @param  string|null  $name
+     *
+     * @return void
+     */
+    public function alwaysFrom($address, $name = null)
+    {
+        $this->getMailer()->alwaysFrom($address, $name);
+    }
+
+    /**
+     * Set the global to address and name.
+     *
+     * @param  string  $address
+     * @param  string|null  $name
+     *
+     * @return void
+     */
+    public function alwaysTo($address, $name = null)
+    {
+        $this->getMailer()->alwaysTo($address, $name);
     }
 
     /**
@@ -98,6 +134,10 @@ class Mailer
     {
         $mailer = $this->getMailer();
 
+        if ($view instanceof MailableContract) {
+            return $view->send($this->getMailer());
+        }
+
         $mailer->send($view, $data, $callback);
 
         return new Receipt($mailer, false);
@@ -115,6 +155,10 @@ class Mailer
      */
     public function queue($view, array $data = [], $callback = null, $queue = null)
     {
+        if ($view instanceof MailableContract) {
+            return $view->queue($this->queue);
+        }
+
         $callback = $this->buildQueueCallable($callback);
 
         $with = [
@@ -123,9 +167,40 @@ class Mailer
             'callback' => $callback,
         ];
 
-        $this->app->make('queue')->push('orchestra.mail@handleQueuedMessage', $with, $queue);
+        $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
 
-        return new Receipt($this->mailer ?: $this->app->make('mailer'), true);
+        return new Receipt($this->getMailer(), true);
+    }
+
+    /**
+     * Queue a new e-mail message for sending on the given queue.
+     *
+     * @param  string  $queue
+     * @param  string|array  $view
+     * @param  array  $data
+     * @param  \Closure|string|null  $callback
+     *
+     * @return \Orchestra\Contracts\Notification\Receipt
+     */
+    public function onQueue($queue, $view, array $data = [], $callback = null)
+    {
+        return $this->queue($view, $data, $callback, $queue);
+    }
+
+    /**
+     * Queue a new e-mail message for sending on the given queue.
+     *
+     * This method didn't match rest of framework's "onQueue" phrasing. Added "onQueue".
+     *
+     * @param  string  $queue
+     * @param  string|array  $view
+     * @param  array  $data
+     * @param  \Closure|string  $callback
+     * @return mixed
+     */
+    public function queueOn($queue, $view, array $data , $callback = null)
+    {
+        return $this->onQueue($queue, $view, $data, $callback);
     }
 
     /**
@@ -168,7 +243,7 @@ class Mailer
      */
     protected function getQueuedCallable(array $data)
     {
-        if (str_contains($data['callback'], 'SerializableClosure')) {
+        if (Str::contains($data['callback'], 'SerializableClosure')) {
             return with(unserialize($data['callback']))->getClosure();
         }
 
@@ -193,6 +268,10 @@ class Mailer
             $mailer->alwaysFrom($from['address'], $from['name']);
         }
 
+        if ($this->queue instanceof QueueContract) {
+            $mailer->setQueue($this->queue);
+        }
+
         $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));
 
         return $mailer;
@@ -203,8 +282,22 @@ class Mailer
      *
      * @return bool
      */
-    protected function shouldBeQueued()
+    public function shouldBeQueued()
     {
         return $this->memory->get('email.queue', false);
+    }
+
+    /**
+     * Set the queue manager instance.
+     *
+     * @param  \Illuminate\Contracts\Queue\Factory  $queue
+     *
+     * @return $this
+     */
+    public function setQueue(QueueContract $queue)
+    {
+        $this->queue = $queue;
+
+        return $this;
     }
 }

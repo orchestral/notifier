@@ -2,6 +2,7 @@
 
 namespace Orchestra\Notifier;
 
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
@@ -34,7 +35,7 @@ class Message extends Fluent implements MessageContract
      */
     public function getData()
     {
-        return Arr::get($this->attributes, 'data', []);
+        return isset($this->attributes['data']) ? $this->attributes['data'] : [];
     }
 
     /**
@@ -44,7 +45,7 @@ class Message extends Fluent implements MessageContract
      */
     public function getSubject()
     {
-        return Arr::get($this->attributes, 'subject', '');
+        return isset($this->attributes['subject']) ? $this->attributes['subject'] : '';
     }
 
     /**
@@ -54,7 +55,11 @@ class Message extends Fluent implements MessageContract
      */
     public function getView()
     {
-        return Arr::get($this->attributes, 'view');
+        if (! isset($this->attributes['view'])) {
+            throw new Exception('Missing $view variable.');
+        }
+
+        return $this->attributes['view'];
     }
 
     /**
@@ -64,8 +69,6 @@ class Message extends Fluent implements MessageContract
      */
     public function mailable()
     {
-        $view = $this->getView();
-
-        return ($view instanceof MailableContract);
+        return $this->attributes['view'] instanceof MailableContract;
     }
 }
