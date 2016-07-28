@@ -66,14 +66,14 @@ class Mailer
      * Allow Orchestra Platform to either use send or queue based on
      * settings.
      *
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
-     * @param  \Closure|string  $callback
-     * @param  string  $queue
+     * @param  \Closure|string|null  $callback
+     * @param  string|null  $queue
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function push($view, array $data, $callback, $queue = null)
+    public function push($view, array $data = [], $callback = null, $queue = null)
     {
         $method = 'queue';
         $memory = $this->memory;
@@ -88,13 +88,13 @@ class Mailer
     /**
      * Force Orchestra Platform to send email directly.
      *
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
-     * @param  \Closure|string  $callback
+     * @param  \Closure|string|null  $callback
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function send($view, array $data, $callback)
+    public function send($view, array $data = [], $callback = null)
     {
         $mailer = $this->getMailer();
 
@@ -106,14 +106,14 @@ class Mailer
     /**
      * Force Orchestra Platform to send email using queue.
      *
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
-     * @param  \Closure|string  $callback
-     * @param  string  $queue
+     * @param  \Closure|string|null  $callback
+     * @param  string|null  $queue
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function queue($view, array $data, $callback, $queue = null)
+    public function queue($view, array $data = [], $callback = null, $queue = null)
     {
         $callback = $this->buildQueueCallable($callback);
 
