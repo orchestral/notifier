@@ -75,11 +75,11 @@ class Mailer
      */
     public function push($view, array $data = [], $callback = null, $queue = null)
     {
-        $method = 'queue';
+        $method = 'send';
         $memory = $this->memory;
 
-        if (false === $memory->get('email.queue', false)) {
-            $method = 'send';
+        if ($this->shouldBeQueued()) {
+            $method = 'queue';
         }
 
         return $this->{$method}($view, $data, $callback, $queue);
@@ -196,5 +196,15 @@ class Mailer
         $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));
 
         return $mailer;
+    }
+
+    /**
+     * Should the email be send via queue.
+     *
+     * @return bool
+     */
+    protected function shouldBeQueued()
+    {
+        return $this->memory->get('email.queue', false);
     }
 }
