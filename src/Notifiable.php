@@ -40,13 +40,17 @@ trait Notifiable
      */
     protected function sendNotification(Recipient $user, $subject, $view = null, array $data = [])
     {
-        $entity = $user;
-
         if ($subject instanceof MessageContract) {
-            $data    = $subject->getData();
+            if ($subject->mailable()) {
+                return Notifier::send($user, $subject);
+            }
+
             $view    = $subject->getView();
+            $data    = $subject->getData();
             $subject = $subject->getSubject();
         }
+
+        $entity  = $user;
 
         if ($user instanceof Arrayable) {
             $entity = $user->toArray();

@@ -4,6 +4,7 @@ namespace Orchestra\Notifier;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
+use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Orchestra\Contracts\Notification\Message as MessageContract;
 
 class Message extends Fluent implements MessageContract
@@ -54,5 +55,17 @@ class Message extends Fluent implements MessageContract
     public function getView()
     {
         return Arr::get($this->attributes, 'view');
+    }
+
+    /**
+     * Is message mailable.
+     *
+     * @return bool
+     */
+    public function mailable()
+    {
+        $view = $this->getView();
+
+        return ($view instanceof MailableContract);
     }
 }
