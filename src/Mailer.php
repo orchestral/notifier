@@ -7,7 +7,7 @@ use Swift_Mailer;
 use Orchestra\Memory\Memorizable;
 use Illuminate\Contracts\Queue\Job;
 use SuperClosure\SerializableClosure;
-use Illuminate\Contracts\Mail\Mailer as Mail;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
 
 class Mailer
 {
@@ -53,7 +53,7 @@ class Mailer
      */
     public function getMailer()
     {
-        if (! $this->mailer instanceof Mail) {
+        if (! $this->mailer instanceof MailerContract) {
             $this->transport->setMemoryProvider($this->memory);
 
             $this->mailer = $this->resolveMailer();
