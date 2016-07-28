@@ -16,7 +16,7 @@ trait Notifiable
      *
      * @param  \Illuminate\Support\Collection  $users
      * @param  \Orchestra\Contracts\Notification\Message|string  $subject
-     * @param  string|null  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|null  $view
      * @param  array  $data
      *
      * @return bool
@@ -33,7 +33,7 @@ trait Notifiable
      *
      * @param  \Orchestra\Contracts\Notification\Recipient  $user
      * @param  \Orchestra\Contracts\Notification\Message|string  $subject
-     * @param  string|null  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|null  $view
      * @param  array  $data
      *
      * @return bool

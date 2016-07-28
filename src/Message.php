@@ -11,7 +11,7 @@ class Message extends Fluent implements MessageContract
     /**
      * Create a new Message instance.
      *
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
      * @param  string|null  $subject
      *
@@ -49,7 +49,7 @@ class Message extends Fluent implements MessageContract
     /**
      * Get view.
      *
-     * @return string|array
+     * @return \Illuminate\Contracts\Mail\Mailable|string|array
      */
     public function getView()
     {
