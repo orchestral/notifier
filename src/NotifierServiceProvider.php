@@ -36,7 +36,7 @@ class NotifierServiceProvider extends ServiceProvider
             $mailer = new Mailer($app, new TransportManager($app));
 
             if ($app->bound('queue')) {
-                $mailer->setQueue($queue);
+                $mailer->setQueue($app->make('queue'));
             }
 
             return $mailer;
