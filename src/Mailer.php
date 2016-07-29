@@ -37,22 +37,6 @@ class Mailer
     }
 
     /**
-     * Register the Swift Mailer instance.
-     *
-     * @return \Illuminate\Contracts\Mail\Mailer
-     */
-    public function getMailer()
-    {
-        if (! $this->mailer instanceof MailerContract) {
-            $this->transport->setMemoryProvider($this->memory);
-
-            $this->mailer = $this->resolveMailer();
-        }
-
-        return $this->mailer;
-    }
-
-    /**
      * Allow Orchestra Platform to either use send or queue based on
      * settings.
      *
@@ -65,12 +49,7 @@ class Mailer
      */
     public function push($view, array $data = [], $callback = null, $queue = null)
     {
-        $method = 'send';
-        $memory = $this->memory;
-
-        if ($this->shouldBeQueued()) {
-            $method = 'queue';
-        }
+        $method = $this->shouldBeQueued() ? 'queue' : 'send';
 
         return $this->{$method}($view, $data, $callback, $queue);
     }
@@ -134,6 +113,22 @@ class Mailer
     public function shouldBeQueued()
     {
         return $this->memory->get('email.queue', false);
+    }
+
+    /**
+     * Register the Swift Mailer instance.
+     *
+     * @return \Illuminate\Contracts\Mail\Mailer
+     */
+    public function getMailer()
+    {
+        if (! $this->mailer instanceof MailerContract) {
+            $this->transport->setMemoryProvider($this->memory);
+
+            $this->mailer = $this->resolveMailer();
+        }
+
+        return $this->mailer;
     }
 
     /**

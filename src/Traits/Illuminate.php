@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Orchestra\Memory\Memorizable;
 use Illuminate\Contracts\Queue\Job;
 use SuperClosure\SerializableClosure;
+use Orchestra\Notifier\MailableMailer;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Queue\Factory as QueueContract;
 
@@ -52,6 +53,32 @@ trait Illuminate
     public function alwaysTo($address, $name = null)
     {
         $this->getMailer()->alwaysTo($address, $name);
+    }
+
+    /**
+     * Begin the process of mailing a mailable class instance.
+     *
+     * @param  mixed  $users
+     * @return MailableMailer
+     */
+    public function to($users)
+    {
+        return (new MailableMailer($this->getMailer()))
+                    ->setMemoryProvider($this->memory)
+                    ->to($users);
+    }
+
+    /**
+     * Begin the process of mailing a mailable class instance.
+     *
+     * @param  mixed  $users
+     * @return MailableMailer
+     */
+    public function bcc($users)
+    {
+        return (new MailableMailer($this->getMailer()))
+                    ->setMemoryProvider($this->memory)
+                    ->bcc($users);
     }
 
     /**
