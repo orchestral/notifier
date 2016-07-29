@@ -48,6 +48,7 @@ class MailableMailer
      * Set the recipients of the message.
      *
      * @param  mixed  $users
+     *
      * @return $this
      */
     public function to($users)
@@ -61,6 +62,7 @@ class MailableMailer
      * Set the recipients of the message.
      *
      * @param  mixed  $users
+     *
      * @return $this
      */
     public function cc($users)

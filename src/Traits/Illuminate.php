@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 use Orchestra\Memory\Memorizable;
 use Illuminate\Contracts\Queue\Job;
 use SuperClosure\SerializableClosure;
-use Orchestra\Notifier\MailableMailer;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Queue\Factory as QueueContract;
 
@@ -60,6 +59,7 @@ trait Illuminate
      *
      * @param  string  $text
      * @param  mixed  $callback
+     *
      * @return void
      */
     public function raw($text, $callback)
@@ -73,6 +73,7 @@ trait Illuminate
      * @param  string  $view
      * @param  array  $data
      * @param  mixed  $callback
+     *
      * @return void
      */
     public function plain($view, array $data, $callback)
@@ -120,6 +121,7 @@ trait Illuminate
      * @param  string|array  $view
      * @param  array  $data
      * @param  \Closure|string  $callback
+     *
      * @return mixed
      */
     public function laterOn($queue, $delay, $view, array $data = [], $callback = null)
