@@ -52,7 +52,7 @@ class Receipt implements ReceiptContract
     {
         $failures = $this->failures();
 
-        return (! empty($failures));
+        return ! empty($failures);
     }
 
     /**

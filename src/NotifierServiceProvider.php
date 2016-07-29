@@ -33,9 +33,7 @@ class NotifierServiceProvider extends ServiceProvider
     protected function registerMailer()
     {
         $this->app->singleton('orchestra.mail', function ($app) {
-            $transport = new TransportManager($app);
-
-            $mailer = new Mailer($app, $transport);
+            $mailer = new Mailer($app, new TransportManager($app));
 
             if ($app->bound('queue')) {
                 $mailer->setQueue($queue);
