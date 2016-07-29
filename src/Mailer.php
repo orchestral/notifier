@@ -2,6 +2,7 @@
 
 namespace Orchestra\Notifier;
 
+use Swift_Mailer;
 use Orchestra\Notifier\Traits\Illuminate;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;

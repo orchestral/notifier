@@ -82,7 +82,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->with('orchestra.mail@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
 
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
-            ->shouldReceive('setQueue')->once()->with($app['queue'])->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
         $transport = new TransportManager($app);
@@ -364,7 +363,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
 
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
-            ->shouldReceive('setQueue')->once()->with($app['queue'])->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
         $transport = new TransportManager($app);
@@ -407,7 +405,6 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
 
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
-            ->shouldReceive('setQueue')->once()->with($app['queue'])->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
         $transport = new TransportManager($app);
