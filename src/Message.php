@@ -3,7 +3,6 @@
 namespace Orchestra\Notifier;
 
 use Exception;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Orchestra\Contracts\Notification\Message as MessageContract;
@@ -69,6 +68,10 @@ class Message extends Fluent implements MessageContract
      */
     public function mailable()
     {
+        if (! isset($this->attributes['view'])) {
+            return false;
+        }
+
         return $this->attributes['view'] instanceof MailableContract;
     }
 }
