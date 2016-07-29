@@ -18,6 +18,13 @@ class Mailer
     protected $app;
 
     /**
+     * Transporter instance.
+     *
+     * @var \Orchestra\Notifier\TransportManager
+     */
+    protected $transport;
+
+    /**
      * Construct a new Mail instance.
      *
      * @param  \Illuminate\Contracts\Container\Container  $app
@@ -127,5 +134,32 @@ class Mailer
     public function shouldBeQueued()
     {
         return $this->memory->get('email.queue', false);
+    }
+
+    /**
+     * Setup mailer.
+     *
+     * @return \Illuminate\Contracts\Mail\Mailer
+     */
+    protected function resolveMailer()
+    {
+        $from   = $this->memory->get('email.from');
+        $mailer = $this->app->make('mailer');
+
+        // If a "from" address is set, we will set it on the mailer so that
+        // all mail messages sent by the applications will utilize the same
+        // "from" address on each one, which makes the developer's life a
+        // lot more convenient.
+        if (is_array($from) && ! empty($from['address'])) {
+            $mailer->alwaysFrom($from['address'], $from['name']);
+        }
+
+        if ($this->queue instanceof QueueContract) {
+            $mailer->setQueue($this->queue);
+        }
+
+        $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));
+
+        return $mailer;
     }
 }

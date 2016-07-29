@@ -3,11 +3,11 @@
 namespace Orchestra\Notifier\Traits;
 
 use Closure;
-use Swift_Mailer;
 use Illuminate\Support\Str;
 use Orchestra\Memory\Memorizable;
 use Illuminate\Contracts\Queue\Job;
 use SuperClosure\SerializableClosure;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Queue\Factory as QueueContract;
 
 trait Illuminate
@@ -27,13 +27,6 @@ trait Illuminate
      * @var \Illuminate\Contracts\Queue\Factory
      */
     protected $queue;
-
-    /**
-     * Transporter instance.
-     *
-     * @var \Orchestra\Notifier\TransportManager
-     */
-    protected $transport;
 
     /**
      * Set the global from address and name.
@@ -102,36 +95,13 @@ trait Illuminate
      */
     public function setQueue(QueueContract $queue)
     {
+        if ($this->mailer instanceof MailerContract) {
+            $this->mailer->setQueue($queue);
+        }
+
         $this->queue = $queue;
 
         return $this;
-    }
-
-    /**
-     * Setup mailer.
-     *
-     * @return \Illuminate\Contracts\Mail\Mailer
-     */
-    protected function resolveMailer()
-    {
-        $from   = $this->getMemoryProvider()->get('email.from');
-        $mailer = $this->app->make('mailer');
-
-        // If a "from" address is set, we will set it on the mailer so that
-        // all mail messages sent by the applications will utilize the same
-        // "from" address on each one, which makes the developer's life a
-        // lot more convenient.
-        if (is_array($from) && ! empty($from['address'])) {
-            $mailer->alwaysFrom($from['address'], $from['name']);
-        }
-
-        if ($this->queue instanceof QueueContract) {
-            $mailer->setQueue($this->queue);
-        }
-
-        $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));
-
-        return $mailer;
     }
 
     /**
