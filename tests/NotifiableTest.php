@@ -8,7 +8,7 @@ use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Orchestra\Support\Facades\Notifier;
 
-class NotifiableTraitTest extends \PHPUnit_Framework_TestCase
+class NotifiableTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Setup the test environment.
@@ -58,7 +58,7 @@ class NotifiableTraitTest extends \PHPUnit_Framework_TestCase
 
 class Notifiable
 {
-    use \Orchestra\Notifier\NotifiableTrait;
+    use \Orchestra\Notifier\Notifiable;
 
     public function notify($user)
     {
