@@ -43,7 +43,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->twice()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub = (new Mailer($app, $transport))->attach($app['orchestra.memory']);
 
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->push('foo.bar', ['foo' => 'foobar'], ''));
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->push('foo.bar', ['foo' => 'foobar'], ''));
@@ -60,7 +60,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
-        $app->instance('queue', $queue = m::mock('QueueListener'));
+        $app->instance('queue', $queue = m::mock('\Illuminate\Contracts\Queue\Factory'));
 
         $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
             ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
@@ -81,8 +81,13 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $queue->shouldReceive('push')->once()
             ->with('orchestra.mail@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
 
+        $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
+            ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
+
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub = (new Mailer($app, $transport))
+                    ->setQueue($app['queue'])
+                    ->attach($app['orchestra.memory']);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->push($with['view'], $with['data'], $with['callback']));
     }
 
@@ -110,7 +115,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub = (new Mailer($app, $transport))->attach($app['orchestra.memory']);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
@@ -138,7 +143,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($memory);
+        $stub = (new Mailer($app, $transport))->attach($memory);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
@@ -166,7 +171,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($memory);
+        $stub = (new Mailer($app, $transport))->attach($memory);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
@@ -200,7 +205,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($memory);
+        $stub = (new Mailer($app, $transport))->attach($memory);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
@@ -230,7 +235,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($memory);
+        $stub = (new Mailer($app, $transport))->attach($memory);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
@@ -259,7 +264,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($memory);
+        $stub = (new Mailer($app, $transport))->attach($memory);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
@@ -292,7 +297,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $logger->shouldReceive('getMonolog')->once()->andReturn($monolog);
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($memory);
+        $stub = (new Mailer($app, $transport))->attach($memory);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
@@ -321,7 +326,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->andReturnNull();
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($memory);
+        $stub = (new Mailer($app, $transport))->attach($memory);
         $stub->send('foo.bar', ['foo' => 'foobar'], '');
     }
 
@@ -336,7 +341,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
 
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
-        $app->instance('queue', $queue = m::mock('QueueListener'));
+        $app->instance('queue', $queue = m::mock('\Illuminate\Contracts\Queue\Factory'));
 
         $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
             ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
@@ -356,8 +361,14 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $queue->shouldReceive('push')->once()
             ->with('orchestra.mail@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
 
+
+        $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
+            ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
+
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub = (new Mailer($app, $transport))
+                    ->setQueue($app['queue'])
+                    ->attach($app['orchestra.memory']);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->queue($with['view'], $with['data'], $with['callback']));
     }
 
@@ -368,11 +379,12 @@ class MailerTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function testQueueMethodWhenClassNameIsGiven()
-    {$app = new Container();
+    {
+        $app = new Container();
 
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
         $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
-        $app->instance('queue', $queue = m::mock('QueueListener'));
+        $app->instance('queue', $queue = m::mock('\Illuminate\Contracts\Queue\Factory'));
 
         $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
             ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
@@ -391,8 +403,14 @@ class MailerTest extends \PHPUnit_Framework_TestCase
             ->with('orchestra.mail@handleQueuedMessage', $with, '')
             ->andReturn(true);
 
+
+        $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
+            ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
+
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub = (new Mailer($app, $transport))
+                    ->setQueue($app['queue'])
+                    ->attach($app['orchestra.memory']);
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->queue($with['view'], $with['data'], $with['callback']));
     }
 
@@ -450,7 +468,7 @@ class MailerTest extends \PHPUnit_Framework_TestCase
                 ->with($view, $data, m::any())->andReturn(true);
 
         $transport = new TransportManager($app);
-        $stub = with(new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub = (new Mailer($app, $transport))->attach($app['orchestra.memory']);
         $stub->handleQueuedMessage($job, compact('view', 'data', 'callback'));
     }
 }

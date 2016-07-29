@@ -3,7 +3,6 @@
 namespace Orchestra\Notifier\Handlers;
 
 use Closure;
-use Illuminate\Mail\Message;
 use Orchestra\Notifier\Mailer;
 use Orchestra\Memory\Memorizable;
 use SuperClosure\SerializableClosure;
@@ -12,7 +11,7 @@ use Orchestra\Contracts\Notification\Recipient;
 use Orchestra\Contracts\Notification\Notification;
 use Orchestra\Contracts\Notification\Message as MessageContract;
 
-class Orchestra implements Notification
+class Orchestra extends Handler implements Notification
 {
     use Memorizable;
 
@@ -53,18 +52,7 @@ class Orchestra implements Notification
         // exception.
         $callback = ($callback instanceof Closure ? new SerializableClosure($callback) : $callback);
 
-        // Send the notification using push which would allow Orchestra
-        // Platform to choose either to use queue or send.
-        $receipt = $this->mailer->push($view, $data, function (Message $message) use ($user, $subject, $callback) {
-            // Set the recipient detail.
-            $message->to($user->getRecipientEmail(), $user->getRecipientName());
-
-            // Only append the subject if it was provided.
-            ! empty($subject) && $message->subject($subject);
-
-            // Run any callback if provided.
-            is_callable($callback) && $callback(...func_get_args());
-        });
+        $receipt = $this->mailer->push($view, $data, $this->createMessageCallback($user, $subject, $callback));
 
         return $receipt->usingQueue($this->isUsingQueue());
     }
@@ -80,14 +68,14 @@ class Orchestra implements Notification
         // when the mailer is only push to queue, in this case we should
         // assume that sending is successful when using queue.
 
-        $usingQueue = false;
-        $usingApi   = 'mail';
+        $queue  = false;
+        $driver = 'mail';
 
         if ($this->memory instanceof Provider) {
-            $usingQueue = $this->memory->get('email.queue', false);
-            $usingApi   = $this->memory->get('email.driver');
+            $queue  = $this->memory->get('email.queue', false);
+            $driver = $this->memory->get('email.driver');
         }
 
-        return ($usingQueue || in_array($usingApi, ['mailgun', 'mandrill', 'log']));
+        return ($queue || in_array($driver, ['mailgun', 'mandrill', 'log']));
     }
 }

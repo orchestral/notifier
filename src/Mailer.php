@@ -2,16 +2,14 @@
 
 namespace Orchestra\Notifier;
 
-use Closure;
 use Swift_Mailer;
-use Orchestra\Memory\Memorizable;
-use Illuminate\Contracts\Queue\Job;
-use SuperClosure\SerializableClosure;
-use Illuminate\Contracts\Mail\Mailer as Mail;
+use Orchestra\Notifier\Traits\Illuminate;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Contracts\Mail\Mailable as MailableContract;
 
 class Mailer
 {
-    use Memorizable;
+    use Illuminate;
 
     /**
      * Application instance.
@@ -19,13 +17,6 @@ class Mailer
      * @var \Illuminate\Contracts\Container\Container
      */
     protected $app;
-
-    /**
-     * Mailer instance.
-     *
-     * @var \Illuminate\Contracts\Mail\Mailer
-     */
-    protected $mailer;
 
     /**
      * Transporter instance.
@@ -47,40 +38,43 @@ class Mailer
     }
 
     /**
-     * Register the Swift Mailer instance.
+     * Begin the process of mailing a mailable class instance.
      *
-     * @return \Illuminate\Contracts\Mail\Mailer
+     * @param  mixed  $users
+     *
+     * @return \Orchestra\Notifier\MailableMailer
      */
-    public function getMailer()
+    public function to($users)
     {
-        if (! $this->mailer instanceof Mail) {
-            $this->transport->setMemoryProvider($this->memory);
+        return (new MailableMailer($this))->to($users);
+    }
 
-            $this->mailer = $this->resolveMailer();
-        }
-
-        return $this->mailer;
+    /**
+     * Begin the process of mailing a mailable class instance.
+     *
+     * @param  mixed  $users
+     *
+     * @return \Orchestra\Notifier\MailableMailer
+     */
+    public function bcc($users)
+    {
+        return (new MailableMailer($this))->bcc($users);
     }
 
     /**
      * Allow Orchestra Platform to either use send or queue based on
      * settings.
      *
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
-     * @param  \Closure|string  $callback
-     * @param  string  $queue
+     * @param  \Closure|string|null  $callback
+     * @param  string|null  $queue
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function push($view, array $data, $callback, $queue = null)
+    public function push($view, array $data = [], $callback = null, $queue = null)
     {
-        $method = 'queue';
-        $memory = $this->memory;
-
-        if (false === $memory->get('email.queue', false)) {
-            $method = 'send';
-        }
+        $method = $this->shouldBeQueued() ? 'queue' : 'send';
 
         return $this->{$method}($view, $data, $callback, $queue);
     }
@@ -88,15 +82,19 @@ class Mailer
     /**
      * Force Orchestra Platform to send email directly.
      *
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
-     * @param  \Closure|string  $callback
+     * @param  \Closure|string|null  $callback
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function send($view, array $data, $callback)
+    public function send($view, array $data = [], $callback = null)
     {
         $mailer = $this->getMailer();
+
+        if ($view instanceof MailableContract) {
+            return $view->send($this->getMailer());
+        }
 
         $mailer->send($view, $data, $callback);
 
@@ -106,73 +104,76 @@ class Mailer
     /**
      * Force Orchestra Platform to send email using queue.
      *
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
-     * @param  \Closure|string  $callback
-     * @param  string  $queue
+     * @param  \Closure|string|null  $callback
+     * @param  string|null  $queue
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function queue($view, array $data, $callback, $queue = null)
+    public function queue($view, array $data = [], $callback = null, $queue = null)
     {
+        if ($view instanceof MailableContract) {
+            return $view->queue($this->queue);
+        }
+
         $callback = $this->buildQueueCallable($callback);
+        $with     = compact('view', 'data', 'callback');
 
-        $with = [
-            'view'     => $view,
-            'data'     => $data,
-            'callback' => $callback,
-        ];
+        $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
 
-        $this->app->make('queue')->push('orchestra.mail@handleQueuedMessage', $with, $queue);
-
-        return new Receipt($this->mailer ?: $this->app->make('mailer'), true);
+        return new Receipt($this->getMailer(), true);
     }
 
     /**
-     * Build the callable for a queued e-mail job.
+     * Force Orchestra Platform to send email using queue for sending after (n) seconds.
      *
-     * @param  mixed  $callback
+     * @param  int  $delay
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
+     * @param  array  $data
+     * @param  \Closure|string|null  $callback
+     * @param  string|null  $queue
      *
-     * @return mixed
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    protected function buildQueueCallable($callback)
+    public function later($delay, $view, array $data = [], $callback = null, $queue = null)
     {
-        if (! $callback instanceof Closure) {
-            return $callback;
+        if ($view instanceof MailableContract) {
+            return $view->later($delay, $this->queue);
         }
 
-        return serialize(new SerializableClosure($callback));
+        $callback = $this->buildQueueCallable($callback);
+        $with     = compact('view', 'data', 'callback');
+
+        $this->queue->later($delay, 'orchestra.mail@handleQueuedMessage', $with, $queue);
+
+        return new Receipt($this->getMailer(), true);
     }
 
     /**
-     * Handle a queued e-mail message job.
+     * Should the email be send via queue.
      *
-     * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  array  $data
-     *
-     * @return void
+     * @return bool
      */
-    public function handleQueuedMessage(Job $job, $data)
+    public function shouldBeQueued()
     {
-        $this->send($data['view'], $data['data'], $this->getQueuedCallable($data));
-
-        $job->delete();
+        return $this->memory->get('email.queue', false);
     }
 
     /**
-     * Get the true callable for a queued e-mail message.
+     * Register the Swift Mailer instance.
      *
-     * @param  array  $data
-     *
-     * @return mixed
+     * @return \Illuminate\Contracts\Mail\Mailer
      */
-    protected function getQueuedCallable(array $data)
+    public function getMailer()
     {
-        if (str_contains($data['callback'], 'SerializableClosure')) {
-            return with(unserialize($data['callback']))->getClosure();
+        if (! $this->mailer instanceof MailerContract) {
+            $this->transport->setMemoryProvider($this->memory);
+
+            $this->mailer = $this->resolveMailer();
         }
 
-        return $data['callback'];
+        return $this->mailer;
     }
 
     /**
@@ -191,6 +192,10 @@ class Mailer
         // lot more convenient.
         if (is_array($from) && ! empty($from['address'])) {
             $mailer->alwaysFrom($from['address'], $from['name']);
+        }
+
+        if ($this->queue instanceof QueueContract) {
+            $mailer->setQueue($this->queue);
         }
 
         $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));

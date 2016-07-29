@@ -25,7 +25,8 @@ class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = m::mock('\Illuminate\Contracts\Container\Container');
 
-        $app->shouldReceive('singleton')->once()->with('orchestra.mail', m::type('Closure'))
+        $app->shouldReceive('bound')->once()->with('queue')->andReturn(false)
+            ->shouldReceive('singleton')->once()->with('orchestra.mail', m::type('Closure'))
                 ->andReturnUsing(function ($n, $c) use ($app) {
                     return $c($app);
                 })

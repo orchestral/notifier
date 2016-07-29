@@ -16,7 +16,7 @@ trait Notifiable
      *
      * @param  \Illuminate\Support\Collection  $users
      * @param  \Orchestra\Contracts\Notification\Message|string  $subject
-     * @param  string|null  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|null  $view
      * @param  array  $data
      *
      * @return bool
@@ -33,20 +33,24 @@ trait Notifiable
      *
      * @param  \Orchestra\Contracts\Notification\Recipient  $user
      * @param  \Orchestra\Contracts\Notification\Message|string  $subject
-     * @param  string|null  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|null  $view
      * @param  array  $data
      *
      * @return bool
      */
     protected function sendNotification(Recipient $user, $subject, $view = null, array $data = [])
     {
-        $entity = $user;
-
         if ($subject instanceof MessageContract) {
-            $data    = $subject->getData();
+            if ($subject->mailable()) {
+                return Notifier::send($user, $subject);
+            }
+
             $view    = $subject->getView();
+            $data    = $subject->getData();
             $subject = $subject->getSubject();
         }
+
+        $entity  = $user;
 
         if ($user instanceof Arrayable) {
             $entity = $user->toArray();
