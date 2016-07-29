@@ -56,31 +56,28 @@ trait Illuminate
     }
 
     /**
-     * Begin the process of mailing a mailable class instance.
+     * Send a new message when only a raw text part.
      *
-     * @param  mixed  $users
-     *
-     * @return MailableMailer
+     * @param  string  $text
+     * @param  mixed  $callback
+     * @return void
      */
-    public function to($users)
+    public function raw($text, $callback)
     {
-        return (new MailableMailer($this->getMailer()))
-                    ->setMemoryProvider($this->memory)
-                    ->to($users);
+        return $this->send(['raw' => $text], [], $callback);
     }
 
     /**
-     * Begin the process of mailing a mailable class instance.
+     * Send a new message when only a plain part.
      *
-     * @param  mixed  $users
-     *
-     * @return MailableMailer
+     * @param  string  $view
+     * @param  array  $data
+     * @param  mixed  $callback
+     * @return void
      */
-    public function bcc($users)
+    public function plain($view, array $data, $callback)
     {
-        return (new MailableMailer($this->getMailer()))
-                    ->setMemoryProvider($this->memory)
-                    ->bcc($users);
+        return $this->send(['text' => $view], $data, $callback);
     }
 
     /**
@@ -116,6 +113,21 @@ trait Illuminate
     }
 
     /**
+     * Queue a new e-mail message for sending after (n) seconds on the given queue.
+     *
+     * @param  string  $queue
+     * @param  int  $delay
+     * @param  string|array  $view
+     * @param  array  $data
+     * @param  \Closure|string  $callback
+     * @return mixed
+     */
+    public function laterOn($queue, $delay, $view, array $data = [], $callback = null)
+    {
+        return $this->later($delay, $view, $data, $callback, $queue);
+    }
+
+    /**
      * Set the queue manager instance.
      *
      * @param  \Illuminate\Contracts\Queue\Factory  $queue
@@ -131,6 +143,16 @@ trait Illuminate
         $this->queue = $queue;
 
         return $this;
+    }
+
+    /**
+     * Get the array of failed recipients.
+     *
+     * @return array
+     */
+    public function failures()
+    {
+        return $this->getMailer()->failures();
     }
 
     /**
@@ -209,4 +231,17 @@ trait Illuminate
      * @return \Orchestra\Contracts\Notification\Receipt
      */
     abstract public function queue($view, array $data = [], $callback = null, $queue = null);
+
+    /**
+     * Force Orchestra Platform to send email using queue for sending after (n) seconds.
+     *
+     * @param  int  $delay
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
+     * @param  array  $data
+     * @param  \Closure|string|null  $callback
+     * @param  string|null  $queue
+     *
+     * @return \Orchestra\Contracts\Notification\Receipt
+     */
+    abstract public function later($delay, $view, array $data = [], $callback = null, $queue = null);
 }

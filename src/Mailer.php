@@ -37,6 +37,30 @@ class Mailer
     }
 
     /**
+     * Begin the process of mailing a mailable class instance.
+     *
+     * @param  mixed  $users
+     *
+     * @return \Orchestra\Notifier\MailableMailer
+     */
+    public function to($users)
+    {
+        return (new MailableMailer($this))->to($users);
+    }
+
+    /**
+     * Begin the process of mailing a mailable class instance.
+     *
+     * @param  mixed  $users
+     *
+     * @return \Orchestra\Notifier\MailableMailer
+     */
+    public function bcc($users)
+    {
+        return (new MailableMailer($this))->bcc($users);
+    }
+
+    /**
      * Allow Orchestra Platform to either use send or queue based on
      * settings.
      *
@@ -93,14 +117,34 @@ class Mailer
         }
 
         $callback = $this->buildQueueCallable($callback);
-
-        $with = [
-            'view'     => $view,
-            'data'     => $data,
-            'callback' => $callback,
-        ];
+        $with     = compact('view', 'data', 'callback');
 
         $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
+
+        return new Receipt($this->getMailer(), true);
+    }
+
+    /**
+     * Force Orchestra Platform to send email using queue for sending after (n) seconds.
+     *
+     * @param  int  $delay
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
+     * @param  array  $data
+     * @param  \Closure|string|null  $callback
+     * @param  string|null  $queue
+     *
+     * @return \Orchestra\Contracts\Notification\Receipt
+     */
+    public function later($delay, $view, array $data = [], $callback = null, $queue = null)
+    {
+        if ($view instanceof MailableContract) {
+            return $view->later($delay, $this->queue);
+        }
+
+        $callback = $this->buildQueueCallable($callback);
+        $with     = compact('view', 'data', 'callback');
+
+        $this->queue->later($delay, 'orchestra.mail@handleQueuedMessage', $with, $queue);
 
         return new Receipt($this->getMailer(), true);
     }
