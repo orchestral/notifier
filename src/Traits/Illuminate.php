@@ -59,6 +59,7 @@ trait Illuminate
      * Begin the process of mailing a mailable class instance.
      *
      * @param  mixed  $users
+     *
      * @return MailableMailer
      */
     public function to($users)
@@ -72,6 +73,7 @@ trait Illuminate
      * Begin the process of mailing a mailable class instance.
      *
      * @param  mixed  $users
+     *
      * @return MailableMailer
      */
     public function bcc($users)

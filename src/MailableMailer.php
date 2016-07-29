@@ -3,6 +3,7 @@
 namespace Orchestra\Notifier;
 
 use Orchestra\Memory\Memorizable;
+use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Mail\MailableMailer as Mailable;
 
 class MailableMailer extends Mailable
@@ -12,7 +13,8 @@ class MailableMailer extends Mailable
     /**
      * Push a new mailable message instance.
      *
-     * @param  Mailable  $mailable
+     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
+     *
      * @return mixed
      */
     public function push(Mailable $mailable)
