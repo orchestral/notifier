@@ -4,12 +4,12 @@ namespace Orchestra\Notifier;
 
 use Orchestra\Notifier\Events\CssInliner;
 use Illuminate\Mail\Events\MessageSending;
-use Orchestra\Support\Providers\Traits\EventProviderTrait;
+use Orchestra\Support\Providers\Traits\EventProvider;
 use Illuminate\Mail\MailServiceProvider as ServiceProvider;
 
 class MailServiceProvider extends ServiceProvider
 {
-    use EventProviderTrait;
+    use EventProvider;
 
     /**
      * The event handler mappings for the application.
