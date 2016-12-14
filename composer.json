@@ -21,7 +21,7 @@
         "orchestra/contracts": "~3.4.0",
         "orchestra/memory": "~3.4.0",
         "orchestra/support": "~3.4.0",
-        "tijsverkoyen/css-to-inline-styles": "~1.2"
+        "tijsverkoyen/css-to-inline-styles": "~2.2"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
