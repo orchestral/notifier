@@ -5,6 +5,11 @@ title: Notifier Change Log
 
 ## Version 3.3 {#v3-3}
 
+### v3.3.2 {#v3-3-2}
+
+* Add `Orchestra\Notifier\MailabeMailer`.
+* Add `Orchestra\Notifier\Handlers\Handler` abstract class.
+
 ### v3.3.1 {#v3-3-1}
 
 * Add `Orchestra\Notifier\Notifiable::sendNotifications()` method.
