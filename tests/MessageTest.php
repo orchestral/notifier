@@ -3,8 +3,9 @@
 namespace Orchestra\Notifier\TestCase;
 
 use Orchestra\Notifier\Message;
+use PHPUnit\Framework\TestCase;
 
-class MessageTest extends \PHPUnit_Framework_TestCase
+class MessageTest extends TestCase
 {
     /**
      * Test \Orchestra\Notifier\Message instance signature.

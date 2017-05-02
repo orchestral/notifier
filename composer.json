@@ -25,9 +25,10 @@
     },
     "require-dev": {
         "aws/aws-sdk-php": "~3.0",
-        "jeremeamia/superclosure": "~2.0",
+        "jeremeamia/superclosure": "~2.2",
         "illuminate/mail": "~5.5.0",
-        "mockery/mockery": "~0.9.4"
+        "mockery/mockery": "~0.9.4",
+        "phpunit/phpunit": "~6.0"
     },
     "suggest": {
         "aws/aws-sdk-php": "Required to use the SES mail driver (~3.0).",

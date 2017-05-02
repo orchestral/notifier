@@ -1,18 +1,19 @@
 <?php
 
-namespace Orchestra\Notifier\Handlers\TestCase;
+namespace Orchestra\Notifier\TestCase\Handlers;
 
 use Mockery as m;
 use Orchestra\Notifier\Message;
 use Orchestra\Notifier\Receipt;
+use PHPUnit\Framework\TestCase;
 use Orchestra\Notifier\Handlers\Orchestra;
 
-class OrchestraTest extends \PHPUnit_Framework_TestCase
+class OrchestraTest extends TestCase
 {
     /**
      * Teardown the test environment.
      */
-    public function tearDown()
+    protected function tearDown()
     {
         m::close();
     }

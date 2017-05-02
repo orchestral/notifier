@@ -4,16 +4,17 @@ namespace Orchestra\Notifier\TestCase;
 
 use Mockery as m;
 use Orchestra\Notifier\Message;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Orchestra\Support\Facades\Notifier;
 
-class NotifiableTest extends \PHPUnit_Framework_TestCase
+class NotifiableTest extends TestCase
 {
     /**
      * Setup the test environment.
      */
-    public function setUp()
+    protected function setUp()
     {
         $app = new Container();
 
@@ -24,7 +25,7 @@ class NotifiableTest extends \PHPUnit_Framework_TestCase
     /**
      * Teardown the test environment.
      */
-    public function tearDown()
+    protected function tearDown()
     {
         m::close();
     }

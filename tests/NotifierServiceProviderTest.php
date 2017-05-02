@@ -3,15 +3,16 @@
 namespace Orchestra\Notifier\TestCase;
 
 use Mockery as m;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Container\Container;
 use Orchestra\Notifier\NotifierServiceProvider;
 
-class NotifierServiceProviderTest extends \PHPUnit_Framework_TestCase
+class NotifierServiceProviderTest extends TestCase
 {
     /**
      * Teardown the test environment.
      */
-    public function tearDown()
+    protected function tearDown()
     {
         m::close();
     }
