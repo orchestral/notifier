@@ -4,16 +4,17 @@ namespace Orchestra\Notifier\TestCase;
 
 use Mockery as m;
 use Orchestra\Notifier\Mailer;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Container\Container;
 use SuperClosure\SerializableClosure;
 use Orchestra\Notifier\TransportManager;
 
-class MailerTest extends \PHPUnit_Framework_TestCase
+class MailerTest extends TestCase
 {
     /**
      * Teardown the test environment.
      */
-    public function tearDown()
+    protected function tearDown()
     {
         m::close();
     }

@@ -1,17 +1,18 @@
 <?php
 
-namespace Orchestra\Notifier\Handlers\TestCase;
+namespace Orchestra\Notifier\TestCase\Handlers;
 
 use Mockery as m;
 use Orchestra\Notifier\Message;
+use PHPUnit\Framework\TestCase;
 use Orchestra\Notifier\Handlers\Laravel;
 
-class LaravelTest extends \PHPUnit_Framework_TestCase
+class LaravelTest extends TestCase
 {
     /**
      * Teardown the test environment.
      */
-    public function tearDown()
+    protected function tearDown()
     {
         m::close();
     }
