@@ -34,7 +34,7 @@ class Message extends Fluent implements MessageContract
      */
     public function getData()
     {
-        return isset($this->attributes['data']) ? $this->attributes['data'] : [];
+        return $this->attributes['data'] ?? [];
     }
 
     /**
@@ -44,7 +44,7 @@ class Message extends Fluent implements MessageContract
      */
     public function getSubject()
     {
-        return isset($this->attributes['subject']) ? $this->attributes['subject'] : '';
+        return $this->attributes['subject'] ?? '';
     }
 
     /**
