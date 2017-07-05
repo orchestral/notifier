@@ -6,10 +6,10 @@ use Aws\Ses\SesClient;
 use Illuminate\Support\Manager;
 use Orchestra\Memory\Memorizable;
 use GuzzleHttp\Client as HttpClient;
-use Swift_MailTransport as MailTransport;
 use Swift_SmtpTransport as SmtpTransport;
 use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\SesTransport;
+use Swift_SendmailTransport as MailTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
 use Illuminate\Mail\Transport\SparkPostTransport;
@@ -28,7 +28,7 @@ class TransportManager extends Manager
     {
         $config = $this->getTransportConfig();
 
-        $transport = SmtpTransport::newInstance($config['host'], $config['port']);
+        $transport = new SmtpTransport($config['host'], $config['port']);
 
         if (isset($config['encryption'])) {
             $transport->setEncryption($config['encryption']);
@@ -52,7 +52,7 @@ class TransportManager extends Manager
      */
     protected function createSendmailDriver()
     {
-        return SendmailTransport::newInstance($this->getConfig('sendmail'));
+        return new SendmailTransport($this->getConfig('sendmail'));
     }
 
     /**
@@ -82,7 +82,7 @@ class TransportManager extends Manager
      */
     protected function createMailDriver()
     {
-        return MailTransport::newInstance();
+        return new MailTransport();
     }
 
     /**
