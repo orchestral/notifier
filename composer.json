@@ -17,16 +17,16 @@
     },
     "require": {
         "php": ">=7.0",
-        "illuminate/encryption": "~5.5.0",
-        "orchestra/contracts": "~3.5.0",
-        "orchestra/memory": "~3.5.0",
-        "orchestra/support": "~3.5.0",
+        "illuminate/encryption": "~5.6.0",
+        "orchestra/contracts": "~3.6.0",
+        "orchestra/memory": "~3.6.0",
+        "orchestra/support": "~3.6.0",
         "tijsverkoyen/css-to-inline-styles": "~2.2"
     },
     "require-dev": {
         "aws/aws-sdk-php": "~3.0",
         "jeremeamia/superclosure": "~2.2",
-        "illuminate/mail": "~5.5.0",
+        "illuminate/mail": "~5.6.0",
         "mockery/mockery": "~0.9.4",
         "phpunit/phpunit": "~6.0"
     },
@@ -36,7 +36,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.5-dev"
+            "dev-master": "3.6-dev"
         }
     },
     "config": {
