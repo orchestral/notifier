@@ -29,7 +29,7 @@ class Receipt implements ReceiptContract
      */
     public function __construct(Mail $mailer, $usingQueue = false)
     {
-        $this->mailer     = $mailer;
+        $this->mailer = $mailer;
         $this->usingQueue = $usingQueue;
     }
 

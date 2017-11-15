@@ -29,7 +29,7 @@ class GenericRecipient implements Recipient
     public function __construct($email, $name)
     {
         $this->email = $email;
-        $this->name  = $name;
+        $this->name = $name;
     }
 
     /**

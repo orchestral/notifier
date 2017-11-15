@@ -45,12 +45,12 @@ trait Notifiable
                 return Notifier::send($user, $subject);
             }
 
-            $view    = $subject->getView();
-            $data    = $subject->getData();
+            $view = $subject->getView();
+            $data = $subject->getData();
             $subject = $subject->getSubject();
         }
 
-        $entity  = $user;
+        $entity = $user;
 
         if ($user instanceof Arrayable) {
             $entity = $user->toArray();
