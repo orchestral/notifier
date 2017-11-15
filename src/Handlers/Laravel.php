@@ -39,8 +39,8 @@ class Laravel extends Handler implements Notification
      */
     public function send(Recipient $user, MessageContract $message, Closure $callback = null)
     {
-        $view    = $message->getView();
-        $data    = $message->getData();
+        $view = $message->getView();
+        $data = $message->getData();
         $subject = $message->getSubject();
 
         $this->mailer->send($view, $data, $this->createMessageCallback($user, $subject, $callback));

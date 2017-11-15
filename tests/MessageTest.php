@@ -23,7 +23,7 @@ class MessageTest extends TestCase
     {
         $view = 'foo.bar';
         $data = ['data' => 'foo'];
-        $subject = "Hello world";
+        $subject = 'Hello world';
         $stub = Message::create($view, $data, $subject);
 
         $this->assertEquals($view, $stub->view);

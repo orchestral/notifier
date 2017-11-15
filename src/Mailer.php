@@ -33,7 +33,7 @@ class Mailer
      */
     public function __construct($app, TransportManager $transport)
     {
-        $this->app       = $app;
+        $this->app = $app;
         $this->transport = $transport;
     }
 
@@ -118,7 +118,7 @@ class Mailer
         }
 
         $callback = $this->buildQueueCallable($callback);
-        $with     = compact('view', 'data', 'callback');
+        $with = compact('view', 'data', 'callback');
 
         $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
 
@@ -143,7 +143,7 @@ class Mailer
         }
 
         $callback = $this->buildQueueCallable($callback);
-        $with     = compact('view', 'data', 'callback');
+        $with = compact('view', 'data', 'callback');
 
         $this->queue->later($delay, 'orchestra.mail@handleQueuedMessage', $with, $queue);
 
@@ -183,7 +183,7 @@ class Mailer
      */
     protected function resolveMailer()
     {
-        $from   = $this->memory->get('email.from');
+        $from = $this->memory->get('email.from');
         $mailer = $this->app->make('mailer');
 
         // If a "from" address is set, we will set it on the mailer so that

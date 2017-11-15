@@ -21,8 +21,8 @@ class Message extends Fluent implements MessageContract
     public static function create($view, array $data = [], $subject = null)
     {
         return new static([
-            'view'    => $view,
-            'data'    => $data,
+            'view' => $view,
+            'data' => $data,
             'subject' => $subject,
         ]);
     }

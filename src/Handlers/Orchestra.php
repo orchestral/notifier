@@ -43,8 +43,8 @@ class Orchestra extends Handler implements Notification
      */
     public function send(Recipient $user, MessageContract $message, Closure $callback = null)
     {
-        $view    = $message->getView();
-        $data    = $message->getData() ?: [];
+        $view = $message->getView();
+        $data = $message->getData() ?: [];
         $subject = $message->getSubject() ?: '';
 
         // In order to pass a Closure as "use" we need to actually convert
@@ -68,14 +68,14 @@ class Orchestra extends Handler implements Notification
         // when the mailer is only push to queue, in this case we should
         // assume that sending is successful when using queue.
 
-        $queue  = false;
+        $queue = false;
         $driver = 'mail';
 
         if ($this->memory instanceof Provider) {
-            $queue  = $this->memory->get('email.queue', false);
+            $queue = $this->memory->get('email.queue', false);
             $driver = $this->memory->get('email.driver');
         }
 
-        return ($queue || in_array($driver, ['mailgun', 'mandrill', 'log']));
+        return $queue || in_array($driver, ['mailgun', 'mandrill', 'log']);
     }
 }

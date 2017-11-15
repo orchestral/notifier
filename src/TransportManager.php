@@ -64,10 +64,10 @@ class TransportManager extends Manager
     {
         $client = new SesClient([
             'credentials' => [
-                'key'    => $this->getSecureConfig('key'),
+                'key' => $this->getSecureConfig('key'),
                 'secret' => $this->getSecureConfig('secret'),
             ],
-            'region'  => $this->getConfig('region'),
+            'region' => $this->getConfig('region'),
             'service' => 'email',
             'version' => 'latest',
         ]);

@@ -75,7 +75,7 @@ class MailerTest extends TestCase
             'view' => 'foo.bar',
             'data' => ['foo' => 'foobar'],
             'callback' => function () {
-
+                //
             },
         ];
 
@@ -355,7 +355,7 @@ class MailerTest extends TestCase
             'view' => 'foo.bar',
             'data' => ['foo' => 'foobar'],
             'callback' => function () {
-
+                //
             },
         ];
 
@@ -423,7 +423,7 @@ class MailerTest extends TestCase
     public function queueMessageDataProvdier()
     {
         $callback = new SerializableClosure(function () {
-
+            //
         });
 
         return [
@@ -435,7 +435,7 @@ class MailerTest extends TestCase
             [
                 'view' => 'foo.bar',
                 'data' => ['foo' => 'foobar'],
-                'callback' => "hello world",
+                'callback' => 'hello world',
             ],
         ];
     }
