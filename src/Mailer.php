@@ -93,7 +93,7 @@ class Mailer
         $mailer = $this->getMailer();
 
         if ($view instanceof MailableContract) {
-            return $view->send($this->getMailer());
+            return $view->send($mailer);
         }
 
         $mailer->send($view, $data, $callback);
