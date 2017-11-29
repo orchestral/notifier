@@ -114,13 +114,13 @@ class Mailer
     public function queue($view, array $data = [], $callback = null, $queue = null)
     {
         if ($view instanceof MailableContract) {
-            return $view->queue($this->queue);
+            $view->queue($this->queue);
+        } else {
+            $callback = $this->buildQueueCallable($callback);
+            $with = compact('view', 'data', 'callback');
+
+            $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
         }
-
-        $callback = $this->buildQueueCallable($callback);
-        $with = compact('view', 'data', 'callback');
-
-        $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
 
         return new Receipt($this->getMailer(), true);
     }
