@@ -51,6 +51,7 @@ class NotifierManagerTest extends TestCase
         $app['orchestra.mail'] = $mailer = m::mock('\Orchestra\Notifier\Mailer');
         $app['orchestra.memory'] = $memory = m::mock('\Orchestra\Memory\MemoryManager');
 
+        $mailer->shouldReceive('attached')->once()->andReturn(false);
         $memory->shouldReceive('makeOrFallback')->once()->andReturn(m::mock('\Orchestra\Contracts\Memory\Provider'));
 
         $stub = new NotifierManager($app);
