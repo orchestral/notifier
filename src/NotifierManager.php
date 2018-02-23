@@ -25,9 +25,15 @@ class NotifierManager extends Manager
      */
     protected function createOrchestraDriver()
     {
-        $notifier = new Orchestra($this->app->make('orchestra.mail'));
+        $mailer = $this->app->make('orchestra.mail');
+        $notifier = new Orchestra($mailer);
 
-        $notifier->attach($this->app->make('orchestra.memory')->makeOrFallback());
+        if ($mailer->attached()) {
+            $notifier->attach($mailer->getMemoryProvider());
+        } else {
+            $notifier->attach($this->app->make('orchestra.memory')->makeOrFallback());
+        }
+
 
         return $notifier;
     }

@@ -35,6 +35,10 @@ class NotifierServiceProvider extends ServiceProvider
         $this->app->singleton('orchestra.mail', function ($app) {
             $mailer = new Mailer($app, new TransportManager($app));
 
+            if ($app->bound('orchestra.platform.memory')) {
+                $mailer->attach($app->make('orchestra.platform.memory'));
+            }
+
             if ($app->bound('queue')) {
                 $mailer->setQueue($app->make('queue'));
             }
