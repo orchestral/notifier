@@ -1,19 +1,17 @@
 <?php
 
-namespace Orchestra\Notifier\Traits;
+namespace Orchestra\Notifier\Concerns;
 
 use Closure;
 use Illuminate\Support\Str;
-use Orchestra\Memory\Memorizable;
 use Illuminate\Contracts\Queue\Job;
 use SuperClosure\SerializableClosure;
+use Orchestra\Contracts\Notification\Receipt;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Queue\Factory as QueueContract;
 
 trait Illuminate
 {
-    use Memorizable;
-
     /**
      * Mailer instance.
      *
@@ -36,7 +34,7 @@ trait Illuminate
      *
      * @return void
      */
-    public function alwaysFrom($address, $name = null)
+    public function alwaysFrom(string $address, ?string $name = null): void
     {
         $this->getMailer()->alwaysFrom($address, $name);
     }
@@ -49,7 +47,7 @@ trait Illuminate
      *
      * @return void
      */
-    public function alwaysTo($address, $name = null)
+    public function alwaysTo(string $address, ?string $name = null): void
     {
         $this->getMailer()->alwaysTo($address, $name);
     }
@@ -60,9 +58,9 @@ trait Illuminate
      * @param  string  $text
      * @param  mixed  $callback
      *
-     * @return void
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function raw($text, $callback)
+    public function raw(string $text, $callback): Receipt
     {
         return $this->send(['raw' => $text], [], $callback);
     }
@@ -74,9 +72,9 @@ trait Illuminate
      * @param  array  $data
      * @param  mixed  $callback
      *
-     * @return void
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function plain($view, array $data, $callback)
+    public function plain(string $view, array $data, $callback): Receipt
     {
         return $this->send(['text' => $view], $data, $callback);
     }
@@ -85,13 +83,13 @@ trait Illuminate
      * Queue a new e-mail message for sending on the given queue.
      *
      * @param  string  $queue
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
      * @param  \Closure|string|null  $callback
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function onQueue($queue, $view, array $data = [], $callback = null)
+    public function onQueue(string $queue, $view, array $data = [], $callback = null): Receipt
     {
         return $this->queue($view, $data, $callback, $queue);
     }
@@ -102,13 +100,13 @@ trait Illuminate
      * This method didn't match rest of framework's "onQueue" phrasing. Added "onQueue".
      *
      * @param  string  $queue
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
      * @param  \Closure|string  $callback
      *
-     * @return mixed
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function queueOn($queue, $view, array $data, $callback = null)
+    public function queueOn(string $queue, $view, array $data, $callback = null): Receipt
     {
         return $this->onQueue($queue, $view, $data, $callback);
     }
@@ -118,13 +116,13 @@ trait Illuminate
      *
      * @param  string  $queue
      * @param  int  $delay
-     * @param  string|array  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
      * @param  \Closure|string  $callback
      *
-     * @return mixed
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function laterOn($queue, $delay, $view, array $data = [], $callback = null)
+    public function laterOn(string $queue, $delay, $view, array $data = [], $callback = null): Receipt
     {
         return $this->later($delay, $view, $data, $callback, $queue);
     }
@@ -136,7 +134,7 @@ trait Illuminate
      *
      * @return $this
      */
-    public function setQueue(QueueContract $queue)
+    public function setQueue(QueueContract $queue): self
     {
         if ($this->mailer instanceof MailerContract) {
             $this->mailer->setQueue($queue);
@@ -152,7 +150,7 @@ trait Illuminate
      *
      * @return array
      */
-    public function failures()
+    public function failures(): array
     {
         return $this->getMailer()->failures();
     }
@@ -209,7 +207,7 @@ trait Illuminate
      *
      * @return \Illuminate\Contracts\Mail\Mailer
      */
-    abstract public function getMailer();
+    abstract public function getMailer(): MailerContract;
 
     /**
      * Force Orchestra Platform to send email directly.
@@ -220,7 +218,7 @@ trait Illuminate
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    abstract public function send($view, array $data = [], $callback = null);
+    abstract public function send($view, array $data = [], $callback = null): Receipt;
 
     /**
      * Force Orchestra Platform to send email using queue.
@@ -232,7 +230,7 @@ trait Illuminate
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    abstract public function queue($view, array $data = [], $callback = null, $queue = null);
+    abstract public function queue($view, array $data = [], $callback = null, ?string $queue = null): Receipt;
 
     /**
      * Force Orchestra Platform to send email using queue for sending after (n) seconds.
@@ -245,5 +243,5 @@ trait Illuminate
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    abstract public function later($delay, $view, array $data = [], $callback = null, $queue = null);
+    abstract public function later($delay, $view, array $data = [], $callback = null, ?string $queue = null): Receipt;
 }

@@ -3,7 +3,6 @@
 namespace Orchestra\Notifier\TestCase\Feature;
 
 use Illuminate\Support\Facades\Config;
-use Orchestra\Notifier\NotifierManager;
 use Orchestra\Support\Facades\Notifier;
 
 class NotifierManagerTest extends TestCase

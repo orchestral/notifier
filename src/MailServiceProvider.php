@@ -2,7 +2,6 @@
 
 namespace Orchestra\Notifier;
 
-use Orchestra\Notifier\Events\CssInliner;
 use Illuminate\Mail\Events\MessageSending;
 use Orchestra\Support\Providers\Traits\EventProvider;
 use Illuminate\Mail\MailServiceProvider as ServiceProvider;
@@ -17,7 +16,7 @@ class MailServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        MessageSending::class => [CssInliner::class],
+        MessageSending::class => [Events\CssInliner::class],
     ];
 
     /**

@@ -9,6 +9,7 @@ use SuperClosure\SerializableClosure;
 use Orchestra\Contracts\Memory\Provider;
 use Orchestra\Contracts\Notification\Recipient;
 use Orchestra\Contracts\Notification\Notification;
+use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 use Orchestra\Contracts\Notification\Message as MessageContract;
 
 class Orchestra extends Handler implements Notification
@@ -37,11 +38,11 @@ class Orchestra extends Handler implements Notification
      *
      * @param  \Orchestra\Contracts\Notification\Recipient  $user
      * @param  \Orchestra\Contracts\Notification\Message  $message
-     * @param  \Closure  $callback
+     * @param  \Closure|null  $callback
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function send(Recipient $user, MessageContract $message, Closure $callback = null)
+    public function send(Recipient $user, MessageContract $message, Closure $callback = null): ReceiptContract
     {
         $view = $message->getView();
         $data = $message->getData() ?: [];
@@ -50,7 +51,9 @@ class Orchestra extends Handler implements Notification
         // In order to pass a Closure as "use" we need to actually convert
         // it into Serializable Closure, otherwise Laravel would throw an
         // exception.
-        $callback = ($callback instanceof Closure ? new SerializableClosure($callback) : $callback);
+        $callback = $callback instanceof Closure
+                        ? new SerializableClosure($callback)
+                        : $callback;
 
         $receipt = $this->mailer->push($view, $data, $this->createMessageCallback($user, $subject, $callback));
 

@@ -14,6 +14,7 @@ class NotifiableTest extends TestCase
     {
         $user = m::mock('\Orchestra\Contracts\Notification\Recipient', '\Illuminate\Contracts\Support\Arrayable');
         $notifier = m::mock('\Orchestra\Contracts\Notification\Notification');
+        $receipt = m::mock('\Orchestra\Contracts\Notification\Receipt');
 
         $stub = new class() {
             use Notifiable;
@@ -39,11 +40,13 @@ class NotifiableTest extends TestCase
         ]);
 
         $notifier->shouldReceive('send')->twice()
-            ->with($user, m::type('\Orchestra\Contracts\Notification\Message'))->andReturn(true);
+            ->with($user, m::type('\Orchestra\Contracts\Notification\Message'))->andReturn($receipt);
+
+        $receipt->shouldReceive('sent')->andReturn(true);
 
         Notifier::swap($notifier);
 
-        $this->assertTrue($stub->notify($user));
-        $this->assertTrue($stub->notifyFluent($user));
+        $this->assertSame($receipt, $stub->notify($user));
+        $this->assertSame($receipt, $stub->notifyFluent($user));
     }
 }

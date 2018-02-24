@@ -30,7 +30,7 @@ class NotifierServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerMailer()
+    protected function registerMailer(): void
     {
         $this->app->singleton('orchestra.mail', function ($app) {
             $mailer = new Mailer($app, new TransportManager($app));
@@ -52,7 +52,7 @@ class NotifierServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerNotifier()
+    protected function registerNotifier(): void
     {
         $this->app->singleton('orchestra.notifier', function ($app) {
             return new NotifierManager($app);

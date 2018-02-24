@@ -26,7 +26,7 @@ class GenericRecipient implements Recipient
      * @param  string  $email
      * @param  string  $name
      */
-    public function __construct($email, $name)
+    public function __construct(string $email, string $name)
     {
         $this->email = $email;
         $this->name = $name;
@@ -37,7 +37,7 @@ class GenericRecipient implements Recipient
      *
      * @return string
      */
-    public function getRecipientEmail()
+    public function getRecipientEmail(): string
     {
         return $this->email;
     }
@@ -47,7 +47,7 @@ class GenericRecipient implements Recipient
      *
      * @return string
      */
-    public function getRecipientName()
+    public function getRecipientName(): string
     {
         return $this->name;
     }

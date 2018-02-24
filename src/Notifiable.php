@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Orchestra\Support\Facades\Notifier;
 use Illuminate\Contracts\Support\Arrayable;
 use Orchestra\Contracts\Notification\Recipient;
+use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 use Orchestra\Contracts\Notification\Message as MessageContract;
 
 trait Notifiable
@@ -19,9 +20,9 @@ trait Notifiable
      * @param  \Illuminate\Contracts\Mail\Mailable|string|null  $view
      * @param  array  $data
      *
-     * @return bool
+     * @return void
      */
-    protected function sendNotifications(Collection $users, $subject, $view = null, array $data = [])
+    protected function sendNotifications(Collection $users, $subject, $view = null, array $data = []): void
     {
         foreach ($users->all() as $user) {
             $this->sendNotification($user, $subject, $view, $data);
@@ -36,9 +37,9 @@ trait Notifiable
      * @param  \Illuminate\Contracts\Mail\Mailable|string|null  $view
      * @param  array  $data
      *
-     * @return bool
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    protected function sendNotification(Recipient $user, $subject, $view = null, array $data = [])
+    protected function sendNotification(Recipient $user, $subject, $view = null, array $data = []): ReceiptContract
     {
         if ($subject instanceof MessageContract) {
             if ($subject->mailable()) {
