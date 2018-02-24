@@ -1,6 +1,6 @@
 <?php
 
-namespace Orchestra\Notifier\TestCase\Handlers;
+namespace Orchestra\Notifier\TestCase\Unit\Handlers;
 
 use Mockery as m;
 use Orchestra\Notifier\Message;
@@ -17,13 +17,8 @@ class LaravelTest extends TestCase
         m::close();
     }
 
-    /**
-     * Test Orchestra\Notifier\LaravelNotifier::send() method without
-     * queue.
-     *
-     * @test
-     */
-    public function testSendMethodSucceed()
+    /** @test */
+    public function it_can_send_email()
     {
         $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message = m::mock('\Illuminate\Mail\Message');
@@ -52,12 +47,8 @@ class LaravelTest extends TestCase
         $this->assertTrue($receipt->sent());
     }
 
-    /**
-     * Test Orchestra\Notifier\LaravelNotifier::send() method with callback.
-     *
-     * @test
-     */
-    public function testSendMethodWithCallback()
+    /** @test */
+    public function it_can_send_email_using_callback()
     {
         $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message = m::mock('\Illuminate\Mail\Message');
@@ -93,12 +84,8 @@ class LaravelTest extends TestCase
         $this->assertTrue($receipt->sent());
     }
 
-    /**
-     * Test Orchestra\Notifier\LaravelNotifier::send() method failed.
-     *
-     * @test
-     */
-    public function testSendMethodFailed()
+    /** @test */
+    public function it_fails_to_send_email()
     {
         $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message = m::mock('\Illuminate\Mail\Message');

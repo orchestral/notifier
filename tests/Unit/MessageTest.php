@@ -1,25 +1,22 @@
 <?php
 
-namespace Orchestra\Notifier\TestCase;
+namespace Orchestra\Notifier\TestCase\Unit;
 
 use Orchestra\Notifier\Message;
 use PHPUnit\Framework\TestCase;
 
 class MessageTest extends TestCase
 {
-    /**
-     * Test \Orchestra\Notifier\Message instance signature.
-     *
-     * @test
-     */
-    public function testInstanceSignature()
+    /** @test */
+    public function it_has_proper_signature()
     {
         $stub = new Message();
 
         $this->assertInstanceOf('\Illuminate\Support\Fluent', $stub);
     }
 
-    public function testCreateFactoryMethod()
+    /** @test */
+    public function it_can_be_initiated()
     {
         $view = 'foo.bar';
         $data = ['data' => 'foo'];
