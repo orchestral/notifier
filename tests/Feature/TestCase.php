@@ -16,6 +16,7 @@ abstract class TestCase extends Testbench
     protected function getPackageProviders($app): array
     {
         return [
+            \Orchestra\Memory\MemoryServiceProvider::class,
             \Orchestra\Notifier\NotifierServiceProvider::class,
         ];
     }

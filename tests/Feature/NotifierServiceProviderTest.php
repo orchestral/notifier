@@ -4,12 +4,8 @@ namespace Orchestra\Notifier\TestCase\Feature;
 
 class NotifierServiceProviderTest extends TestCase
 {
-    /**
-     * Test Orchestra\Notifier\NotifierServiceProvider::register() method.
-     *
-     * @test
-     */
-    public function testRegisterMethod()
+    /** @test */
+    public function it_can_register_services()
     {
         $this->assertInstanceOf('\Orchestra\Notifier\NotifierManager', $this->app['orchestra.notifier']);
     }

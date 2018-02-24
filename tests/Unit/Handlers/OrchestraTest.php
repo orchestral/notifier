@@ -1,6 +1,6 @@
 <?php
 
-namespace Orchestra\Notifier\TestCase\Handlers;
+namespace Orchestra\Notifier\TestCase\Unit\Handlers;
 
 use Mockery as m;
 use Orchestra\Notifier\Message;
@@ -18,13 +18,8 @@ class OrchestraTest extends TestCase
         m::close();
     }
 
-    /**
-     * Test Orchestra\Notifier\OrchestraNotifier::send() method without
-     * queue.
-     *
-     * @test
-     */
-    public function testSendMethodWithoutQueue()
+    /** @test */
+    public function it_can_send_email()
     {
         $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
@@ -54,12 +49,8 @@ class OrchestraTest extends TestCase
         $this->assertTrue($receipt->sent());
     }
 
-    /**
-     * Test Orchestra\Notifier\OrchestraNotifier::send() method with callback.
-     *
-     * @test
-     */
-    public function testSendMethodWithCallback()
+    /** @test */
+    public function it_can_send_email_using_callback()
     {
         $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message = m::mock('\Illuminate\Mail\Message');
@@ -92,13 +83,8 @@ class OrchestraTest extends TestCase
         $this->assertTrue($receipt->sent());
     }
 
-    /**
-     * Test Orchestra\Notifier\OrchestraNotifier::send() method using
-     * queue.
-     *
-     * @test
-     */
-    public function testSendMethodUsingQueue()
+    /** @test */
+    public function it_can_send_email_using_queue()
     {
         $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message = m::mock('\Illuminate\Mail\Message');
@@ -132,12 +118,8 @@ class OrchestraTest extends TestCase
         $this->assertTrue($receipt->sent());
     }
 
-    /**
-     * Test Orchestra\Notifier\OrchestraNotifier::send() method failed.
-     *
-     * @test
-     */
-    public function testSendMethodFailed()
+    /** @test */
+    public function it_fails_to_send_email()
     {
         $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
         $message = m::mock('\Illuminate\Mail\Message');

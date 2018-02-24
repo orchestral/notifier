@@ -4,7 +4,6 @@ namespace Orchestra\Notifier\TestCase\Unit;
 
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
-use Illuminate\Container\Container;
 use Orchestra\Notifier\NotifierServiceProvider;
 
 class NotifierServiceProviderTest extends TestCase
@@ -17,27 +16,19 @@ class NotifierServiceProviderTest extends TestCase
         m::close();
     }
 
-    /**
-     * Test Orchestra\Notifier\NotifierServiceProvider::provides() method.
-     *
-     * @test
-     */
-    public function testProvidesMethod()
-    {
-        $stub = new NotifierServiceProvider(null);
-
-        $this->assertEquals(['orchestra.mail', 'orchestra.notifier'], $stub->provides());
-    }
-
-    /**
-     * Test Orchestra\Notifier\NotifierServiceProvider is deferred.
-     *
-     * @test
-     */
-    public function testServiceIsDeferred()
+    /** @test */
+    public function it_deferred_registering_the_services()
     {
         $stub = new NotifierServiceProvider(null);
 
         $this->assertTrue($stub->isDeferred());
+    }
+
+    /** @test */
+    public function it_can_provides_expected_services()
+    {
+        $stub = new NotifierServiceProvider(null);
+
+        $this->assertEquals(['orchestra.mail', 'orchestra.notifier'], $stub->provides());
     }
 }

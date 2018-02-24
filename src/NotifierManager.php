@@ -34,7 +34,6 @@ class NotifierManager extends Manager
             $notifier->attach($this->app->make('orchestra.memory')->makeOrFallback());
         }
 
-
         return $notifier;
     }
 
