@@ -27,7 +27,7 @@ class Receipt implements ReceiptContract
      * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      * @param  bool  $usingQueue
      */
-    public function __construct(Mail $mailer, $usingQueue = false)
+    public function __construct(Mail $mailer, bool $usingQueue = false)
     {
         $this->mailer = $mailer;
         $this->usingQueue = $usingQueue;
@@ -38,7 +38,7 @@ class Receipt implements ReceiptContract
      *
      * @return bool
      */
-    public function sent()
+    public function sent(): bool
     {
         return $this->isQueued() || ! $this->failed();
     }
@@ -48,7 +48,7 @@ class Receipt implements ReceiptContract
      *
      * @return bool
      */
-    public function failed()
+    public function failed(): bool
     {
         $failures = $this->failures();
 
@@ -60,7 +60,7 @@ class Receipt implements ReceiptContract
      *
      * @return array
      */
-    public function failures()
+    public function failures(): array
     {
         return $this->mailer->failures();
     }
@@ -72,7 +72,7 @@ class Receipt implements ReceiptContract
      *
      * @return $this
      */
-    public function usingQueue($usingQueue = false)
+    public function usingQueue(bool $usingQueue = false): self
     {
         $this->usingQueue = $usingQueue;
 
@@ -84,7 +84,7 @@ class Receipt implements ReceiptContract
      *
      * @return bool
      */
-    public function isQueued()
+    public function isQueued(): bool
     {
         return $this->usingQueue;
     }

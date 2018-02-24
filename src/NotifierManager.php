@@ -3,8 +3,7 @@
 namespace Orchestra\Notifier;
 
 use Illuminate\Support\Manager;
-use Orchestra\Notifier\Handlers\Laravel;
-use Orchestra\Notifier\Handlers\Orchestra;
+use Orchestra\Contracts\Notification\Notification;
 
 class NotifierManager extends Manager
 {
@@ -13,9 +12,9 @@ class NotifierManager extends Manager
      *
      * @return \Orchestra\Contracts\Notification\Notification
      */
-    protected function createLaravelDriver()
+    protected function createLaravelDriver(): Notification
     {
-        return new Laravel($this->app->make('mailer'));
+        return new Handlers\Laravel($this->app->make('mailer'));
     }
 
     /**
@@ -23,11 +22,16 @@ class NotifierManager extends Manager
      *
      * @return \Orchestra\Contracts\Notification\Notification
      */
-    protected function createOrchestraDriver()
+    protected function createOrchestraDriver(): Notification
     {
-        $notifier = new Orchestra($this->app->make('orchestra.mail'));
+        $mailer = $this->app->make('orchestra.mail');
+        $notifier = new Handlers\Orchestra($mailer);
 
-        $notifier->attach($this->app->make('orchestra.memory')->makeOrFallback());
+        if ($mailer->attached()) {
+            $notifier->attach($mailer->getMemoryProvider());
+        } else {
+            $notifier->attach($this->app->make('orchestra.memory')->makeOrFallback());
+        }
 
         return $notifier;
     }

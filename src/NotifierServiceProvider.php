@@ -30,10 +30,14 @@ class NotifierServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerMailer()
+    protected function registerMailer(): void
     {
         $this->app->singleton('orchestra.mail', function ($app) {
             $mailer = new Mailer($app, new TransportManager($app));
+
+            if ($app->bound('orchestra.platform.memory')) {
+                $mailer->attach($app->make('orchestra.platform.memory'));
+            }
 
             if ($app->bound('queue')) {
                 $mailer->setQueue($app->make('queue'));
@@ -48,7 +52,7 @@ class NotifierServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerNotifier()
+    protected function registerNotifier(): void
     {
         $this->app->singleton('orchestra.notifier', function ($app) {
             return new NotifierManager($app);

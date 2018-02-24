@@ -1,6 +1,6 @@
 <?php
 
-namespace Orchestra\Notifier\TestCase;
+namespace Orchestra\Notifier\TestCase\Unit;
 
 use Mockery as m;
 use Orchestra\Notifier\Mailer;
@@ -19,12 +19,8 @@ class MailerTest extends TestCase
         m::close();
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::push() method uses Mail::send().
-     *
-     * @test
-     */
-    public function testPushMethodUsesSend()
+    /** @test */
+    public function it_can_push_mail()
     {
         $app = new Container();
 
@@ -50,12 +46,8 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->push('foo.bar', ['foo' => 'foobar'], ''));
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::push() method uses Mail::queue().
-     *
-     * @test
-     */
-    public function testPushMethodUsesQueue()
+    /** @test */
+    public function it_can_push_mail_using_queue()
     {
         $app = new Container();
 
@@ -92,12 +84,8 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->push($with['view'], $with['data'], $with['callback']));
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::send() method.
-     *
-     * @test
-     */
-    public function testSendMethod()
+    /** @test */
+    public function it_can_send_mail()
     {
         $app = new Container();
 
@@ -120,12 +108,8 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::send() method using mail.
-     *
-     * @test
-     */
-    public function testSendMethodViaMail()
+    /** @test */
+    public function it_can_send_mail_via_mail()
     {
         $app = new Container();
 
@@ -148,12 +132,8 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::send() method using sendmail.
-     *
-     * @test
-     */
-    public function testSendMethodViaSendMail()
+    /** @test */
+    public function it_can_send_mail_via_sendmail()
     {
         $app = new Container();
 
@@ -176,12 +156,8 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::send() method using smtp.
-     *
-     * @test
-     */
-    public function testSendMethodViaSmtp()
+    /** @test */
+    public function it_can_send_mail_via_smtp()
     {
         $app = new Container();
 
@@ -210,12 +186,8 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::send() method using mailgun.
-     *
-     * @test
-     */
-    public function testSendMethodViaMailgun()
+    /** @test */
+    public function it_can_send_mail_via_mailgun()
     {
         $app = new Container();
 
@@ -240,12 +212,8 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::send() method using mandrill.
-     *
-     * @test
-     */
-    public function testSendMethodViaMandrill()
+    /** @test */
+    public function it_can_send_mail_via_mandrill()
     {
         $app = new Container();
 
@@ -269,12 +237,8 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::send() method using log.
-     *
-     * @test
-     */
-    public function testSendMethodViaLog()
+    /** @test */
+    public function it_can_send_mail_via_log()
     {
         $monolog = m::mock('\Psr\Log\LoggerInterface');
 
@@ -303,12 +267,10 @@ class MailerTest extends TestCase
     }
 
     /**
-     * Test Orchestra\Notifier\Mailer::send() method using invalid driver
-     * throws exception.
-     *
+     * @test
      * @expectedException \InvalidArgumentException
      */
-    public function testSendMethodViaInvalidDriverThrowsException()
+    public function it_cant_send_mail_via_invalid_transport()
     {
         $app = new Container();
 
@@ -331,12 +293,8 @@ class MailerTest extends TestCase
         $stub->send('foo.bar', ['foo' => 'foobar'], '');
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::queue() method.
-     *
-     * @test
-     */
-    public function testQueueMethod()
+    /** @test */
+    public function it_can_queue_mail()
     {
         $app = new Container();
 
@@ -362,7 +320,6 @@ class MailerTest extends TestCase
         $queue->shouldReceive('push')->once()
             ->with('orchestra.mail@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
 
-
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
@@ -373,13 +330,8 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->queue($with['view'], $with['data'], $with['callback']));
     }
 
-    /**
-     * Test Orchestra\Notifier\Mailer::queue() method when a class name
-     * is given.
-     *
-     * @test
-     */
-    public function testQueueMethodWhenClassNameIsGiven()
+    /** @test */
+    public function it_can_queue_mail_using_custom_class_name()
     {
         $app = new Container();
 
@@ -404,7 +356,6 @@ class MailerTest extends TestCase
             ->with('orchestra.mail@handleQueuedMessage', $with, '')
             ->andReturn(true);
 
-
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
@@ -412,7 +363,39 @@ class MailerTest extends TestCase
         $stub = (new Mailer($app, $transport))
                     ->setQueue($app['queue'])
                     ->attach($app['orchestra.memory']);
+
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->queue($with['view'], $with['data'], $with['callback']));
+    }
+
+    /**
+     * @test
+     * @dataProvider queueMessageDataProvdier
+     */
+    public function it_can_handle_queued_mail($view, $data, $callback)
+    {
+        $app = new Container();
+
+        $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
+        $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
+
+        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
+            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
+            ->shouldReceive('get')->with('email.from')->andReturn([
+                'address' => 'hello@orchestraplatform.com',
+                'name' => 'Orchestra Platform',
+            ]);
+
+        $job = m::mock('\Illuminate\Contracts\Queue\Job');
+
+        $job->shouldReceive('delete')->once()->andReturn(null);
+        $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
+            ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
+            ->shouldReceive('send')->once()
+                ->with($view, $data, m::any())->andReturn(true);
+
+        $transport = new TransportManager($app);
+        $stub = (new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub->handleQueuedMessage($job, compact('view', 'data', 'callback'));
     }
 
     /**
@@ -438,38 +421,5 @@ class MailerTest extends TestCase
                 'callback' => 'hello world',
             ],
         ];
-    }
-
-    /**
-     * Test Orchestra\Notifier\Mailer::handleQueuedMessage() method.
-     *
-     * @test
-     * @dataProvider queueMessageDataProvdier
-     */
-    public function testHandleQueuedMessageMethod($view, $data, $callback)
-    {
-        $app = new Container();
-
-        $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
-            ->shouldReceive('get')->with('email.from')->andReturn([
-                'address' => 'hello@orchestraplatform.com',
-                'name' => 'Orchestra Platform',
-            ]);
-
-        $job = m::mock('\Illuminate\Contracts\Queue\Job');
-
-        $job->shouldReceive('delete')->once()->andReturn(null);
-        $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
-            ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
-            ->shouldReceive('send')->once()
-                ->with($view, $data, m::any())->andReturn(true);
-
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($app['orchestra.memory']);
-        $stub->handleQueuedMessage($job, compact('view', 'data', 'callback'));
     }
 }

@@ -1,18 +1,14 @@
 <?php
 
-namespace Orchestra\Notifier\TestCase;
+namespace Orchestra\Notifier\TestCase\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Orchestra\Notifier\GenericRecipient;
 
 class GenericRecipientTest extends TestCase
 {
-    /**
-     * Test Orchestra\Notifier\GenericRecipient.
-     *
-     * @test
-     */
-    public function testGenericRecipient()
+    /** @test */
+    public function it_can_initiate_recipient()
     {
         $email = 'admin@orchestraplatform.com';
         $name = 'Administrator';

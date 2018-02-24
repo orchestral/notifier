@@ -32,7 +32,7 @@ class Message extends Fluent implements MessageContract
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->attributes['data'] ?? [];
     }
@@ -42,7 +42,7 @@ class Message extends Fluent implements MessageContract
      *
      * @return string
      */
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->attributes['subject'] ?? '';
     }

@@ -15,7 +15,7 @@ class CssInliner
      *
      * @return void
      */
-    public function handle(MessageSending $sending)
+    public function handle(MessageSending $sending): void
     {
         $message = $sending->message;
 

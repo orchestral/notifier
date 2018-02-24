@@ -3,13 +3,15 @@
 namespace Orchestra\Notifier;
 
 use Swift_Mailer;
-use Orchestra\Notifier\Traits\Illuminate;
+use Orchestra\Memory\Memorizable;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
+use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 
 class Mailer
 {
-    use Illuminate;
+    use Concerns\Illuminate,
+        Memorizable;
 
     /**
      * Application instance.
@@ -44,7 +46,7 @@ class Mailer
      *
      * @return \Orchestra\Notifier\MailableMailer
      */
-    public function to($users)
+    public function to($users): MailableMailer
     {
         return (new MailableMailer($this))->to($users);
     }
@@ -56,7 +58,7 @@ class Mailer
      *
      * @return \Orchestra\Notifier\MailableMailer
      */
-    public function bcc($users)
+    public function bcc($users): MailableMailer
     {
         return (new MailableMailer($this))->bcc($users);
     }
@@ -72,7 +74,7 @@ class Mailer
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function push($view, array $data = [], $callback = null, $queue = null)
+    public function push($view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
         $method = $this->shouldBeQueued() ? 'queue' : 'send';
 
@@ -88,7 +90,7 @@ class Mailer
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function send($view, array $data = [], $callback = null)
+    public function send($view, array $data = [], $callback = null): ReceiptContract
     {
         $mailer = $this->getMailer();
 
@@ -111,7 +113,7 @@ class Mailer
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function queue($view, array $data = [], $callback = null, $queue = null)
+    public function queue($view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
         if ($view instanceof MailableContract) {
             $view->queue($this->queue);
@@ -136,7 +138,7 @@ class Mailer
      *
      * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function later($delay, $view, array $data = [], $callback = null, $queue = null)
+    public function later($delay, $view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
         if ($view instanceof MailableContract) {
             return $view->later($delay, $this->queue);
@@ -155,7 +157,7 @@ class Mailer
      *
      * @return bool
      */
-    public function shouldBeQueued()
+    public function shouldBeQueued(): bool
     {
         return $this->memory->get('email.queue', false);
     }
@@ -165,7 +167,7 @@ class Mailer
      *
      * @return \Illuminate\Contracts\Mail\Mailer
      */
-    public function getMailer()
+    public function getMailer(): MailerContract
     {
         if (! $this->mailer instanceof MailerContract) {
             $this->transport->setMemoryProvider($this->memory);
@@ -181,7 +183,7 @@ class Mailer
      *
      * @return \Illuminate\Contracts\Mail\Mailer
      */
-    protected function resolveMailer()
+    protected function resolveMailer(): MailerContract
     {
         $from = $this->memory->get('email.from');
         $mailer = $this->app->make('mailer');
