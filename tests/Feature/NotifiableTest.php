@@ -4,6 +4,7 @@ namespace Orchestra\Notifier\TestCase\Feature;
 
 use Mockery as m;
 use Orchestra\Notifier\Message;
+use Orchestra\Notifier\Notifiable;
 use Orchestra\Support\Facades\Notifier;
 
 class NotifiableTest extends TestCase
@@ -15,7 +16,7 @@ class NotifiableTest extends TestCase
         $notifier = m::mock('\Orchestra\Contracts\Notification\Notification');
 
         $stub = new class() {
-            use \Orchestra\Notifier\Notifiable;
+            use Notifiable;
 
             public function notify($user)
             {
