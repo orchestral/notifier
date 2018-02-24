@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
+## 3.5.2
+
+Released: 2018-02-24
+
+### Changes
+
+* Assign `orchestra.platform.memory` as `Orchestra\Contracts\Memory\Provider` if the IoC is bound.
+
 ## 3.5.1
 
 Released: 2017-12-26
