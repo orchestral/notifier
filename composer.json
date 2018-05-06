@@ -27,7 +27,7 @@
         "orchestra/contracts": "~3.6.0",
         "orchestra/memory": "~3.6.0",
         "orchestra/support": "~3.6.0",
-        "tijsverkoyen/css-to-inline-styles": "~2.2"
+        "tijsverkoyen/css-to-inline-styles": "^2.2"
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.0",
