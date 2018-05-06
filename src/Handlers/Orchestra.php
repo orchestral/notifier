@@ -9,8 +9,8 @@ use SuperClosure\SerializableClosure;
 use Orchestra\Contracts\Memory\Provider;
 use Orchestra\Contracts\Notification\Recipient;
 use Orchestra\Contracts\Notification\Notification;
-use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 use Orchestra\Contracts\Notification\Message as MessageContract;
+use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 
 class Orchestra extends Handler implements Notification
 {

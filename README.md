@@ -8,6 +8,7 @@ Notifier Component add a simplify approach to notifier the application user usin
 [![Total Downloads](https://poser.pugx.org/orchestra/notifier/downloads)](https://packagist.org/packages/orchestra/notifier)
 [![Latest Unstable Version](https://poser.pugx.org/orchestra/notifier/v/unstable)](//packagist.org/packages/orchestra/notifier)
 [![License](https://poser.pugx.org/orchestra/notifier/license)](https://packagist.org/packages/orchestra/notifier)
+[![Coverage Status](https://coveralls.io/repos/github/orchestral/notifier/badge.svg?branch=3.6)](https://coveralls.io/github/orchestral/notifier?branch=3.6)
 
 ## Table of Content
 
