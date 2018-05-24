@@ -2,6 +2,15 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
+
+## 3.6.0
+
+Released: 2018-05-24
+
+### Changes
+
+* Update support to Laravel Framework 5.6.
+
 ## 3.5.2
 
 Released: 2018-02-24
@@ -26,11 +35,3 @@ Released: 2017-11-14
 ### Changes
 
 * Update support to Laravel Framework 5.5.
-
-## 3.4.0
-
-Released: 2017-05-03
-
-### Changes
-
-* Update support to Laravel Framework 5.4.
