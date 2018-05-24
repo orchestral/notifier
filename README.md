@@ -8,6 +8,7 @@ Notifier Component add a simplify approach to notifier the application user usin
 [![Total Downloads](https://poser.pugx.org/orchestra/notifier/downloads)](https://packagist.org/packages/orchestra/notifier)
 [![Latest Unstable Version](https://poser.pugx.org/orchestra/notifier/v/unstable)](//packagist.org/packages/orchestra/notifier)
 [![License](https://poser.pugx.org/orchestra/notifier/license)](https://packagist.org/packages/orchestra/notifier)
+[![Coverage Status](https://coveralls.io/repos/github/orchestral/notifier/badge.svg?branch=master)](https://coveralls.io/github/orchestral/notifier?branch=master)
 
 ## Table of Content
 
@@ -27,7 +28,7 @@ Laravel    | Notifier
  5.3.x     | 3.3.x
  5.4.x     | 3.4.x
  5.5.x     | 3.5.x
- 5.6.x     | 3.6.x@dev
+ 5.6.x     | 3.6.x
  5.7.x     | 3.7.x@dev
 
 ## Installation

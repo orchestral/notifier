@@ -7,8 +7,8 @@ use Illuminate\Support\Collection;
 use Orchestra\Support\Facades\Notifier;
 use Illuminate\Contracts\Support\Arrayable;
 use Orchestra\Contracts\Notification\Recipient;
-use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 use Orchestra\Contracts\Notification\Message as MessageContract;
+use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 
 trait Notifiable
 {

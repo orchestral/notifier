@@ -134,7 +134,7 @@ trait Illuminate
      *
      * @return $this
      */
-    public function setQueue(QueueContract $queue): self
+    public function setQueue(QueueContract $queue)
     {
         if ($this->mailer instanceof MailerContract) {
             $this->mailer->setQueue($queue);

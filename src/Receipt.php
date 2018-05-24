@@ -72,7 +72,7 @@ class Receipt implements ReceiptContract
      *
      * @return $this
      */
-    public function usingQueue(bool $usingQueue = false): self
+    public function usingQueue(bool $usingQueue = false)
     {
         $this->usingQueue = $usingQueue;
 
