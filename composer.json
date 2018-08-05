@@ -22,7 +22,7 @@
     },
     "require": {
         "php": ">=7.1",
-        "illuminate/encryption": "dev-master",
+        "illuminate/encryption": "~5.8.0",
         "jeremeamia/superclosure": "^2.2",
         "orchestra/contracts": "~3.8.0",
         "orchestra/memory": "~3.8.0",
