@@ -33,7 +33,7 @@
         "aws/aws-sdk-php": "^3.0",
         "guzzlehttp/guzzle": "^6.0",
         "mockery/mockery": "^1.0",
-        "orchestra/testbench": "^3.7.0"
+        "orchestra/testbench": "~3.7.0"
     },
     "suggest": {
         "aws/aws-sdk-php": "Required to use the SES mail driver (^3.0).",
