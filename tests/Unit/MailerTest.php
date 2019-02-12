@@ -14,7 +14,7 @@ class MailerTest extends TestCase
     /**
      * Teardown the test environment.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -266,12 +266,11 @@ class MailerTest extends TestCase
         $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
-    /**
-     * @test
-     * @expectedException \InvalidArgumentException
-     */
+    /** @test */
     public function it_cant_send_mail_via_invalid_transport()
     {
+        $this->expectException('InvalidArgumentException');
+
         $app = new Container();
 
         $app->instance('orchestra.memory', $memory = m::mock('\Orchestra\Contracts\Memory\Provider'));
