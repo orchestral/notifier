@@ -66,7 +66,7 @@ class NotifierServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $path = realpath(__DIR__.'/../resources');
+        $path = \realpath(__DIR__.'/../resources');
 
         $this->addConfigComponent('orchestra/notifier', 'orchestra/notifier', "{$path}/config");
     }

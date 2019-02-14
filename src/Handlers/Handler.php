@@ -26,7 +26,7 @@ abstract class Handler
             ! empty($subject) && $message->subject($subject);
 
             // Run any callback if provided.
-            is_callable($callback) && $callback(...func_get_args());
+            \is_callable($callback) && $callback(...func_get_args());
         };
     }
 }
