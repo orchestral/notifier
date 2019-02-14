@@ -6,8 +6,8 @@ use Mockery as m;
 use Orchestra\Notifier\Mailer;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Container\Container;
-use SuperClosure\SerializableClosure;
 use Orchestra\Notifier\TransportManager;
+use Illuminate\Queue\SerializableClosure;
 
 class MailerTest extends TestCase
 {
@@ -404,6 +404,8 @@ class MailerTest extends TestCase
      */
     public function queueMessageDataProvdier()
     {
+        SerializableClosure::setSecretKey('1asn3t5DmVASHszn+O8phiLNhjztDOPJFlZ6YIatMLU=');
+
         $callback = new SerializableClosure(function () {
             //
         });

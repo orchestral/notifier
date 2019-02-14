@@ -3,9 +3,10 @@
 namespace Orchestra\Notifier\Concerns;
 
 use Closure;
+use Serializable;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Queue\Job;
-use SuperClosure\SerializableClosure;
+use Illuminate\Queue\SerializableClosure;
 use Orchestra\Contracts\Notification\Receipt;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Queue\Factory as QueueContract;
@@ -164,7 +165,7 @@ trait Illuminate
      */
     protected function buildQueueCallable($callback)
     {
-        if (! $callback instanceof Closure) {
+        if (! $callback instanceof Closure && ! $callback instanceof Serializable) {
             return $callback;
         }
 
@@ -196,7 +197,7 @@ trait Illuminate
     protected function getQueuedCallable(array $data)
     {
         if (Str::contains($data['callback'], 'SerializableClosure')) {
-            return with(unserialize($data['callback']))->getClosure();
+            return unserialize($data['callback'])->getClosure();
         }
 
         return $data['callback'];
