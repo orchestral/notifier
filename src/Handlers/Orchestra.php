@@ -5,7 +5,7 @@ namespace Orchestra\Notifier\Handlers;
 use Closure;
 use Orchestra\Notifier\Mailer;
 use Orchestra\Memory\Memorizable;
-use SuperClosure\SerializableClosure;
+use Illuminate\Queue\SerializableClosure;
 use Orchestra\Contracts\Memory\Provider;
 use Orchestra\Contracts\Notification\Recipient;
 use Orchestra\Contracts\Notification\Notification;

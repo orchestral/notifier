@@ -23,7 +23,7 @@
     "require": {
         "php": ">=7.1",
         "illuminate/encryption": "~5.7.0",
-        "jeremeamia/superclosure": "^2.2",
+        "illuminate/queue": "~5.7.0",
         "orchestra/contracts": "~3.7.0",
         "orchestra/memory": "~3.7.0",
         "orchestra/support": "~3.7.0",
