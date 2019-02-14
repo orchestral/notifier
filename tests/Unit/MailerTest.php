@@ -405,7 +405,7 @@ class MailerTest extends TestCase
      */
     public function queueMessageDataProvdier()
     {
-        SerializableClosure::setSecretKey('1asn3t5DmVASHszn+O8phiLNhjztDOPJFlZ6YIatMLU=');
+        SerializableClosure::setSecretKey('AckfSECXIvnK5r28GVIWUAxmbBSjTsmF');
 
         $callback = new SerializableClosure(function () {
             //
