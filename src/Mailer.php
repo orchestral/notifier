@@ -119,7 +119,7 @@ class Mailer
             $view->queue($this->queue);
         } else {
             $callback = $this->buildQueueCallable($callback);
-            $with = compact('view', 'data', 'callback');
+            $with = \compact('view', 'data', 'callback');
 
             $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
         }
@@ -145,7 +145,7 @@ class Mailer
         }
 
         $callback = $this->buildQueueCallable($callback);
-        $with = compact('view', 'data', 'callback');
+        $with = \compact('view', 'data', 'callback');
 
         $this->queue->later($delay, 'orchestra.mail@handleQueuedMessage', $with, $queue);
 
@@ -192,7 +192,7 @@ class Mailer
         // all mail messages sent by the applications will utilize the same
         // "from" address on each one, which makes the developer's life a
         // lot more convenient.
-        if (is_array($from) && ! empty($from['address'])) {
+        if (\is_array($from) && ! empty($from['address'])) {
             $mailer->alwaysFrom($from['address'], $from['name']);
         }
 

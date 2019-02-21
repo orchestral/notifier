@@ -5,8 +5,8 @@ namespace Orchestra\Notifier\Handlers;
 use Closure;
 use Orchestra\Notifier\Mailer;
 use Orchestra\Memory\Memorizable;
-use Illuminate\Queue\SerializableClosure;
 use Orchestra\Contracts\Memory\Provider;
+use Illuminate\Queue\SerializableClosure;
 use Orchestra\Contracts\Notification\Recipient;
 use Orchestra\Contracts\Notification\Notification;
 use Orchestra\Contracts\Notification\Message as MessageContract;
@@ -79,6 +79,6 @@ class Orchestra extends Handler implements Notification
             $driver = $this->memory->get('email.driver');
         }
 
-        return $queue || in_array($driver, ['mailgun', 'mandrill', 'log']);
+        return $queue || \in_array($driver, ['mailgun', 'mandrill', 'log']);
     }
 }

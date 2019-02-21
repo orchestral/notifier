@@ -169,7 +169,7 @@ trait Illuminate
             return $callback;
         }
 
-        return serialize(new SerializableClosure($callback));
+        return \serialize(new SerializableClosure($callback));
     }
 
     /**
@@ -197,7 +197,7 @@ trait Illuminate
     protected function getQueuedCallable(array $data)
     {
         if (Str::contains($data['callback'], 'SerializableClosure')) {
-            return unserialize($data['callback'])->getClosure();
+            return \unserialize($data['callback'])->getClosure();
         }
 
         return $data['callback'];
