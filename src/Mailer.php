@@ -44,11 +44,11 @@ class Mailer
      *
      * @param  mixed  $users
      *
-     * @return \Orchestra\Notifier\MailableMailer
+     * @return \Orchestra\Notifier\PendingMail
      */
-    public function to($users): MailableMailer
+    public function to($users): PendingMail
     {
-        return (new MailableMailer($this))->to($users);
+        return (new PendingMail($this))->to($users);
     }
 
     /**
@@ -56,11 +56,11 @@ class Mailer
      *
      * @param  mixed  $users
      *
-     * @return \Orchestra\Notifier\MailableMailer
+     * @return \Orchestra\Notifier\PendingMail
      */
-    public function bcc($users): MailableMailer
+    public function bcc($users): PendingMail
     {
-        return (new MailableMailer($this))->bcc($users);
+        return (new PendingMail($this))->bcc($users);
     }
 
     /**
