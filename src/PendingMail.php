@@ -4,7 +4,7 @@ namespace Orchestra\Notifier;
 
 use Illuminate\Contracts\Mail\Mailable;
 
-class MailableMailer
+class PendingMail
 {
     /**
      * The mailer instance.
