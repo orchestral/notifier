@@ -24,12 +24,12 @@ class GenericRecipient implements Recipient
      * Create a new recipient.
      *
      * @param  string  $email
-     * @param  string  $name
+     * @param  string|null  $name
      */
-    public function __construct(string $email, string $name)
+    public function __construct(string $email, ?string $name = null)
     {
         $this->email = $email;
-        $this->name = $name;
+        $this->name = $name ?? $email;
     }
 
     /**

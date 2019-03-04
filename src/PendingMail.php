@@ -3,6 +3,7 @@
 namespace Orchestra\Notifier;
 
 use Illuminate\Contracts\Mail\Mailable;
+use Orchestra\Contracts\Notification\Recipient;
 
 class PendingMail
 {
@@ -53,7 +54,11 @@ class PendingMail
      */
     public function to($users)
     {
-        $this->to = $users;
+        if ($users instanceof Recipient) {
+            $this->to = [$users->getRecipientEmail(), $users->getRecipientName()];
+        } else {
+            $this->to = $users;
+        }
 
         return $this;
     }
@@ -123,7 +128,7 @@ class PendingMail
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      *
-     * @return \Orchestra\Notifier\Receipt
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function queue(Mailable $mailable)
     {
@@ -140,7 +145,7 @@ class PendingMail
      * @param  \DateTime|int  $delay
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      *
-     * @return \Orchestra\Notifier\Receipt
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function later($delay, Mailable $mailable)
     {
