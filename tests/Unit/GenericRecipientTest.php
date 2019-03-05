@@ -14,7 +14,7 @@ class GenericRecipientTest extends TestCase
         $name = 'Administrator';
         $stub = new GenericRecipient($email, $name);
 
-        $this->assertInstanceOf('\Orchestra\Contracts\Notification\Recipient', $stub);
+        $this->assertInstanceOf('Orchestra\Contracts\Notification\Recipient', $stub);
         $this->assertEquals($email, $stub->getRecipientEmail());
         $this->assertEquals($name, $stub->getRecipientName());
     }

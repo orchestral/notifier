@@ -12,7 +12,7 @@ class LaravelTest extends TestCase
     /**
      * Teardown the test environment.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -20,16 +20,17 @@ class LaravelTest extends TestCase
     /** @test */
     public function it_can_send_email()
     {
-        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $message = m::mock('\Illuminate\Mail\Message');
-        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $mailer = m::mock('Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('Illuminate\Mail\Message');
+        $user = m::mock('Orchestra\Contracts\Notification\Recipient', [
+            'getRecipientEmail' => 'hello@orchestraplatform.com',
+            'getRecipientName' => 'Administrator',
+        ]);
 
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = [];
 
-        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
-            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
         $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer, $message) {
                     $c($message);
@@ -43,16 +44,19 @@ class LaravelTest extends TestCase
         $stub = new Laravel($mailer);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
-        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertInstanceOf('Orchestra\Notifier\Receipt', $receipt);
         $this->assertTrue($receipt->sent());
     }
 
     /** @test */
     public function it_can_send_email_using_callback()
     {
-        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $message = m::mock('\Illuminate\Mail\Message');
-        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $mailer = m::mock('Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('Illuminate\Mail\Message');
+        $user = m::mock('Orchestra\Contracts\Notification\Recipient', [
+            'getRecipientEmail' => 'hello@orchestraplatform.com',
+            'getRecipientName' => 'Administrator',
+        ]);
 
         $subject = 'foobar';
         $view = 'foo.bar';
@@ -61,9 +65,6 @@ class LaravelTest extends TestCase
         $callback = function ($mail) {
             $mail->subject('foobar!!');
         };
-
-        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
-            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
 
         $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer, $message) {
@@ -80,23 +81,24 @@ class LaravelTest extends TestCase
 
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')), $callback);
 
-        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertInstanceOf('Orchestra\Notifier\Receipt', $receipt);
         $this->assertTrue($receipt->sent());
     }
 
     /** @test */
     public function it_fails_to_send_email()
     {
-        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $message = m::mock('\Illuminate\Mail\Message');
-        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $mailer = m::mock('Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('Illuminate\Mail\Message');
+        $user = m::mock('Orchestra\Contracts\Notification\Recipient', [
+            'getRecipientEmail' => 'hello@orchestraplatform.com',
+            'getRecipientName' => 'Administrator',
+        ]);
 
         $subject = 'foobar';
         $view = 'foo.bar';
         $data = [];
 
-        $user->shouldReceive('getRecipientEmail')->once()->andReturn('hello@orchestraplatform.com')
-            ->shouldReceive('getRecipientName')->once()->andReturn('Administrator');
         $mailer->shouldReceive('send')->once()->with($view, $data, m::type('Closure'))
                 ->andReturnUsing(function ($v, $d, $c) use ($mailer, $message) {
                     $c($message);
@@ -110,7 +112,7 @@ class LaravelTest extends TestCase
         $stub = new Laravel($mailer);
         $receipt = $stub->send($user, new Message(compact('subject', 'view', 'data')));
 
-        $this->assertInstanceOf('\Orchestra\Notifier\Receipt', $receipt);
+        $this->assertInstanceOf('Orchestra\Notifier\Receipt', $receipt);
         $this->assertFalse($receipt->sent());
     }
 }

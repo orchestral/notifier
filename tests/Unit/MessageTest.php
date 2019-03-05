@@ -12,7 +12,7 @@ class MessageTest extends TestCase
     {
         $stub = new Message();
 
-        $this->assertInstanceOf('\Illuminate\Support\Fluent', $stub);
+        $this->assertInstanceOf('Illuminate\Support\Fluent', $stub);
     }
 
     /** @test */
