@@ -76,7 +76,7 @@ class PendingMail
     public function to($users)
     {
         if ($users instanceof Recipient) {
-            $this->to = [$users->getRecipientEmail(), $users->getRecipientName()];
+            $this->to = ['address' => $users->getRecipientEmail(), 'name' => $users->getRecipientName()];
         } else {
             $this->to = $users;
         }
