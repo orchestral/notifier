@@ -57,6 +57,7 @@ class PendingMail
      * Set the locale of the message.
      *
      * @param  string  $locale
+     *
      * @return $this
      */
     public function locale($locale)
@@ -148,6 +149,7 @@ class PendingMail
      * Send a mailable message immediately.
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
+     *
      * @return mixed
      */
     public function sendNow(Mailable $mailable)
@@ -190,6 +192,7 @@ class PendingMail
      * Populate the mailable with the addresses.
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
+     *
      * @return \Illuminate\Contracts\Mail\Mailable
      */
     protected function fill(Mailable $mailable): Mailable
