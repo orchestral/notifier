@@ -2,6 +2,16 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
+## 3.7.2
+
+Released: 2019-03-08
+
+### Changes
+
+* Rename `Orchestra\Notifier\MailableMailer` to `Orchestra\Notifier\PendingMail`.
+* Make `$name` optional under `Orchestra\Notifier\GenericRecipient`.
+* Update `Orchestra\Notifier\TransportManager` based on Laravel.
+
 ## 3.7.1
 
 Released: 2019-02-21
