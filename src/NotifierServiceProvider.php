@@ -60,7 +60,7 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     public function boot()
     {
-        $path = \realpath(__DIR__.'/../resources');
+        $path = \realpath(__DIR__.'/../');
 
         $this->addConfigComponent('orchestra/notifier', 'orchestra/notifier', "{$path}/config");
     }
