@@ -2,7 +2,6 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
-
 ## 3.8.0
 
 Released: 2019-03-13
