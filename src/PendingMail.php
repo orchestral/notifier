@@ -3,8 +3,10 @@
 namespace Orchestra\Notifier;
 
 use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Orchestra\Contracts\Notification\Recipient;
 
-class MailableMailer
+class PendingMail
 {
     /**
      * The mailer instance.
@@ -12,6 +14,13 @@ class MailableMailer
      * @var \Orchestra\Notifier\Mailer
      */
     protected $mailer;
+
+    /**
+     * The locale of the message.
+     *
+     * @var string
+     */
+    protected $locale;
 
     /**
      * The "to" recipients of the message.
@@ -45,6 +54,20 @@ class MailableMailer
     }
 
     /**
+     * Set the locale of the message.
+     *
+     * @param  string  $locale
+     *
+     * @return $this
+     */
+    public function locale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
      * Set the recipients of the message.
      *
      * @param  mixed  $users
@@ -53,7 +76,15 @@ class MailableMailer
      */
     public function to($users)
     {
-        $this->to = $users;
+        if ($users instanceof Recipient) {
+            $this->to = [['email' => $users->getRecipientEmail(), 'name' => $users->getRecipientName()]];
+        } else {
+            $this->to = $users;
+        }
+
+        if (! $this->locale && $users instanceof HasLocalePreference) {
+            $this->locale($users->preferredLocale());
+        }
 
         return $this;
     }
@@ -95,11 +126,7 @@ class MailableMailer
      */
     public function push(Mailable $mailable)
     {
-        $mailable = $mailable->to($this->to)
-                 ->cc($this->cc)
-                 ->bcc($this->bcc);
-
-        return $this->mailer->push($mailable);
+        return $this->mailer->push($this->fill($mailable));
     }
 
     /**
@@ -111,11 +138,23 @@ class MailableMailer
      */
     public function send(Mailable $mailable)
     {
-        $mailable = $mailable->to($this->to)
-                 ->cc($this->cc)
-                 ->bcc($this->bcc);
+        if ($mailable instanceof ShouldQueue) {
+            return $this->queue($mailable);
+        }
 
-        return $this->mailer->send($mailable);
+        return $this->sendNow($mailable);
+    }
+
+    /**
+     * Send a mailable message immediately.
+     *
+     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
+     *
+     * @return mixed
+     */
+    public function sendNow(Mailable $mailable)
+    {
+        return $this->mailer->send($this->fill($mailable));
     }
 
     /**
@@ -123,13 +162,15 @@ class MailableMailer
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      *
-     * @return \Orchestra\Notifier\Receipt
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function queue(Mailable $mailable)
     {
-        $mailable = $mailable->to($this->to)
-                 ->cc($this->cc)
-                 ->bcc($this->bcc);
+        $mailable = $this->fill($mailable);
+
+        if (isset($mailable->delay)) {
+            return $this->mailer->later($mailable->delay, $mailable);
+        }
 
         return $this->mailer->queue($mailable);
     }
@@ -140,14 +181,25 @@ class MailableMailer
      * @param  \DateTime|int  $delay
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      *
-     * @return \Orchestra\Notifier\Receipt
+     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function later($delay, Mailable $mailable)
     {
-        $mailable = $mailable->to($this->to)
-                 ->cc($this->cc)
-                 ->bcc($this->bcc);
+        return $this->mailer->later($delay, $this->fill($mailable));
+    }
 
-        return $this->mailer->later($delay, $mailable);
+    /**
+     * Populate the mailable with the addresses.
+     *
+     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
+     *
+     * @return \Illuminate\Contracts\Mail\Mailable
+     */
+    protected function fill(Mailable $mailable): Mailable
+    {
+        return $mailable->to($this->to)
+                        ->cc($this->cc)
+                        ->bcc($this->bcc)
+                        ->locale($this->locale);
     }
 }
