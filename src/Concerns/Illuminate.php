@@ -34,7 +34,6 @@ trait Illuminate
      */
     protected $from;
 
-
     /**
      * Set the global from address and name.
      *

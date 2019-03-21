@@ -23,6 +23,8 @@ class NotifierServiceProvider extends ServiceProvider
         $this->registerMailer();
 
         $this->registerNotifier();
+
+        $this->registerIlluminateMailerResolver();
     }
 
     /**
@@ -33,10 +35,11 @@ class NotifierServiceProvider extends ServiceProvider
     protected function registerMailer(): void
     {
         $this->app->singleton('orchestra.mail', function ($app) {
-            $mailer = new Mailer($app, new TransportManager($app));
+            $mailer = new Mailer($app, $transport = new TransportManager($app));
 
             if ($app->bound('orchestra.platform.memory')) {
-                $mailer->attach($app->make('orchestra.platform.memory'));
+                $mailer->attach($memory = $app->make('orchestra.platform.memory'));
+                $transport->setMemoryProvider($memory);
             }
 
             if ($app->bound('queue')) {
@@ -56,6 +59,18 @@ class NotifierServiceProvider extends ServiceProvider
     {
         $this->app->singleton('orchestra.notifier', function ($app) {
             return new NotifierManager($app);
+        });
+    }
+
+    /**
+     * Register the service provider for notifier.
+     *
+     * @return void
+     */
+    protected function registerIlluminateMailerResolver(): void
+    {
+        $this->app->afterResolving('mailer', function ($service) {
+            $this->app->make('orchestra.mail')->configureIlluminateMailer($service);
         });
     }
 

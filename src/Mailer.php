@@ -167,6 +167,22 @@ class Mailer
     }
 
     /**
+     * Update from on mailable.
+     *
+     * @param  \Illuminate\Contracts\Mail\Mailable $message
+     *
+     * @return \Illuminate\Contracts\Mail\Mailable
+     */
+    protected function updateFromOnMailable(MailableContract $message): MailableContract
+    {
+        if (! empty($this->from['address'])) {
+            $message->from($this->from['address'], $this->from['name']);
+        }
+
+        return $message;
+    }
+
+    /**
      * Register the Swift Mailer instance.
      *
      * @return \Illuminate\Contracts\Mail\Mailer
@@ -174,9 +190,7 @@ class Mailer
     public function getMailer(): MailerContract
     {
         if (! $this->mailer instanceof MailerContract) {
-            $this->transport->setMemoryProvider($this->memory);
-
-            $this->mailer = $this->resolveMailer();
+            $this->mailer = $this->app->make('mailer');
         }
 
         return $this->mailer;
@@ -187,10 +201,9 @@ class Mailer
      *
      * @return \Illuminate\Contracts\Mail\Mailer
      */
-    protected function resolveMailer(): MailerContract
+    public function configureIlluminateMailer(MailerContract $mailer): MailerContract
     {
         $from = $this->memory->get('email.from');
-        $mailer = $this->app->make('mailer');
 
         // If a "from" address is set, we will set it on the mailer so that
         // all mail messages sent by the applications will utilize the same
@@ -208,20 +221,5 @@ class Mailer
         $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));
 
         return $mailer;
-    }
-
-    /**
-     * Update from on mailable.
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailable $message
-     * @return \Illuminate\Contracts\Mail\Mailable
-     */
-    protected function updateFromOnMailable(MailableContract $message): MailableContract
-    {
-        if (! empty($this->from['address'])) {
-            $message->from($this->from['address'], $this->from['name']);
-        }
-
-        return $message;
     }
 }
