@@ -2,6 +2,18 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
+## 3.7.3
+
+Released: 2019-03-22
+
+### Changes
+
+* Configure `Illuminate\Mail\Mailer` to use configuration set by Notifier when it's being resolved instead of only using it once Notifier being resolved.
+
+### Fixes 
+
+* Fixed missing `from` on Mailable when using queued Mailable.
+
 ## 3.7.2
 
 Released: 2019-03-08
