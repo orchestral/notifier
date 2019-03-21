@@ -95,7 +95,7 @@ class Mailer
         $mailer = $this->getMailer();
 
         if ($view instanceof MailableContract) {
-            $view->send($mailer);
+            $this->updateFromOnMailable($view)->send($mailer);
         } else {
             $mailer->send($view, $data, $callback);
         }
@@ -115,8 +115,10 @@ class Mailer
      */
     public function queue($view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
+        $mailer = $this->getMailer();
+
         if ($view instanceof MailableContract) {
-            $view->queue($this->queue);
+            $this->updateFromOnMailable($view)->queue($this->queue);
         } else {
             $callback = $this->buildQueueCallable($callback);
             $with = \compact('view', 'data', 'callback');
@@ -124,7 +126,7 @@ class Mailer
             $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
         }
 
-        return new Receipt($this->getMailer(), true);
+        return new Receipt($mailer, true);
     }
 
     /**
@@ -140,8 +142,10 @@ class Mailer
      */
     public function later($delay, $view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
+        $mailer = $this->getMailer();
+
         if ($view instanceof MailableContract) {
-            return $view->later($delay, $this->queue);
+            return $this->updateFromOnMailable($view)->later($delay, $this->queue);
         }
 
         $callback = $this->buildQueueCallable($callback);
@@ -149,7 +153,7 @@ class Mailer
 
         $this->queue->later($delay, 'orchestra.mail@handleQueuedMessage', $with, $queue);
 
-        return new Receipt($this->getMailer(), true);
+        return new Receipt($mailer, true);
     }
 
     /**
@@ -163,6 +167,22 @@ class Mailer
     }
 
     /**
+     * Update from on mailable.
+     *
+     * @param  \Illuminate\Contracts\Mail\Mailable $message
+     *
+     * @return \Illuminate\Contracts\Mail\Mailable
+     */
+    protected function updateFromOnMailable(MailableContract $message): MailableContract
+    {
+        if (! empty($this->from['address'])) {
+            $message->from($this->from['address'], $this->from['name']);
+        }
+
+        return $message;
+    }
+
+    /**
      * Register the Swift Mailer instance.
      *
      * @return \Illuminate\Contracts\Mail\Mailer
@@ -170,9 +190,7 @@ class Mailer
     public function getMailer(): MailerContract
     {
         if (! $this->mailer instanceof MailerContract) {
-            $this->transport->setMemoryProvider($this->memory);
-
-            $this->mailer = $this->resolveMailer();
+            $this->mailer = $this->app->make('mailer');
         }
 
         return $this->mailer;
@@ -183,16 +201,16 @@ class Mailer
      *
      * @return \Illuminate\Contracts\Mail\Mailer
      */
-    protected function resolveMailer(): MailerContract
+    public function configureIlluminateMailer(MailerContract $mailer): MailerContract
     {
         $from = $this->memory->get('email.from');
-        $mailer = $this->app->make('mailer');
 
         // If a "from" address is set, we will set it on the mailer so that
         // all mail messages sent by the applications will utilize the same
         // "from" address on each one, which makes the developer's life a
         // lot more convenient.
         if (\is_array($from) && ! empty($from['address'])) {
+            $this->from = $from;
             $mailer->alwaysFrom($from['address'], $from['name']);
         }
 

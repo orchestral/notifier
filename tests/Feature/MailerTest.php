@@ -1,37 +1,25 @@
 <?php
 
-namespace Orchestra\Notifier\TestCase\Unit;
+namespace Orchestra\Notifier\TestCase\Feature;
 
 use Mockery as m;
 use Psr\Log\LoggerInterface;
 use Orchestra\Notifier\Mailer;
-use PHPUnit\Framework\TestCase;
 use Illuminate\Container\Container;
 use Orchestra\Notifier\TransportManager;
 use Illuminate\Queue\SerializableClosure;
 
 class MailerTest extends TestCase
 {
-    /**
-     * Teardown the test environment.
-     */
-    protected function tearDown(): void
-    {
-        m::close();
-    }
-
     /** @test */
     public function it_can_push_mail()
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
-            ->shouldReceive('get')->twice()->with('email.queue', false)->andReturn(false)
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+            ->shouldReceive('get')->twice()->with('email.queue', false)->twice()->andReturn(false)
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -40,8 +28,8 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->twice()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->push('foo.bar', ['foo' => 'foobar'], ''));
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->push('foo.bar', ['foo' => 'foobar'], ''));
@@ -50,16 +38,13 @@ class MailerTest extends TestCase
     /** @test */
     public function it_can_push_mail_using_queue()
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
+        $this->app->instance('queue', $queue = m::mock('Illuminate\Contracts\Queue\Factory'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-        $app->instance('queue', $queue = m::mock('Illuminate\Contracts\Queue\Factory'));
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
-            ->shouldReceive('get')->once()->with('email.queue', false)->andReturn(true)
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+            ->shouldReceive('get')->once()->with('email.queue', false)->once()->andReturn(true)
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -78,24 +63,20 @@ class MailerTest extends TestCase
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))
-                    ->setQueue($app['queue'])
-                    ->attach($app['orchestra.memory']);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->push($with['view'], $with['data'], $with['callback']));
     }
 
     /** @test */
     public function it_can_send_mail()
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -104,22 +85,20 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
     /** @test */
     public function it_can_send_mail_via_mail()
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -128,22 +107,21 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($memory);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
     /** @test */
     public function it_can_send_mail_via_sendmail()
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('get')->with('email.sendmail', null)->andReturn('/bin/sendmail -t')
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('sendmail')
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.sendmail', null)->once()->andReturn('/bin/sendmail -t')
+            ->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('sendmail')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -152,28 +130,27 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($memory);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
     /** @test */
     public function it_can_send_mail_via_smtp()
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn([
+        $memory->shouldReceive('get')->with('email', [])->once()->andReturn([
                 'host' => 'smtp.mailgun.org',
                 'port' => 587,
                 'encryption' => 'tls',
                 'username' => 'hello@orchestraplatform.com',
             ])
-            ->shouldReceive('secureGet')->with('email.password', null)->andReturn(123456)
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('smtp')
-            ->shouldReceive('get')->with('email.from')->andReturn([
+            ->shouldReceive('secureGet')->with('email.password', null)->once()->andReturn(123456)
+            ->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('smtp')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -182,24 +159,23 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($memory);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
     /** @test */
     public function it_can_send_mail_via_mailgun()
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('secureGet')->with('email.secret', null)->andReturn('auniquetoken')
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mailgun')
-            ->shouldReceive('get')->with('email.domain', null)->andReturn('mailer.mailgun.org')
-            ->shouldReceive('get')->with('email.guzzle', [])->andReturn([])
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('secureGet')->with('email.secret', null)->once()->andReturn('auniquetoken')
+            ->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mailgun')
+            ->shouldReceive('get')->with('email.domain', null)->once()->andReturn('mailer.mailgun.org')
+            ->shouldReceive('get')->with('email.guzzle', [])->once()->andReturn([])
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -208,23 +184,22 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($memory);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
     /** @test */
     public function it_can_send_mail_via_mandrill()
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('secureGet')->with('email.secret', null)->andReturn('auniquetoken')
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mandrill')
-            ->shouldReceive('get')->with('email.guzzle', [])->andReturn([])
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('secureGet')->with('email.secret', null)->once()->andReturn('auniquetoken')
+            ->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mandrill')
+            ->shouldReceive('get')->with('email.guzzle', [])->once()->andReturn([])
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -233,25 +208,21 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($memory);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
     /** @test */
     public function it_can_send_mail_via_log()
     {
-        $logger = m::mock(LoggerInterface::class);
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
+        $this->app->instance(LoggerInterface::class, $logger = m::mock(LoggerInterface::class));
 
-        $app = new Container();
-
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-        $app->instance(LoggerInterface::class, $logger);
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'log'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('log')
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('log')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -260,8 +231,9 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($memory);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
     }
 
@@ -270,14 +242,11 @@ class MailerTest extends TestCase
     {
         $this->expectException('InvalidArgumentException');
 
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'invalid'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('invalid')
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('invalid')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -286,8 +255,9 @@ class MailerTest extends TestCase
             ->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->andReturnNull();
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($memory);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $stub->send('foo.bar', ['foo' => 'foobar'], '');
     }
 
@@ -296,13 +266,12 @@ class MailerTest extends TestCase
     {
         $app = new Container();
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-        $app->instance('queue', $queue = m::mock('Illuminate\Contracts\Queue\Factory'));
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
+        $this->app->instance('queue', $queue = m::mock('Illuminate\Contracts\Queue\Factory'));
 
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -321,25 +290,21 @@ class MailerTest extends TestCase
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))
-                    ->setQueue($app['queue'])
-                    ->attach($app['orchestra.memory']);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->queue($with['view'], $with['data'], $with['callback']));
     }
 
     /** @test */
     public function it_can_queue_mail_using_custom_class_name()
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
+        $this->app->instance('queue', $queue = m::mock('Illuminate\Contracts\Queue\Factory'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-        $app->instance('queue', $queue = m::mock('Illuminate\Contracts\Queue\Factory'));
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -357,10 +322,8 @@ class MailerTest extends TestCase
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))
-                    ->setQueue($app['queue'])
-                    ->attach($app['orchestra.memory']);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->queue($with['view'], $with['data'], $with['callback']));
     }
@@ -371,14 +334,11 @@ class MailerTest extends TestCase
      */
     public function it_can_handle_queued_mail($view, $data, $callback)
     {
-        $app = new Container();
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
 
-        $app->instance('orchestra.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('get')->with('email', [])->andReturn(['driver' => 'mail'])
-            ->shouldReceive('get')->with('email.driver', 'mail')->andReturn('mail')
-            ->shouldReceive('get')->with('email.from')->andReturn([
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
             ]);
@@ -386,13 +346,15 @@ class MailerTest extends TestCase
         $job = m::mock('Illuminate\Contracts\Queue\Job');
 
         $job->shouldReceive('delete')->once()->andReturn(null);
+
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()
                 ->with($view, $data, m::any())->andReturn(true);
 
-        $transport = new TransportManager($app);
-        $stub = (new Mailer($app, $transport))->attach($app['orchestra.memory']);
+        $stub = $this->app['orchestra.mail'];
+        $stub->configureIlluminateMailer($mailer);
+
         $stub->handleQueuedMessage($job, compact('view', 'data', 'callback'));
     }
 
