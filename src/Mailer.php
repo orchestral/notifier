@@ -115,6 +115,8 @@ class Mailer
      */
     public function queue($view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
+        $mailer = $this->getMailer();
+
         if ($view instanceof MailableContract) {
             $this->updateFromOnMailable($view)->queue($this->queue);
         } else {
@@ -124,7 +126,7 @@ class Mailer
             $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
         }
 
-        return new Receipt($this->getMailer(), true);
+        return new Receipt($mailer, true);
     }
 
     /**
@@ -140,6 +142,8 @@ class Mailer
      */
     public function later($delay, $view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
+        $mailer = $this->getMailer();
+
         if ($view instanceof MailableContract) {
             return $this->updateFromOnMailable($view)->later($delay, $this->queue);
         }
@@ -149,7 +153,7 @@ class Mailer
 
         $this->queue->later($delay, 'orchestra.mail@handleQueuedMessage', $with, $queue);
 
-        return new Receipt($this->getMailer(), true);
+        return new Receipt($mailer, true);
     }
 
     /**
