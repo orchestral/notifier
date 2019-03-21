@@ -95,7 +95,7 @@ class Mailer
         $mailer = $this->getMailer();
 
         if ($view instanceof MailableContract) {
-            $view->send($mailer);
+            $this->updateFromOnMailable($view)->send($mailer);
         } else {
             $mailer->send($view, $data, $callback);
         }
@@ -116,7 +116,7 @@ class Mailer
     public function queue($view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
         if ($view instanceof MailableContract) {
-            $view->queue($this->queue);
+            $this->updateFromOnMailable($view)->queue($this->queue);
         } else {
             $callback = $this->buildQueueCallable($callback);
             $with = \compact('view', 'data', 'callback');
@@ -141,7 +141,7 @@ class Mailer
     public function later($delay, $view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
         if ($view instanceof MailableContract) {
-            return $view->later($delay, $this->queue);
+            return $this->updateFromOnMailable($view)->later($delay, $this->queue);
         }
 
         $callback = $this->buildQueueCallable($callback);
@@ -203,5 +203,20 @@ class Mailer
         $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));
 
         return $mailer;
+    }
+
+    /**
+     * Update from on mailable.
+     *
+     * @param  \Illuminate\Contracts\Mail\Mailable $message
+     * @return \Illuminate\Contracts\Mail\Mailable
+     */
+    protected function updateFromOnMailable(MailableContract $message): MailableContract
+    {
+        if (! empty($this->from['address'])) {
+            $message->from($this->from['address'], $this->from['name']);
+        }
+
+        return $message;
     }
 }
