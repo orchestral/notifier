@@ -28,6 +28,14 @@ trait Illuminate
     protected $queue;
 
     /**
+     * The global from address and name.
+     *
+     * @var array
+     */
+    protected $from;
+
+
+    /**
      * Set the global from address and name.
      *
      * @param  string  $address

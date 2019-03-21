@@ -197,6 +197,7 @@ class Mailer
         // "from" address on each one, which makes the developer's life a
         // lot more convenient.
         if (\is_array($from) && ! empty($from['address'])) {
+            $this->from = $from;
             $mailer->alwaysFrom($from['address'], $from['name']);
         }
 
