@@ -5,7 +5,6 @@ namespace Orchestra\Notifier\TestCase\Feature;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Orchestra\Notifier\PendingMail;
-use Orchestra\Support\Facades\Mail;
 
 class PendingMailTest extends TestCase
 {

@@ -2,6 +2,18 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
+## 3.8.1
+
+Released: 2019-03-22
+
+### Changes
+
+* Configure `Illuminate\Mail\Mailer` to use configuration set by Notifier when it's being resolved instead of only using it once Notifier being resolved.
+
+### Fixes 
+
+* Fixed missing `from` on Mailable when using queued Mailable.
+
 ## 3.8.0
 
 Released: 2019-03-13
@@ -9,6 +21,18 @@ Released: 2019-03-13
 ### Changes
 
 * Update support to Laravel Framework 5.8.
+
+## 3.7.3
+
+Released: 2019-03-22
+
+### Changes
+
+* Configure `Illuminate\Mail\Mailer` to use configuration set by Notifier when it's being resolved instead of only using it once Notifier being resolved.
+
+### Fixes 
+
+* Fixed missing `from` on Mailable when using queued Mailable.
 
 ## 3.7.2
 

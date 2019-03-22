@@ -2,6 +2,7 @@
 
 namespace Orchestra\Notifier\TestCase\Feature;
 
+use Mockery as m;
 use Illuminate\Support\Facades\Config;
 use Orchestra\Support\Facades\Notifier;
 
@@ -11,6 +12,14 @@ class NotifierManagerTest extends TestCase
     public function it_can_driver_using_default()
     {
         config(['orchestra/notifier::driver' => 'laravel']);
+
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
+                'address' => 'hello@orchestraplatform.com',
+                'name' => 'Orchestra Platform',
+            ]);
 
         $this->assertInstanceOf('Orchestra\Notifier\Handlers\Laravel', Notifier::driver());
     }
@@ -24,6 +33,14 @@ class NotifierManagerTest extends TestCase
     /** @test */
     public function it_can_create_laravel_driver()
     {
+        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
+
+        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+            ->shouldReceive('get')->with('email.from')->once()->andReturn([
+                'address' => 'hello@orchestraplatform.com',
+                'name' => 'Orchestra Platform',
+            ]);
+
         $this->assertInstanceOf('Orchestra\Notifier\Handlers\Laravel', Notifier::driver('laravel'));
     }
 

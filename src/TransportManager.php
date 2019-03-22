@@ -92,6 +92,7 @@ class TransportManager extends Manager
      * Add the SES credentials to the configuration array.
      *
      * @param  array  $config
+     *
      * @return array
      */
     protected function addSesCredentials(array $config)
@@ -197,7 +198,7 @@ class TransportManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return $this->memory->get('email.driver', 'mail');
+        return $this->attached() ? $this->memory->get('email.driver', 'mail') : 'mail';
     }
 
     /**
