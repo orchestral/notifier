@@ -3,7 +3,8 @@
 namespace Orchestra\Notifier;
 
 use Illuminate\Mail\Events\MessageSending;
-use Orchestra\Support\Providers\Traits\EventProvider;
+use Illuminate\Contracts\Foundation\Application;
+use Orchestra\Support\Providers\Concerns\EventProvider;
 use Illuminate\Mail\MailServiceProvider as ServiceProvider;
 
 class MailServiceProvider extends ServiceProvider
@@ -35,6 +36,8 @@ class MailServiceProvider extends ServiceProvider
     {
         parent::register();
 
-        $this->registerEventListeners($this->app->make('events'));
+        $this->app->booted(function (Application $app) {
+            $this->registerEventListeners($app->make('events'));
+        })
     }
 }
