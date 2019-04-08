@@ -38,6 +38,6 @@ class MailServiceProvider extends ServiceProvider
 
         $this->app->booted(function (Application $app) {
             $this->registerEventListeners($app->make('events'));
-        })
+        });
     }
 }
