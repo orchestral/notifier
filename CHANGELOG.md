@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
+## 3.8.2
+
+Released: 2019-04-09
+
+### Changes
+
+* Register event listeners after `$app` has been booted.
+
 ## 3.8.1
 
 Released: 2019-03-22
