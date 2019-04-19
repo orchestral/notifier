@@ -29,6 +29,6 @@ class NotifierServiceProviderTest extends TestCase
     {
         $stub = new NotifierServiceProvider(null);
 
-        $this->assertEquals(['orchestra.mail', 'orchestra.notifier'], $stub->provides());
+        $this->assertEquals(['orchestra.postal', 'orchestra.notifier'], $stub->provides());
     }
 }

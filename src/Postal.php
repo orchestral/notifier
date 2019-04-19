@@ -8,7 +8,7 @@ use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 
-class Mailer
+class Postal
 {
     use Concerns\Illuminate,
         Memorizable;
@@ -123,7 +123,7 @@ class Mailer
             $callback = $this->buildQueueCallable($callback);
             $with = \compact('view', 'data', 'callback');
 
-            $this->queue->push('orchestra.mail@handleQueuedMessage', $with, $queue);
+            $this->queue->push('orchestra.postal@handleQueuedMessage', $with, $queue);
         }
 
         return new Receipt($mailer, true);

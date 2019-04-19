@@ -21,10 +21,10 @@ class OrchestraTest extends TestCase
     /** @test */
     public function it_can_send_email()
     {
-        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $message = m::mock('\Illuminate\Mail\Message');
-        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $mailer = m::mock('Illuminate\Contracts\Mail\Mailer');
+        $notifier = m::mock('Orchestra\Notifier\Postal')->makePartial();
+        $message = m::mock('Illuminate\Mail\Message');
+        $user = m::mock('Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view = 'foo.bar';
@@ -52,10 +52,10 @@ class OrchestraTest extends TestCase
     /** @test */
     public function it_can_send_email_using_callback()
     {
-        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $message = m::mock('\Illuminate\Mail\Message');
-        $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $mailer = m::mock('Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('Illuminate\Mail\Message');
+        $notifier = m::mock('Orchestra\Notifier\Postal')->makePartial();
+        $user = m::mock('Orchestra\Contracts\Notification\Recipient');
 
         $view = 'foo.bar';
         $data = [];
@@ -86,11 +86,11 @@ class OrchestraTest extends TestCase
     /** @test */
     public function it_can_send_email_using_queue()
     {
-        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $message = m::mock('\Illuminate\Mail\Message');
-        $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $memory = m::mock('\Orchestra\Contracts\Memory\Provider');
-        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $mailer = m::mock('Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('Illuminate\Mail\Message');
+        $notifier = m::mock('Orchestra\Notifier\Postal')->makePartial();
+        $memory = m::mock('Orchestra\Contracts\Memory\Provider');
+        $user = m::mock('Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view = 'foo.bar';
@@ -121,10 +121,10 @@ class OrchestraTest extends TestCase
     /** @test */
     public function it_fails_to_send_email()
     {
-        $mailer = m::mock('\Illuminate\Contracts\Mail\Mailer');
-        $message = m::mock('\Illuminate\Mail\Message');
-        $notifier = m::mock('\Orchestra\Notifier\Mailer')->makePartial();
-        $user = m::mock('\Orchestra\Contracts\Notification\Recipient');
+        $mailer = m::mock('Illuminate\Contracts\Mail\Mailer');
+        $message = m::mock('Illuminate\Mail\Message');
+        $notifier = m::mock('Orchestra\Notifier\Postal')->makePartial();
+        $user = m::mock('Orchestra\Contracts\Notification\Recipient');
 
         $subject = 'foobar';
         $view = 'foo.bar';

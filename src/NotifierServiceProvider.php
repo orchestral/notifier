@@ -14,7 +14,7 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     public function register()
     {
-        $this->registerMailer();
+        $this->registerPostal();
 
         $this->registerNotifier();
 
@@ -26,10 +26,10 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      *
      * @return void
      */
-    protected function registerMailer(): void
+    protected function registerPostal(): void
     {
-        $this->app->singleton('orchestra.mail', function ($app) {
-            $mailer = new Mailer($app, $transport = new TransportManager($app));
+        $this->app->singleton('orchestra.postal', function ($app) {
+            $mailer = new Postal($app, $transport = new TransportManager($app));
 
             if ($app->bound('orchestra.platform.memory')) {
                 $mailer->attach($memory = $app->make('orchestra.platform.memory'));
@@ -64,7 +64,7 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
     protected function registerIlluminateMailerResolver(): void
     {
         $this->app->afterResolving('mailer', function ($service) {
-            $this->app->make('orchestra.mail')->configureIlluminateMailer($service);
+            $this->app->make('orchestra.postal')->configureIlluminateMailer($service);
         });
     }
 
@@ -87,6 +87,6 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     public function provides()
     {
-        return ['orchestra.mail', 'orchestra.notifier'];
+        return ['orchestra.postal', 'orchestra.notifier'];
     }
 }

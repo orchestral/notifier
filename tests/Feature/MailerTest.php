@@ -28,7 +28,7 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->twice()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->push('foo.bar', ['foo' => 'foobar'], ''));
@@ -58,12 +58,12 @@ class MailerTest extends TestCase
         ];
 
         $queue->shouldReceive('push')->once()
-            ->with('orchestra.mail@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
+            ->with('orchestra.postal@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
 
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->push($with['view'], $with['data'], $with['callback']));
@@ -85,7 +85,7 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
@@ -107,7 +107,7 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
@@ -130,7 +130,7 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
@@ -159,7 +159,7 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
@@ -184,7 +184,7 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
@@ -208,7 +208,7 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
@@ -231,7 +231,7 @@ class MailerTest extends TestCase
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
@@ -255,7 +255,7 @@ class MailerTest extends TestCase
             ->with('hello@orchestraplatform.com', 'Orchestra Platform')
             ->andReturnNull();
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $stub->send('foo.bar', ['foo' => 'foobar'], '');
@@ -285,12 +285,12 @@ class MailerTest extends TestCase
         ];
 
         $queue->shouldReceive('push')->once()
-            ->with('orchestra.mail@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
+            ->with('orchestra.postal@handleQueuedMessage', m::type('Array'), m::any())->andReturn(true);
 
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->queue($with['view'], $with['data'], $with['callback']));
@@ -316,13 +316,13 @@ class MailerTest extends TestCase
         ];
 
         $queue->shouldReceive('push')->once()
-            ->with('orchestra.mail@handleQueuedMessage', $with, '')
+            ->with('orchestra.postal@handleQueuedMessage', $with, '')
             ->andReturn(true);
 
         $mailer->shouldReceive('setSwiftMailer')->once()->andReturnNull()
             ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform');
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->queue($with['view'], $with['data'], $with['callback']));
@@ -352,7 +352,7 @@ class MailerTest extends TestCase
             ->shouldReceive('send')->once()
                 ->with($view, $data, m::any())->andReturn(true);
 
-        $stub = $this->app['orchestra.mail'];
+        $stub = $this->app['orchestra.postal'];
         $stub->configureIlluminateMailer($mailer);
 
         $stub->handleQueuedMessage($job, compact('view', 'data', 'callback'));

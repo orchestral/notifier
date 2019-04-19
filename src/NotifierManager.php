@@ -24,7 +24,7 @@ class NotifierManager extends Manager
      */
     protected function createOrchestraDriver(): Notification
     {
-        $mailer = $this->app->make('orchestra.mail');
+        $mailer = $this->app->make('orchestra.postal');
         $notifier = new Handlers\Orchestra($mailer);
 
         if ($mailer->attached()) {

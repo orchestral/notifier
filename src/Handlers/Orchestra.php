@@ -3,7 +3,7 @@
 namespace Orchestra\Notifier\Handlers;
 
 use Closure;
-use Orchestra\Notifier\Mailer;
+use Orchestra\Notifier\Postal;
 use Orchestra\Memory\Memorizable;
 use Orchestra\Contracts\Memory\Provider;
 use Illuminate\Queue\SerializableClosure;
@@ -26,9 +26,9 @@ class Orchestra extends Handler implements Notification
     /**
      * Construct a new Orchestra Platform notifier.
      *
-     * @param  \Orchestra\Notifier\Mailer  $mailer
+     * @param  \Orchestra\Notifier\Postal  $mailer
      */
-    public function __construct(Mailer $mailer)
+    public function __construct(Postal $mailer)
     {
         $this->mailer = $mailer;
     }
