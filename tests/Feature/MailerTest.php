@@ -191,30 +191,6 @@ class MailerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_send_mail_via_mandrill()
-    {
-        $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
-        $this->app->instance('mailer', $mailer = m::mock('Illuminate\Contracts\Mail\Mailer'));
-
-        $memory->shouldReceive('secureGet')->with('email.secret', null)->once()->andReturn('auniquetoken')
-            ->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mandrill')
-            ->shouldReceive('get')->with('email.guzzle', [])->once()->andReturn([])
-            ->shouldReceive('get')->with('email.from')->once()->andReturn([
-                'address' => 'hello@orchestraplatform.com',
-                'name' => 'Orchestra Platform',
-            ]);
-
-        $mailer->shouldReceive('setSwiftMailer')->once()->andReturn(null)
-            ->shouldReceive('alwaysFrom')->once()->with('hello@orchestraplatform.com', 'Orchestra Platform')
-            ->shouldReceive('send')->once()->with('foo.bar', ['foo' => 'foobar'], '')->andReturn(true);
-
-        $stub = $this->app['orchestra.postal'];
-        $stub->configureIlluminateMailer($mailer);
-
-        $this->assertInstanceOf('Orchestra\Notifier\Receipt', $stub->send('foo.bar', ['foo' => 'foobar'], ''));
-    }
-
-    /** @test */
     public function it_can_send_mail_via_log()
     {
         $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));

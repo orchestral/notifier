@@ -79,6 +79,6 @@ class Orchestra extends Handler implements Notification
             $driver = $this->memory->get('email.driver');
         }
 
-        return $queue || \in_array($driver, ['mailgun', 'mandrill', 'log']);
+        return $queue || \in_array($driver, ['mailgun', 'log']);
     }
 }

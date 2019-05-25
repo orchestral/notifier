@@ -37,7 +37,7 @@
     },
     "suggest": {
         "aws/aws-sdk-php": "Required to use the SES mail driver (^3.0).",
-        "guzzlehttp/guzzle": "Required to use the Mailgun, Mandrill and SparkPost mail drivers (^6.0)."
+        "guzzlehttp/guzzle": "Required to use the Mailgun mail drivers (^6.0)."
     },
     "extra": {
         "branch-alias": {

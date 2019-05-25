@@ -14,8 +14,6 @@ use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\SesTransport;
 use Illuminate\Mail\Transport\ArrayTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
-use Illuminate\Mail\Transport\MandrillTransport;
-use Illuminate\Mail\Transport\SparkPostTransport;
 use Swift_SendmailTransport as SendmailTransport;
 
 class TransportManager extends Manager
@@ -126,30 +124,6 @@ class TransportManager extends Manager
             $this->getSecureConfig('secret'),
             $this->getConfig('domain'),
             null
-        );
-    }
-
-    /**
-     * Create an instance of the Mandrill Swift Transport driver.
-     *
-     * @return \Illuminate\Mail\Transport\MandrillTransport
-     */
-    protected function createMandrillDriver()
-    {
-        return new MandrillTransport(
-            $this->guzzle(), $this->getSecureConfig('secret')
-        );
-    }
-
-    /**
-     * Create an instance of the SparkPost Swift Transport driver.
-     *
-     * @return \Illuminate\Mail\Transport\SparkPostTransport
-     */
-    protected function createSparkPostDriver()
-    {
-        return new SparkPostTransport(
-            $this->guzzle(), $this->getSecureConfig('secret'), []
         );
     }
 
