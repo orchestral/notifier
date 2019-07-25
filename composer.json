@@ -24,16 +24,16 @@
         "php": ">=7.2",
         "illuminate/encryption": "dev-master",
         "illuminate/queue": "dev-master",
-        "orchestra/contracts": "~3.10.0",
-        "orchestra/memory": "~3.10.0",
-        "orchestra/support": "~3.10.0",
+        "orchestra/contracts": "~4.0.0",
+        "orchestra/memory": "^4.0",
+        "orchestra/support": "^4.0",
         "tijsverkoyen/css-to-inline-styles": "^2.2"
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.0",
         "guzzlehttp/guzzle": "^6.0",
         "mockery/mockery": "^1.2",
-        "orchestra/testbench": "~3.10.0"
+        "orchestra/testbench": "^4.0"
     },
     "suggest": {
         "aws/aws-sdk-php": "Required to use the SES mail driver (^3.0).",
@@ -41,7 +41,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.10-dev"
+            "dev-master": "4.0-dev"
         }
     },
     "config": {
