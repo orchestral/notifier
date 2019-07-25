@@ -28,7 +28,7 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     protected function registerPostal(): void
     {
-        $this->app->singleton('orchestra.postal', function ($app) {
+        $this->app->singleton('orchestra.postal', static function ($app) {
             $mailer = new Postal($app, $transport = new TransportManager($app));
 
             if ($app->bound('orchestra.platform.memory')) {
@@ -51,7 +51,7 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     protected function registerNotifier(): void
     {
-        $this->app->singleton('orchestra.notifier', function ($app) {
+        $this->app->singleton('orchestra.notifier', static function ($app) {
             return new NotifierManager($app);
         });
     }
