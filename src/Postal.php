@@ -4,6 +4,7 @@ namespace Orchestra\Notifier;
 
 use Swift_Mailer;
 use Orchestra\Memory\Memorizable;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
@@ -18,7 +19,7 @@ class Postal
      *
      * @var \Illuminate\Contracts\Container\Container
      */
-    protected $app;
+    protected $container;
 
     /**
      * Transporter instance.
@@ -30,12 +31,12 @@ class Postal
     /**
      * Construct a new Mail instance.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $app
+     * @param  \Illuminate\Contracts\Container\Container  $container
      * @param  \Orchestra\Notifier\TransportManager  $transport
      */
-    public function __construct($app, TransportManager $transport)
+    public function __construct(Container $container, TransportManager $transport)
     {
-        $this->app = $app;
+        $this->container = $container;
         $this->transport = $transport;
     }
 
@@ -190,7 +191,7 @@ class Postal
     public function getMailer(): MailerContract
     {
         if (! $this->mailer instanceof MailerContract) {
-            $this->mailer = $this->app->make('mailer');
+            $this->mailer = $this->container->make('mailer');
         }
 
         return $this->mailer;

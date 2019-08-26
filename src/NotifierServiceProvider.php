@@ -2,6 +2,7 @@
 
 namespace Orchestra\Notifier;
 
+use Illuminate\Contracts\Container\Container;
 use Orchestra\Support\Providers\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
@@ -28,7 +29,7 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     protected function registerPostal(): void
     {
-        $this->app->singleton('orchestra.postal', static function ($app) {
+        $this->app->singleton('orchestra.postal', static function (Container $app) {
             $mailer = new Postal($app, $transport = new TransportManager($app));
 
             if ($app->bound('orchestra.platform.memory')) {
@@ -51,7 +52,7 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     protected function registerNotifier(): void
     {
-        $this->app->singleton('orchestra.notifier', static function ($app) {
+        $this->app->singleton('orchestra.notifier', static function (Container $app) {
             return new NotifierManager($app);
         });
     }

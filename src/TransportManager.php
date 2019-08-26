@@ -134,10 +134,10 @@ class TransportManager extends Manager
      */
     protected function createLogDriver()
     {
-        $logger = $this->app->make(LoggerInterface::class);
+        $logger = $this->container->make(LoggerInterface::class);
 
         if ($logger instanceof LogManager) {
-            $logger = $logger->channel($this->app['config']['mail.log_channel']);
+            $logger = $logger->channel($this->config['mail.log_channel']);
         }
 
         return new LogTransport($logger);
