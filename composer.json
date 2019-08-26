@@ -23,11 +23,12 @@
     "require": {
         "php": ">=7.2",
         "illuminate/encryption": "^6.0",
+        "illuminate/mail": "^6.0",
         "illuminate/queue": "^6.0",
         "orchestra/contracts": "^4.0",
         "orchestra/memory": "^4.0",
         "orchestra/support": "^4.0",
-        "tijsverkoyen/css-to-inline-styles": "^2.2"
+        "tijsverkoyen/css-to-inline-styles": "^2.2.1"
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.0",
@@ -41,7 +42,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.0-dev"
+            "dev-master": "5.0-dev"
         }
     },
     "config": {
