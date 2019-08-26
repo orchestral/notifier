@@ -1,6 +1,6 @@
 <?php
 
-namespace Orchestra\Notifier\TestCase\Feature;
+namespace Orchestra\Notifier\Tests\Feature;
 
 use Mockery as m;
 use Psr\Log\LoggerInterface;

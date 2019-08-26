@@ -1,6 +1,6 @@
 <?php
 
-namespace Orchestra\Notifier\TestCase\Unit;
+namespace Orchestra\Notifier\Tests\Unit;
 
 use Orchestra\Notifier\Message;
 use PHPUnit\Framework\TestCase;
