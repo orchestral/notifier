@@ -14,7 +14,7 @@ class NotifierManager extends Manager
      */
     protected function createLaravelDriver(): Notification
     {
-        return new Handlers\Laravel($this->app->make('mailer'));
+        return new Handlers\Laravel($this->container->make('mailer'));
     }
 
     /**
@@ -24,13 +24,13 @@ class NotifierManager extends Manager
      */
     protected function createOrchestraDriver(): Notification
     {
-        $mailer = $this->app->make('orchestra.postal');
+        $mailer = $this->container->make('orchestra.postal');
         $notifier = new Handlers\Orchestra($mailer);
 
         if ($mailer->attached()) {
             $notifier->attach($mailer->getMemoryProvider());
         } else {
-            $notifier->attach($this->app->make('orchestra.memory')->makeOrFallback());
+            $notifier->attach($this->container->make('orchestra.memory')->makeOrFallback());
         }
 
         return $notifier;
@@ -43,7 +43,7 @@ class NotifierManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return $this->app->make('config')->get('orchestra/notifier::driver', 'laravel');
+        return $this->config->get('orchestra/notifier::driver', 'laravel');
     }
 
     /**
@@ -55,6 +55,6 @@ class NotifierManager extends Manager
      */
     public function setDefaultDriver($name)
     {
-        $this->app->make('config')->set('orchestra/notifier::driver', $name);
+        $this->config->set('orchestra/notifier::driver', $name);
     }
 }
