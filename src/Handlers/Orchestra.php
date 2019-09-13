@@ -3,14 +3,14 @@
 namespace Orchestra\Notifier\Handlers;
 
 use Closure;
-use Orchestra\Notifier\Postal;
-use Orchestra\Memory\Memorizable;
-use Orchestra\Contracts\Memory\Provider;
 use Illuminate\Queue\SerializableClosure;
-use Orchestra\Contracts\Notification\Recipient;
-use Orchestra\Contracts\Notification\Notification;
+use Orchestra\Contracts\Memory\Provider;
 use Orchestra\Contracts\Notification\Message as MessageContract;
+use Orchestra\Contracts\Notification\Notification;
 use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
+use Orchestra\Contracts\Notification\Recipient;
+use Orchestra\Memory\Memorizable;
+use Orchestra\Notifier\Postal;
 
 class Orchestra extends Handler implements Notification
 {

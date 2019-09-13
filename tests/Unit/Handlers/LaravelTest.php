@@ -3,9 +3,9 @@
 namespace Orchestra\Notifier\Tests\Unit\Handlers;
 
 use Mockery as m;
+use Orchestra\Notifier\Handlers\Laravel;
 use Orchestra\Notifier\Message;
 use PHPUnit\Framework\TestCase;
-use Orchestra\Notifier\Handlers\Laravel;
 
 class LaravelTest extends TestCase
 {

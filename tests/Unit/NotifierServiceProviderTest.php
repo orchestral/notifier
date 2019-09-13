@@ -3,8 +3,8 @@
 namespace Orchestra\Notifier\Tests\Unit;
 
 use Mockery as m;
-use PHPUnit\Framework\TestCase;
 use Orchestra\Notifier\NotifierServiceProvider;
+use PHPUnit\Framework\TestCase;
 
 class NotifierServiceProviderTest extends TestCase
 {

@@ -3,10 +3,10 @@
 namespace Orchestra\Notifier\Tests\Unit\Handlers;
 
 use Mockery as m;
+use Orchestra\Notifier\Handlers\Orchestra;
 use Orchestra\Notifier\Message;
 use Orchestra\Notifier\Receipt;
 use PHPUnit\Framework\TestCase;
-use Orchestra\Notifier\Handlers\Orchestra;
 
 class OrchestraTest extends TestCase
 {

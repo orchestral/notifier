@@ -2,12 +2,10 @@
 
 namespace Orchestra\Notifier\Tests\Feature;
 
+use Illuminate\Container\Container;
+use Illuminate\Queue\SerializableClosure;
 use Mockery as m;
 use Psr\Log\LoggerInterface;
-use Orchestra\Notifier\Mailer;
-use Illuminate\Container\Container;
-use Orchestra\Notifier\TransportManager;
-use Illuminate\Queue\SerializableClosure;
 
 class MailerTest extends TestCase
 {

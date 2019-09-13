@@ -3,18 +3,18 @@
 namespace Orchestra\Notifier;
 
 use Aws\Ses\SesClient;
-use Illuminate\Support\Arr;
-use Psr\Log\LoggerInterface;
+use GuzzleHttp\Client as HttpClient;
 use Illuminate\Log\LogManager;
+use Illuminate\Mail\Transport\ArrayTransport;
+use Illuminate\Mail\Transport\LogTransport;
+use Illuminate\Mail\Transport\MailgunTransport;
+use Illuminate\Mail\Transport\SesTransport;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Manager;
 use Orchestra\Memory\Memorizable;
-use GuzzleHttp\Client as HttpClient;
-use Swift_SmtpTransport as SmtpTransport;
-use Illuminate\Mail\Transport\LogTransport;
-use Illuminate\Mail\Transport\SesTransport;
-use Illuminate\Mail\Transport\ArrayTransport;
-use Illuminate\Mail\Transport\MailgunTransport;
+use Psr\Log\LoggerInterface;
 use Swift_SendmailTransport as SendmailTransport;
+use Swift_SmtpTransport as SmtpTransport;
 
 class TransportManager extends Manager
 {

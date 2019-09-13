@@ -2,8 +2,8 @@
 
 namespace Orchestra\Notifier\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use Orchestra\Notifier\GenericRecipient;
+use PHPUnit\Framework\TestCase;
 
 class GenericRecipientTest extends TestCase
 {

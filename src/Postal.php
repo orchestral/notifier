@@ -2,12 +2,12 @@
 
 namespace Orchestra\Notifier;
 
-use Swift_Mailer;
-use Orchestra\Memory\Memorizable;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
+use Orchestra\Memory\Memorizable;
+use Swift_Mailer;
 
 class Postal
 {

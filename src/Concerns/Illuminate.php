@@ -3,13 +3,13 @@
 namespace Orchestra\Notifier\Concerns;
 
 use Closure;
-use Serializable;
-use Illuminate\Support\Str;
-use Illuminate\Contracts\Queue\Job;
-use Illuminate\Queue\SerializableClosure;
-use Orchestra\Contracts\Notification\Receipt;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Queue\Factory as QueueContract;
+use Illuminate\Contracts\Queue\Job;
+use Illuminate\Queue\SerializableClosure;
+use Illuminate\Support\Str;
+use Orchestra\Contracts\Notification\Receipt;
+use Serializable;
 
 trait Illuminate
 {
