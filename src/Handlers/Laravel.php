@@ -3,12 +3,12 @@
 namespace Orchestra\Notifier\Handlers;
 
 use Closure;
-use Orchestra\Notifier\Receipt;
 use Illuminate\Contracts\Mail\Mailer as Mail;
-use Orchestra\Contracts\Notification\Recipient;
-use Orchestra\Contracts\Notification\Notification;
 use Orchestra\Contracts\Notification\Message as MessageContract;
+use Orchestra\Contracts\Notification\Notification;
 use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
+use Orchestra\Contracts\Notification\Recipient;
+use Orchestra\Notifier\Receipt;
 
 class Laravel extends Handler implements Notification
 {

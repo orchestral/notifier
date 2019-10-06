@@ -2,10 +2,10 @@
 
 namespace Orchestra\Notifier;
 
-use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Contracts\Foundation\Application;
-use Orchestra\Support\Providers\Concerns\EventProvider;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\MailServiceProvider as ServiceProvider;
+use Orchestra\Support\Providers\Concerns\EventProvider;
 
 class MailServiceProvider extends ServiceProvider
 {

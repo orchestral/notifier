@@ -3,8 +3,8 @@
 namespace Orchestra\Notifier;
 
 use Illuminate\Contracts\Container\Container;
-use Orchestra\Support\Providers\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Orchestra\Support\Providers\ServiceProvider;
 
 class NotifierServiceProvider extends ServiceProvider implements DeferrableProvider
 {

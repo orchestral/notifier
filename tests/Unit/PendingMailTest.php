@@ -3,8 +3,8 @@
 namespace Orchestra\Notifier\Tests\Feature;
 
 use Mockery as m;
-use PHPUnit\Framework\TestCase;
 use Orchestra\Notifier\PendingMail;
+use PHPUnit\Framework\TestCase;
 
 class PendingMailTest extends TestCase
 {

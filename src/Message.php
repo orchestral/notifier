@@ -3,8 +3,8 @@
 namespace Orchestra\Notifier;
 
 use Exception;
-use Illuminate\Support\Fluent;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
+use Illuminate\Support\Fluent;
 use Orchestra\Contracts\Notification\Message as MessageContract;
 
 class Message extends Fluent implements MessageContract

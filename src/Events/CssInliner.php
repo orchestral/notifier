@@ -2,8 +2,8 @@
 
 namespace Orchestra\Notifier\Events;
 
-use Illuminate\Support\Str;
 use Illuminate\Mail\Events\MessageSending;
+use Illuminate\Support\Str;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 class CssInliner

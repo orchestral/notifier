@@ -2,8 +2,8 @@
 
 namespace Orchestra\Notifier\Tests\Feature;
 
-use Mockery as m;
 use Illuminate\Support\Facades\Config;
+use Mockery as m;
 use Orchestra\Support\Facades\Notifier;
 
 class NotifierManagerTest extends TestCase
