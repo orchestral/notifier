@@ -152,7 +152,7 @@ class Postal
         $callback = $this->buildQueueCallable($callback);
         $with = \compact('view', 'data', 'callback');
 
-        $this->queue->later($delay, 'orchestra.mail@handleQueuedMessage', $with, $queue);
+        $this->queue->later($delay, 'orchestra.postal@handleQueuedMessage', $with, $queue);
 
         return new Receipt($mailer, true);
     }
