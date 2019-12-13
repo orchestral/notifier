@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
+## 4.0.2
+
+Released: 2019-12-13
+
+### Fixes
+
+* Fixes `Orchestra\Notifier\PendingMail` to use `Orchestra\Notifier\Postal`.
+
 ## 4.0.1
 
 Released: 2019-10-30

@@ -24,7 +24,7 @@ class PendingMailTest extends TestCase
             'getRecipientName' => 'Administrator',
         ]);
 
-        $mailer = m::mock('Orchestra\Notifier\Mailer');
+        $mailer = m::mock('Orchestra\Notifier\Postal');
         $mailable = m::mock('Illuminate\Contracts\Mail\Mailable');
 
         $mailable->shouldReceive('to')->once()->with([
