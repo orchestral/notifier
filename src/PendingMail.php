@@ -11,7 +11,7 @@ class PendingMail
     /**
      * The mailer instance.
      *
-     * @var \Orchestra\Notifier\Mailer
+     * @var \Orchestra\Notifier\Postal
      */
     protected $mailer;
 
@@ -46,9 +46,9 @@ class PendingMail
     /**
      * Create a new mailable mailer instance.
      *
-     * @param  \Orchestra\Notifier\Mailer  $mailer
+     * @param  \Orchestra\Notifier\Postal  $mailer
      */
-    public function __construct(Mailer $mailer)
+    public function __construct(Postal $mailer)
     {
         $this->mailer = $mailer;
     }

@@ -19,7 +19,7 @@ class Orchestra extends Handler implements Notification
     /**
      * Mailer instance.
      *
-     * @var \Orchestra\Notifier\Mailer
+     * @var \Orchestra\Notifier\Postal
      */
     protected $mailer;
 
