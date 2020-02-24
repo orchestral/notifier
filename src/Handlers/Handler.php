@@ -10,9 +10,6 @@ abstract class Handler
     /**
      * Create message callback.
      *
-     * @param  string|null  $subject
-     * @param  callable|null  $callback
-     *
      * @return \Closure
      */
     protected function createMessageResolver(Recipient $user, ?string $subject = null, ?callable $callback = null)

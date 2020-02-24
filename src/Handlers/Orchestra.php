@@ -54,10 +54,8 @@ class Orchestra extends Handler implements Notification
 
     /**
      * Determine if mailer using queue.
-     *
-     * @return bool
      */
-    protected function isUsingQueue()
+    protected function isUsingQueue(): bool
     {
         // It impossible to get either the email is sent out straight away
         // when the mailer is only push to queue, in this case we should
