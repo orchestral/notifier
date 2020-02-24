@@ -89,8 +89,6 @@ class TransportManager extends Manager
     /**
      * Add the SES credentials to the configuration array.
      *
-     * @param  array  $config
-     *
      * @return array
      */
     protected function addSesCredentials(array $config)

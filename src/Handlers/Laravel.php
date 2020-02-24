@@ -21,8 +21,6 @@ class Laravel extends Handler implements Notification
 
     /**
      * Setup Illuminate Mailer.
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      */
     public function __construct(Mail $mailer)
     {
@@ -31,12 +29,6 @@ class Laravel extends Handler implements Notification
 
     /**
      * Send notification via API.
-     *
-     * @param  \Orchestra\Contracts\Notification\Recipient  $user
-     * @param  \Orchestra\Contracts\Notification\Message  $message
-     * @param  \Closure|null  $callback
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function send(Recipient $user, MessageContract $message, Closure $callback = null): ReceiptContract
     {
@@ -44,7 +36,7 @@ class Laravel extends Handler implements Notification
         $data = $message->getData();
         $subject = $message->getSubject();
 
-        $this->mailer->send($view, $data, $this->createMessageCallback($user, $subject, $callback));
+        $this->mailer->send($view, $data, $this->createMessageResolver($user, $subject, $callback));
 
         return new Receipt($this->mailer, false);
     }

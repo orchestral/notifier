@@ -4,7 +4,8 @@ namespace Orchestra\Notifier;
 
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Orchestra\Contracts\Notification\Recipient;
+use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
+use Orchestra\Contracts\Notification\Recipient as RecipientContract;
 
 class PendingMail
 {
@@ -45,8 +46,6 @@ class PendingMail
 
     /**
      * Create a new mailable mailer instance.
-     *
-     * @param  \Orchestra\Notifier\Postal  $mailer
      */
     public function __construct(Postal $mailer)
     {
@@ -56,11 +55,9 @@ class PendingMail
     /**
      * Set the locale of the message.
      *
-     * @param  string  $locale
-     *
      * @return $this
      */
-    public function locale($locale)
+    public function locale(string $locale)
     {
         $this->locale = $locale;
 
@@ -76,7 +73,7 @@ class PendingMail
      */
     public function to($users)
     {
-        if ($users instanceof Recipient) {
+        if ($users instanceof RecipientContract) {
             $this->to = [['email' => $users->getRecipientEmail(), 'name' => $users->getRecipientName()]];
         } else {
             $this->to = $users;
@@ -119,24 +116,16 @@ class PendingMail
 
     /**
      * Push a mailable message for sending.
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function push(Mailable $mailable)
+    public function push(Mailable $mailable): RecipientContract
     {
         return $this->mailer->push($this->fill($mailable));
     }
 
     /**
      * Send a new mailable message instance.
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function send(Mailable $mailable)
+    public function send(Mailable $mailable): ReceiptContract
     {
         if ($mailable instanceof ShouldQueue) {
             return $this->queue($mailable);
@@ -147,24 +136,16 @@ class PendingMail
 
     /**
      * Send a mailable message immediately.
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     *
-     * @return mixed
      */
-    public function sendNow(Mailable $mailable)
+    public function sendNow(Mailable $mailable): ReceiptContract
     {
         return $this->mailer->send($this->fill($mailable));
     }
 
     /**
      * Queue a mailable message for sending.
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
-    public function queue(Mailable $mailable)
+    public function queue(Mailable $mailable): RecipientContract
     {
         $mailable = $this->fill($mailable);
 
@@ -178,22 +159,15 @@ class PendingMail
     /**
      * Deliver the queued message after the given delay.
      *
-     * @param  \DateTime|int  $delay
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
+     * @param  \DateInterval|int  $delay
      */
-    public function later($delay, Mailable $mailable)
+    public function later($delay, Mailable $mailable): ReceiptContract
     {
         return $this->mailer->later($delay, $this->fill($mailable));
     }
 
     /**
      * Populate the mailable with the addresses.
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     *
-     * @return \Illuminate\Contracts\Mail\Mailable
      */
     protected function fill(Mailable $mailable): Mailable
     {

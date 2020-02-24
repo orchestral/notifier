@@ -24,8 +24,6 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
 
     /**
      * Register the service provider for mail.
-     *
-     * @return void
      */
     protected function registerPostal(): void
     {
@@ -47,8 +45,6 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
 
     /**
      * Register the service provider for notifier.
-     *
-     * @return void
      */
     protected function registerNotifier(): void
     {
@@ -59,8 +55,6 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
 
     /**
      * Register the service provider for notifier.
-     *
-     * @return void
      */
     protected function registerIlluminateMailerResolver(): void
     {

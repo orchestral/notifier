@@ -10,10 +10,6 @@ class CssInliner
 {
     /**
      * Handle converting to inline CSS.
-     *
-     * @param  \Illuminate\Mail\Events\MessageSending  $sending
-     *
-     * @return void
      */
     public function handle(MessageSending $sending): void
     {

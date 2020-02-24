@@ -36,11 +36,6 @@ trait Illuminate
 
     /**
      * Set the global from address and name.
-     *
-     * @param  string  $address
-     * @param  string|null  $name
-     *
-     * @return void
      */
     public function alwaysFrom(string $address, ?string $name = null): void
     {
@@ -49,11 +44,6 @@ trait Illuminate
 
     /**
      * Set the global to address and name.
-     *
-     * @param  string  $address
-     * @param  string|null  $name
-     *
-     * @return void
      */
     public function alwaysTo(string $address, ?string $name = null): void
     {
@@ -63,10 +53,7 @@ trait Illuminate
     /**
      * Send a new message when only a raw text part.
      *
-     * @param  string  $text
      * @param  mixed  $callback
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function raw(string $text, $callback): Receipt
     {
@@ -76,11 +63,7 @@ trait Illuminate
     /**
      * Send a new message when only a plain part.
      *
-     * @param  string  $view
-     * @param  array  $data
      * @param  mixed  $callback
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function plain(string $view, array $data, $callback): Receipt
     {
@@ -90,12 +73,8 @@ trait Illuminate
     /**
      * Queue a new e-mail message for sending on the given queue.
      *
-     * @param  string  $queue
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string|null  $callback
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function onQueue(string $queue, $view, array $data = [], $callback = null): Receipt
     {
@@ -107,12 +86,8 @@ trait Illuminate
      *
      * This method didn't match rest of framework's "onQueue" phrasing. Added "onQueue".
      *
-     * @param  string  $queue
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string  $callback
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function queueOn(string $queue, $view, array $data, $callback = null): Receipt
     {
@@ -122,13 +97,9 @@ trait Illuminate
     /**
      * Queue a new e-mail message for sending after (n) seconds on the given queue.
      *
-     * @param  string  $queue
      * @param  int  $delay
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string  $callback
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function laterOn(string $queue, $delay, $view, array $data = [], $callback = null): Receipt
     {
@@ -137,8 +108,6 @@ trait Illuminate
 
     /**
      * Set the queue manager instance.
-     *
-     * @param  \Illuminate\Contracts\Queue\Factory  $queue
      *
      * @return $this
      */
@@ -155,8 +124,6 @@ trait Illuminate
 
     /**
      * Get the array of failed recipients.
-     *
-     * @return array
      */
     public function failures(): array
     {
@@ -182,7 +149,6 @@ trait Illuminate
     /**
      * Handle a queued e-mail message job.
      *
-     * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  array  $data
      *
      * @return void
@@ -197,8 +163,6 @@ trait Illuminate
     /**
      * Get the true callable for a queued e-mail message.
      *
-     * @param  array  $data
-     *
      * @return mixed
      */
     protected function getQueuedCallable(array $data)
@@ -212,8 +176,6 @@ trait Illuminate
 
     /**
      * Register the Swift Mailer instance.
-     *
-     * @return \Illuminate\Contracts\Mail\Mailer
      */
     abstract public function getMailer(): MailerContract;
 
@@ -221,10 +183,7 @@ trait Illuminate
      * Force Orchestra Platform to send email directly.
      *
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string|null  $callback
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     abstract public function send($view, array $data = [], $callback = null): Receipt;
 
@@ -232,11 +191,7 @@ trait Illuminate
      * Force Orchestra Platform to send email using queue.
      *
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string|null  $callback
-     * @param  string|null  $queue
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     abstract public function queue($view, array $data = [], $callback = null, ?string $queue = null): Receipt;
 
@@ -245,11 +200,7 @@ trait Illuminate
      *
      * @param  int  $delay
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string|null  $callback
-     * @param  string|null  $queue
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     abstract public function later($delay, $view, array $data = [], $callback = null, ?string $queue = null): Receipt;
 }

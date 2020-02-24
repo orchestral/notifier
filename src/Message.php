@@ -13,12 +13,10 @@ class Message extends Fluent implements MessageContract
      * Create a new Message instance.
      *
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
-     * @param  string|null  $subject
      *
      * @return static
      */
-    public static function create($view, array $data = [], $subject = null)
+    public static function create($view, array $data = [], ?string $subject = null)
     {
         return new static([
             'view' => $view,
@@ -29,8 +27,6 @@ class Message extends Fluent implements MessageContract
 
     /**
      * Get data.
-     *
-     * @return array
      */
     public function getData(): array
     {
@@ -39,8 +35,6 @@ class Message extends Fluent implements MessageContract
 
     /**
      * Get subject.
-     *
-     * @return string
      */
     public function getSubject(): string
     {
@@ -66,7 +60,7 @@ class Message extends Fluent implements MessageContract
      *
      * @return bool
      */
-    public function mailable()
+    public function mailable(): bool
     {
         if (! isset($this->attributes['view'])) {
             return false;
