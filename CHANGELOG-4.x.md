@@ -24,7 +24,7 @@ Released: 2019-09-04
 
 ### Changes
 
-* Update support to Laravel Framework v6.0.
+* Update support to Laravel Framework v6.
 * Rename `Orchestra\Notifier\Mailer` to `Orchestra\Notifier\Postal`.
 
 ### Removed
