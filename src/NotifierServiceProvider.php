@@ -58,7 +58,7 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     protected function registerIlluminateMailerResolver(): void
     {
-        $this->app->afterResolving('mailer', function ($service) {
+        $this->app->afterResolving('mail.manager', function ($service) {
             $this->app->make('orchestra.postal')->configureIlluminateMailer($service);
         });
     }

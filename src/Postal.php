@@ -5,6 +5,7 @@ namespace Orchestra\Notifier;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Mail\MailManager;
 use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 use Orchestra\Memory\Memorizable;
 use Swift_Mailer;
@@ -172,7 +173,7 @@ class Postal
     /**
      * Setup mailer.
      */
-    public function configureIlluminateMailer(MailerContract $mailer): MailerContract
+    public function configureIlluminateMailer(MailManager $manager): void
     {
         $from = $this->memory->get('email.from');
 
@@ -182,15 +183,16 @@ class Postal
         // lot more convenient.
         if (\is_array($from) && ! empty($from['address'])) {
             $this->from = $from;
-            $mailer->alwaysFrom($from['address'], $from['name']);
+
+            \config(['mail.from' => $from]);
         }
+
+        $mailer = $manager->driver($this->transport->getDefaultDriver());
 
         if ($this->queue instanceof QueueContract) {
             $mailer->setQueue($this->queue);
         }
 
         $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));
-
-        return $mailer;
     }
 }

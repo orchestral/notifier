@@ -57,8 +57,6 @@ class Message extends Fluent implements MessageContract
 
     /**
      * Is message mailable.
-     *
-     * @return bool
      */
     public function mailable(): bool
     {
