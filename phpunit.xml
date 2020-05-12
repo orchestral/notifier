@@ -23,4 +23,8 @@
             <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>
+
+    <php>
+        <server name="MAIL_MAILER" value="array"/>
+    </php>
 </phpunit>

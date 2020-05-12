@@ -24,7 +24,8 @@ class NotifierManagerTest extends TestCase
                     'name' => 'Orchestra Platform',
                 ],
             ])
-            ->shouldReceive('get')->with('email.driver', 'mail')->twice()->andReturn('smtp')
+            ->shouldReceive('has')->with('email.driver')->andReturn(true)
+            ->shouldReceive('get')->with('email.driver')->twice()->andReturn('smtp')
             ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
@@ -53,7 +54,8 @@ class NotifierManagerTest extends TestCase
                     'name' => 'Orchestra Platform',
                 ],
             ])
-            ->shouldReceive('get')->with('email.driver', 'mail')->twice()->andReturn('smtp')
+            ->shouldReceive('has')->with('email.driver')->andReturn(true)
+            ->shouldReceive('get')->with('email.driver')->twice()->andReturn('smtp')
             ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',

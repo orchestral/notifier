@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
+## 5.0.2
+
+Released: 2020-05-13
+
+### Fixes
+
+* Fallback to `mail` configuration.
+
 ## 5.0.1
 
 Released: 2020-04-13

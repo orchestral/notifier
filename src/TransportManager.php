@@ -21,6 +21,13 @@ class TransportManager extends Manager
     use Memorizable;
 
     /**
+     * Use fallback.
+     *
+     * @var bool
+     */
+    protected $useFallback = false;
+
+    /**
      * Create an instance of the SMTP Swift Transport driver.
      *
      * @return \Swift_SmtpTransport
@@ -163,6 +170,28 @@ class TransportManager extends Manager
         ));
     }
 
+
+    /**
+     * Get a driver instance.
+     *
+     * @param  string|null  $driver
+     * @return mixed
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function driver($driver = null)
+    {
+        $driver = $driver ?: $this->getDefaultDriver();
+
+        if (!! $this->useFallback) {
+            return $this->app['mail.manager']->mailer($driver)
+                ->getSwiftMailer()
+                ->getTransport();
+        }
+
+        return parent::driver($driver);
+    }
+
     /**
      * Get the default mail driver name.
      *
@@ -170,7 +199,13 @@ class TransportManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return $this->attached() ? $this->memory->get('email.driver', 'mail') : 'mail';
+        if ($this->attached() && $this->memory->has('email.driver')) {
+            return $this->memory->get('email.driver');
+        }
+
+        $this->useFallback = true;
+
+        return \config('mail.default');
     }
 
     /**
