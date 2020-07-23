@@ -4,6 +4,7 @@ namespace Orchestra\Notifier;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\Facades\Mail;
 use Orchestra\Support\Providers\ServiceProvider;
 
 class NotifierServiceProvider extends ServiceProvider implements DeferrableProvider
@@ -58,7 +59,7 @@ class NotifierServiceProvider extends ServiceProvider implements DeferrableProvi
      */
     protected function registerIlluminateMailerResolver(): void
     {
-        $this->app->afterResolving('mail.manager', function ($service) {
+        Mail::resolved(function ($service) {
             $this->app->make('orchestra.postal')->configureIlluminateMailer($service);
         });
     }
