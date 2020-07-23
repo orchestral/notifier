@@ -2,6 +2,14 @@
 
 This changelog references the relevant changes (bug and security fixes) done to `orchestra/notifier`.
 
+## 5.0.3
+
+Released: 2020-07-23
+
+### Changes
+
+* Use `Illuminate\Support\Facades\Mail::resolved()` helper.
+
 ## 5.0.2
 
 Released: 2020-05-13
