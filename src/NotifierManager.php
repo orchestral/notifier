@@ -9,8 +9,6 @@ class NotifierManager extends Manager
 {
     /**
      * Create Laravel driver.
-     *
-     * @return \Orchestra\Contracts\Notification\Notification
      */
     protected function createLaravelDriver(): Notification
     {
@@ -19,8 +17,6 @@ class NotifierManager extends Manager
 
     /**
      * Create Orchestra Platform driver.
-     *
-     * @return \Orchestra\Contracts\Notification\Notification
      */
     protected function createOrchestraDriver(): Notification
     {

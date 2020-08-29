@@ -25,8 +25,6 @@ class Orchestra extends Handler implements Notification
 
     /**
      * Construct a new Orchestra Platform notifier.
-     *
-     * @param  \Orchestra\Notifier\Postal  $mailer
      */
     public function __construct(Postal $mailer)
     {
@@ -35,12 +33,6 @@ class Orchestra extends Handler implements Notification
 
     /**
      * Send notification via API.
-     *
-     * @param  \Orchestra\Contracts\Notification\Recipient  $user
-     * @param  \Orchestra\Contracts\Notification\Message  $message
-     * @param  \Closure|null  $callback
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function send(Recipient $user, MessageContract $message, Closure $callback = null): ReceiptContract
     {
@@ -55,17 +47,15 @@ class Orchestra extends Handler implements Notification
                         ? new SerializableClosure($callback)
                         : $callback;
 
-        $receipt = $this->mailer->push($view, $data, $this->createMessageCallback($user, $subject, $callback));
+        $receipt = $this->mailer->push($view, $data, $this->createMessageResolver($user, $subject, $callback));
 
         return $receipt->usingQueue($this->isUsingQueue());
     }
 
     /**
      * Determine if mailer using queue.
-     *
-     * @return bool
      */
-    protected function isUsingQueue()
+    protected function isUsingQueue(): bool
     {
         // It impossible to get either the email is sent out straight away
         // when the mailer is only push to queue, in this case we should

@@ -22,9 +22,6 @@ class GenericRecipient implements Recipient
 
     /**
      * Create a new recipient.
-     *
-     * @param  string  $email
-     * @param  string|null  $name
      */
     public function __construct(string $email, ?string $name = null)
     {
@@ -34,8 +31,6 @@ class GenericRecipient implements Recipient
 
     /**
      * Get the e-mail address where notification are sent.
-     *
-     * @return string
      */
     public function getRecipientEmail(): string
     {
@@ -44,8 +39,6 @@ class GenericRecipient implements Recipient
 
     /**
      * Get the fullname where notification are sent.
-     *
-     * @return string
      */
     public function getRecipientName(): string
     {

@@ -23,9 +23,6 @@ class Receipt implements ReceiptContract
 
     /**
      * Construct a new mail receipt.
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
-     * @param  bool  $usingQueue
      */
     public function __construct(Mail $mailer, bool $usingQueue = false)
     {
@@ -35,8 +32,6 @@ class Receipt implements ReceiptContract
 
     /**
      * Return true when all e-mail has been sent.
-     *
-     * @return bool
      */
     public function sent(): bool
     {
@@ -45,8 +40,6 @@ class Receipt implements ReceiptContract
 
     /**
      * Return true if any of the e-mail failed to be sent.
-     *
-     * @return bool
      */
     public function failed(): bool
     {
@@ -57,8 +50,6 @@ class Receipt implements ReceiptContract
 
     /**
      * Get list of failed email recipient.
-     *
-     * @return array
      */
     public function failures(): array
     {
@@ -67,8 +58,6 @@ class Receipt implements ReceiptContract
 
     /**
      * Set whether or not e-mail is sent via queue/delayed.
-     *
-     * @param  bool  $usingQueue
      *
      * @return $this
      */
@@ -81,8 +70,6 @@ class Receipt implements ReceiptContract
 
     /**
      * Get if e-mail is queued/delayed.
-     *
-     * @return bool
      */
     public function isQueued(): bool
     {

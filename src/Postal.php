@@ -5,6 +5,7 @@ namespace Orchestra\Notifier;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Mail\MailManager;
 use Orchestra\Contracts\Notification\Receipt as ReceiptContract;
 use Orchestra\Memory\Memorizable;
 use Swift_Mailer;
@@ -31,7 +32,6 @@ class Postal
     /**
      * Construct a new Mail instance.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
      * @param  \Orchestra\Notifier\TransportManager  $transport
      */
     public function __construct(Container $container, TransportManager $transport)
@@ -44,8 +44,6 @@ class Postal
      * Begin the process of mailing a mailable class instance.
      *
      * @param  mixed  $users
-     *
-     * @return \Orchestra\Notifier\PendingMail
      */
     public function to($users): PendingMail
     {
@@ -56,8 +54,6 @@ class Postal
      * Begin the process of mailing a mailable class instance.
      *
      * @param  mixed  $users
-     *
-     * @return \Orchestra\Notifier\PendingMail
      */
     public function bcc($users): PendingMail
     {
@@ -69,11 +65,7 @@ class Postal
      * settings.
      *
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string|null  $callback
-     * @param  string|null  $queue
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function push($view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
@@ -86,17 +78,14 @@ class Postal
      * Force Orchestra Platform to send email directly.
      *
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string|null  $callback
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function send($view, array $data = [], $callback = null): ReceiptContract
     {
         $mailer = $this->getMailer();
 
         if ($view instanceof MailableContract) {
-            $this->updateFromOnMailable($view)->send($mailer);
+            $this->updateSenderOnMailable($view)->send($mailer);
         } else {
             $mailer->send($view, $data, $callback);
         }
@@ -108,18 +97,14 @@ class Postal
      * Force Orchestra Platform to send email using queue.
      *
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string|null  $callback
-     * @param  string|null  $queue
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function queue($view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
         $mailer = $this->getMailer();
 
         if ($view instanceof MailableContract) {
-            $this->updateFromOnMailable($view)->queue($this->queue);
+            $this->updateSenderOnMailable($view)->queue($this->queue);
         } else {
             $callback = $this->buildQueueCallable($callback);
             $with = \compact('view', 'data', 'callback');
@@ -133,20 +118,16 @@ class Postal
     /**
      * Force Orchestra Platform to send email using queue for sending after (n) seconds.
      *
-     * @param  int  $delay
+     * @param  \DateInterval|int  $delay
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
-     * @param  array  $data
      * @param  \Closure|string|null  $callback
-     * @param  string|null  $queue
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     public function later($delay, $view, array $data = [], $callback = null, ?string $queue = null): ReceiptContract
     {
         $mailer = $this->getMailer();
 
         if ($view instanceof MailableContract) {
-            return $this->updateFromOnMailable($view)->later($delay, $this->queue);
+            return $this->updateSenderOnMailable($view)->later($delay, $this->queue);
         }
 
         $callback = $this->buildQueueCallable($callback);
@@ -159,8 +140,6 @@ class Postal
 
     /**
      * Should the email be send via queue.
-     *
-     * @return bool
      */
     public function shouldBeQueued(): bool
     {
@@ -169,12 +148,8 @@ class Postal
 
     /**
      * Update from on mailable.
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailable $message
-     *
-     * @return \Illuminate\Contracts\Mail\Mailable
      */
-    protected function updateFromOnMailable(MailableContract $message): MailableContract
+    protected function updateSenderOnMailable(MailableContract $message): MailableContract
     {
         if (! empty($this->from['address'])) {
             $message->from($this->from['address'], $this->from['name']);
@@ -185,8 +160,6 @@ class Postal
 
     /**
      * Register the Swift Mailer instance.
-     *
-     * @return \Illuminate\Contracts\Mail\Mailer
      */
     public function getMailer(): MailerContract
     {
@@ -199,10 +172,8 @@ class Postal
 
     /**
      * Setup mailer.
-     *
-     * @return \Illuminate\Contracts\Mail\Mailer
      */
-    public function configureIlluminateMailer(MailerContract $mailer): MailerContract
+    public function configureIlluminateMailer(MailManager $manager): void
     {
         $from = $this->memory->get('email.from');
 
@@ -212,15 +183,16 @@ class Postal
         // lot more convenient.
         if (\is_array($from) && ! empty($from['address'])) {
             $this->from = $from;
-            $mailer->alwaysFrom($from['address'], $from['name']);
+
+            \config(['mail.from' => $from]);
         }
+
+        $mailer = $manager->driver($this->transport->getDefaultDriver());
 
         if ($this->queue instanceof QueueContract) {
             $mailer->setQueue($this->queue);
         }
 
         $mailer->setSwiftMailer(new Swift_Mailer($this->transport->driver()));
-
-        return $mailer;
     }
 }

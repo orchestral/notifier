@@ -15,12 +15,8 @@ trait Notifiable
     /**
      * Send email notification to user.
      *
-     * @param  \Illuminate\Support\Collection  $users
      * @param  \Orchestra\Contracts\Notification\Message|string  $subject
      * @param  \Illuminate\Contracts\Mail\Mailable|string|null  $view
-     * @param  array  $data
-     *
-     * @return void
      */
     protected function sendNotifications(Collection $users, $subject, $view = null, array $data = []): void
     {
@@ -32,12 +28,8 @@ trait Notifiable
     /**
      * Send email notification to user.
      *
-     * @param  \Orchestra\Contracts\Notification\Recipient  $user
      * @param  \Orchestra\Contracts\Notification\Message|string  $subject
      * @param  \Illuminate\Contracts\Mail\Mailable|string|null  $view
-     * @param  array  $data
-     *
-     * @return \Orchestra\Contracts\Notification\Receipt
      */
     protected function sendNotification(Recipient $user, $subject, $view = null, array $data = []): ReceiptContract
     {

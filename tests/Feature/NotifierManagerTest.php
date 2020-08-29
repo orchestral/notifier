@@ -15,7 +15,17 @@ class NotifierManagerTest extends TestCase
 
         $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
 
-        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+        $memory->shouldReceive('get')->with('email', [])->andReturn([
+                'driver' => 'smtp',
+                'host' => 'smtp.mailgun.org',
+                'port' => 587,
+                'from' => [
+                    'address' => 'hello@orchestraplatform.com',
+                    'name' => 'Orchestra Platform',
+                ],
+            ])
+            ->shouldReceive('has')->with('email.driver')->andReturn(true)
+            ->shouldReceive('get')->with('email.driver')->twice()->andReturn('smtp')
             ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
@@ -35,7 +45,17 @@ class NotifierManagerTest extends TestCase
     {
         $this->app->instance('orchestra.platform.memory', $memory = m::mock('Orchestra\Contracts\Memory\Provider'));
 
-        $memory->shouldReceive('get')->with('email.driver', 'mail')->once()->andReturn('mail')
+        $memory->shouldReceive('get')->with('email', [])->andReturn([
+                'driver' => 'smtp',
+                'host' => 'smtp.mailgun.org',
+                'port' => 587,
+                'from' => [
+                    'address' => 'hello@orchestraplatform.com',
+                    'name' => 'Orchestra Platform',
+                ],
+            ])
+            ->shouldReceive('has')->with('email.driver')->andReturn(true)
+            ->shouldReceive('get')->with('email.driver')->twice()->andReturn('smtp')
             ->shouldReceive('get')->with('email.from')->once()->andReturn([
                 'address' => 'hello@orchestraplatform.com',
                 'name' => 'Orchestra Platform',
